@@ -19,11 +19,13 @@ Em seguida, o detalhamento necessário para alguém implementar sem perguntar na
 ## Alternativas consideradas
 
 ### Alternativa A — nome
+
 - **A favor:**
 - **Contra:**
 - **Motivo da recusa:**
 
 ### Alternativa B — nome
+
 - **A favor:**
 - **Contra:**
 - **Motivo da recusa:**

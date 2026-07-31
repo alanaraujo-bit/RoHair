@@ -32,16 +32,16 @@ Nasce para uma profissional. É construído, desde a primeira linha, para milhar
 
 ## Documentação
 
-| Documento | Para quê |
-|---|---|
-| [CLAUDE.md](CLAUDE.md) | Instruções permanentes do agente. Lido em toda sessão |
-| [docs/00-ESTADO-ATUAL.md](docs/00-ESTADO-ATUAL.md) | **Onde o projeto está agora.** Comece por aqui |
-| [docs/01-VISAO-PRODUTO.md](docs/01-VISAO-PRODUTO.md) | Posicionamento, princípios, personas, anti-objetivos |
-| [docs/02-ARQUITETURA.md](docs/02-ARQUITETURA.md) | Stack, camadas, tenancy, decisões de banco, PWA |
-| [docs/03-ROADMAP.md](docs/03-ROADMAP.md) | As 16 fases, com entregáveis e definição de pronto |
-| [docs/04-DECISOES.md](docs/04-DECISOES.md) | Decisões tomadas e pendentes |
-| [docs/05-PROTOCOLO-DE-TRABALHO.md](docs/05-PROTOCOLO-DE-TRABALHO.md) | Como dono e agente trabalham juntos |
-| [docs/adr/](docs/adr/) | Architecture Decision Records |
+| Documento                                                            | Para quê                                              |
+| -------------------------------------------------------------------- | ----------------------------------------------------- |
+| [CLAUDE.md](CLAUDE.md)                                               | Instruções permanentes do agente. Lido em toda sessão |
+| [docs/00-ESTADO-ATUAL.md](docs/00-ESTADO-ATUAL.md)                   | **Onde o projeto está agora.** Comece por aqui        |
+| [docs/01-VISAO-PRODUTO.md](docs/01-VISAO-PRODUTO.md)                 | Posicionamento, princípios, personas, anti-objetivos  |
+| [docs/02-ARQUITETURA.md](docs/02-ARQUITETURA.md)                     | Stack, camadas, tenancy, decisões de banco, PWA       |
+| [docs/03-ROADMAP.md](docs/03-ROADMAP.md)                             | As 16 fases, com entregáveis e definição de pronto    |
+| [docs/04-DECISOES.md](docs/04-DECISOES.md)                           | Decisões tomadas e pendentes                          |
+| [docs/05-PROTOCOLO-DE-TRABALHO.md](docs/05-PROTOCOLO-DE-TRABALHO.md) | Como dono e agente trabalham juntos                   |
+| [docs/adr/](docs/adr/)                                               | Architecture Decision Records                         |
 
 ## Stack
 

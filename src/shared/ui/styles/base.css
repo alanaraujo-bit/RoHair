@@ -1,0 +1,113 @@
+/**
+ * Base do aplicativo — a camada que elimina a sensação de navegador.
+ *
+ * Regra que orienta este arquivo: bloquear comportamento de site na CASCA,
+ * preservando-o onde ele é legítimo (campos de texto e conteúdo lido).
+ * A versão completa, com safe areas e gestos, chega na Fase 5.
+ */
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    /* Sem ajuste automático de fonte quando o iPhone gira */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Impede o "bounce" elástico da página inteira */
+    overscroll-behavior-y: none;
+  }
+
+  body {
+    background-color: var(--aurea-canvas);
+    color: var(--aurea-ink);
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Seleção e menu de contexto desligados na casca... */
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  /* ...e religados onde o usuário realmente precisa deles */
+  input,
+  textarea,
+  [contenteditable='true'],
+  [data-selectable] {
+    -webkit-user-select: text;
+    user-select: text;
+    -webkit-touch-callout: default;
+  }
+
+  /**
+   * 16px em campos de formulário impede o zoom automático do Safari no foco.
+   * A alternativa comum (`maximum-scale=1`) desativaria o zoom por pinça e
+   * violaria a WCAG 2.2 — este caminho resolve sem custo de acessibilidade.
+   */
+  input,
+  select,
+  textarea {
+    font-size: max(16px, 1rem);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--aurea-rose);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+
+  ::selection {
+    background-color: var(--aurea-rose-soft);
+    color: var(--aurea-ink);
+  }
+
+  /* Respeitar quem pediu menos movimento não é opcional */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* Entrada escalonada — usada enquanto o Motion não chega, na Fase 2 */
+  @keyframes aurea-rise {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .animate-rise {
+    animation: aurea-rise 0.7s var(--ease-out-soft) both;
+  }
+
+  @keyframes aurea-breathe {
+    0%,
+    100% {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.85;
+      transform: scale(1.06);
+    }
+  }
+
+  .animate-breathe {
+    animation: aurea-breathe 6s ease-in-out infinite;
+  }
+}

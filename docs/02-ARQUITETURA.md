@@ -5,26 +5,26 @@
 
 ## 1. Stack
 
-| Camada | Tecnologia | Justificativa |
-|---|---|---|
-| Framework | **Next.js — App Router** | RSC reduz JavaScript no cliente, essencial num app que roda em 4G; streaming melhora a percepção de velocidade; Server Actions eliminam a camada de API para mutações internas |
-| Linguagem | **TypeScript `strict`** + `noUncheckedIndexedAccess` | Zero `any`. Tipagem é documentação executável |
-| UI | **React 19** | Actions, `useOptimistic` e `useFormStatus` são a base do feedback instantâneo |
-| Estilo | **Tailwind v4** com `@theme` | Tokens nativos em CSS; sem runtime de CSS-in-JS |
-| Cor | **OKLCH** | Uniformidade perceptual permite gerar escalas e **garantir contraste por cálculo**, não por tentativa |
-| Componentes | **shadcn/ui como base copiada** | Acessibilidade do Radix sem virar dependência de aparência. O código é nosso |
-| Movimento | **Motion (Framer Motion)** | Springs de verdade; a sensação nativa vem da física, não de `ease-in-out` |
-| Formulários | **React Hook Form + Zod** | Um único schema Zod valida cliente, Server Action e tipo TypeScript |
-| ORM | **Prisma** | Migrations versionadas, tipos gerados, Client Extensions viabilizam o multi-tenancy automático |
-| Banco | **PostgreSQL (Railway)** | Constraints de exclusão por intervalo, transações reais, JSONB, full-text |
-| Cache/Filas | **Redis (Railway)** | Rate limit, locks distribuídos, filas |
-| Service Worker | **Serwist** | Sucessor mantido do Workbox no ecossistema Next. `next-pwa` está abandonado |
-| Auth | **Sessão própria** (cookie httpOnly + Argon2id) | Dois domínios de identidade separados e um fluxo de ativação por CPF que nenhuma biblioteca cobre. Ver seção 3 |
-| Armazenamento | **Cloudflare R2** | 10 GB grátis e egresso zero. Atrás da porta `StorageService` |
-| Estado de servidor | **RSC + Server Actions**, TanStack Query nas ilhas | Buscar tudo no cliente desperdiça o App Router. Query entra onde há otimismo, polling ou fila offline |
-| Testes | **Vitest** + Testing Library + **Playwright** | Domínio testado sem banco, em segundos. E2E nos fluxos críticos |
-| Erros | **Sentry** | Rastreio com source maps, por release |
-| Deploy | **Vercel** + **Railway** | Edge/serverless para a aplicação; serviços com estado no Railway |
+| Camada             | Tecnologia                                           | Justificativa                                                                                                                                                                  |
+| ------------------ | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Framework          | **Next.js — App Router**                             | RSC reduz JavaScript no cliente, essencial num app que roda em 4G; streaming melhora a percepção de velocidade; Server Actions eliminam a camada de API para mutações internas |
+| Linguagem          | **TypeScript `strict`** + `noUncheckedIndexedAccess` | Zero `any`. Tipagem é documentação executável                                                                                                                                  |
+| UI                 | **React 19**                                         | Actions, `useOptimistic` e `useFormStatus` são a base do feedback instantâneo                                                                                                  |
+| Estilo             | **Tailwind v4** com `@theme`                         | Tokens nativos em CSS; sem runtime de CSS-in-JS                                                                                                                                |
+| Cor                | **OKLCH**                                            | Uniformidade perceptual permite gerar escalas e **garantir contraste por cálculo**, não por tentativa                                                                          |
+| Componentes        | **shadcn/ui como base copiada**                      | Acessibilidade do Radix sem virar dependência de aparência. O código é nosso                                                                                                   |
+| Movimento          | **Motion (Framer Motion)**                           | Springs de verdade; a sensação nativa vem da física, não de `ease-in-out`                                                                                                      |
+| Formulários        | **React Hook Form + Zod**                            | Um único schema Zod valida cliente, Server Action e tipo TypeScript                                                                                                            |
+| ORM                | **Prisma**                                           | Migrations versionadas, tipos gerados, Client Extensions viabilizam o multi-tenancy automático                                                                                 |
+| Banco              | **PostgreSQL (Railway)**                             | Constraints de exclusão por intervalo, transações reais, JSONB, full-text                                                                                                      |
+| Cache/Filas        | **Redis (Railway)**                                  | Rate limit, locks distribuídos, filas                                                                                                                                          |
+| Service Worker     | **Serwist**                                          | Sucessor mantido do Workbox no ecossistema Next. `next-pwa` está abandonado                                                                                                    |
+| Auth               | **Sessão própria** (cookie httpOnly + Argon2id)      | Dois domínios de identidade separados e um fluxo de ativação por CPF que nenhuma biblioteca cobre. Ver seção 3                                                                 |
+| Armazenamento      | **Cloudflare R2**                                    | 10 GB grátis e egresso zero. Atrás da porta `StorageService`                                                                                                                   |
+| Estado de servidor | **RSC + Server Actions**, TanStack Query nas ilhas   | Buscar tudo no cliente desperdiça o App Router. Query entra onde há otimismo, polling ou fila offline                                                                          |
+| Testes             | **Vitest** + Testing Library + **Playwright**        | Domínio testado sem banco, em segundos. E2E nos fluxos críticos                                                                                                                |
+| Erros              | **Sentry**                                           | Rastreio com source maps, por release                                                                                                                                          |
+| Deploy             | **Vercel** + **Railway**                             | Edge/serverless para a aplicação; serviços com estado no Railway                                                                                                               |
 
 ## 2. Estrutura de pastas
 
@@ -127,15 +127,15 @@ milhares de organizações.
 
 ## 5. Decisões de banco que evitam bugs caros
 
-| Decisão | Justificativa |
-|---|---|
-| **UUIDv7** gerado na aplicação | Ordenável por tempo → localidade de índice de um inteiro sequencial, sem expor volume de negócio |
-| **Dinheiro em centavos (`Int`)** | Ponto flutuante em dinheiro é bug garantido. Formatação só através do value object `Money` |
-| **Datas em UTC**, timezone na organização | Mata a classe de bugs "o faturamento do dia mudou depois da meia-noite" |
+| Decisão                                    | Justificativa                                                                                                                         |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| **UUIDv7** gerado na aplicação             | Ordenável por tempo → localidade de índice de um inteiro sequencial, sem expor volume de negócio                                      |
+| **Dinheiro em centavos (`Int`)**           | Ponto flutuante em dinheiro é bug garantido. Formatação só através do value object `Money`                                            |
+| **Datas em UTC**, timezone na organização  | Mata a classe de bugs "o faturamento do dia mudou depois da meia-noite"                                                               |
 | **`EXCLUDE USING gist` sobre `tstzrange`** | Duas requisições simultâneas não conseguem, fisicamente, criar horários sobrepostos. Validação na aplicação é UX; garantia é do banco |
-| **Snapshot de preço no atendimento** | Reajustar o preço de um serviço não pode reescrever o histórico financeiro |
-| **Soft delete + audit log** | Cliente apagada por engano é recuperável; histórico financeiro é imutável |
-| **Cronômetro como intervalos** | Pausar/retomar vira lista imutável de `start`/`end`. Fechar o app no meio não perde nada, e o tempo é auditável |
+| **Snapshot de preço no atendimento**       | Reajustar o preço de um serviço não pode reescrever o histórico financeiro                                                            |
+| **Soft delete + audit log**                | Cliente apagada por engano é recuperável; histórico financeiro é imutável                                                             |
+| **Cronômetro como intervalos**             | Pausar/retomar vira lista imutável de `start`/`end`. Fechar o app no meio não perde nada, e o tempo é auditável                       |
 
 ## 6. Entidades principais
 
@@ -177,13 +177,13 @@ trocar um adapter.
 
 ## 9. Performance — orçamento verificado no CI
 
-| Métrica | Alvo |
-|---|---|
-| LCP em 4G | < 1.8s |
-| INP | < 200ms |
-| CLS | < 0.05 |
-| JS da rota inicial | < 130KB gzip |
-| Dashboard com 2 anos de dados | < 1s |
+| Métrica                       | Alvo         |
+| ----------------------------- | ------------ |
+| LCP em 4G                     | < 1.8s       |
+| INP                           | < 200ms      |
+| CLS                           | < 0.05       |
+| JS da rota inicial            | < 130KB gzip |
+| Dashboard com 2 anos de dados | < 1s         |
 
 ## 10. Acessibilidade
 

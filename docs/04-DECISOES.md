@@ -11,6 +11,7 @@
 ## Decisões tomadas
 
 ### DEC-001 · Serwist no lugar de `next-pwa`
+
 **Data:** 2026-07-31 · **Status:** ✅ Aceita
 
 `next-pwa` está sem manutenção ativa. Serwist é o sucessor moderno do Workbox no
@@ -20,6 +21,7 @@ Aplicação direta da regra "nunca usar bibliotecas abandonadas".
 ---
 
 ### DEC-002 · RSC + Server Actions como padrão; TanStack Query nas ilhas
+
 **Data:** 2026-07-31 · **Status:** ✅ Aceita
 
 Buscar todos os dados via TanStack Query no cliente descarta a principal vantagem
@@ -32,6 +34,7 @@ otimista, polling ou fila offline — agenda ao vivo, cronômetro, atendimento.
 ---
 
 ### DEC-003 · Multi-tenancy por `organizationId` desde o dia 1
+
 **Data:** 2026-07-31 · **Status:** ✅ Aceita
 
 Banco único, schema único, isolamento por `organizationId`, com Prisma Client
@@ -44,6 +47,7 @@ identidade e de todo o modelo de dados; fazer no dia 1 custa pouco.
 ---
 
 ### DEC-004 · Arquitetura feature-first com camadas e regra de dependência por lint
+
 **Data:** 2026-07-31 · **Status:** ✅ Aceita
 
 `domain / application / infrastructure / presentation` por feature, com
@@ -55,6 +59,7 @@ tempo — e é o que torna o domínio testável sem banco.
 ---
 
 ### DEC-005 · Documentação viva como fonte de verdade entre sessões
+
 **Data:** 2026-07-31 · **Status:** ✅ Aceita
 
 `CLAUDE.md` + `docs/` versionados no repositório, com
@@ -68,6 +73,7 @@ lida automaticamente por qualquer sessão nova.
 ---
 
 ### DEC-006 · Roadmap por fases com aprovação obrigatória
+
 **Data:** 2026-07-31 · **Status:** ✅ Aceita
 
 Ver [03-ROADMAP.md](03-ROADMAP.md). Nenhuma fase começa sem aprovação explícita;
@@ -76,6 +82,7 @@ nenhuma é pulada; nenhuma é entregue em conjunto com outra para "adiantar".
 ---
 
 ### DEC-007 · O RoHair tem dois públicos e dois aplicativos em um só código
+
 **Data:** 2026-07-31 · **Status:** ✅ Aceita · **Substitui parte de DEC-006**
 **Origem:** definição do dono sobre o fluxo de acesso das clientes
 
@@ -87,7 +94,7 @@ conversam**:
 - **Portal da Cliente** — a cliente acessa o próprio histórico, fotos de antes e
   depois e agendamentos
 
-**Decisão:** um único repositório e um único design system, com dois *app shells*
+**Decisão:** um único repositório e um único design system, com dois _app shells_
 distintos separados por route group (`(painel)` e `(portal)`), cada um com
 navegação, manifest de PWA e experiência próprios. Roteamento pós-login definido
 pelo tipo de conta.
@@ -102,6 +109,7 @@ renumeradas.
 ---
 
 ### DEC-008 · Autenticação — dois domínios de identidade separados
+
 **Data:** 2026-07-31 · **Status:** ✅ Aceita · **Revoga D-01 (Better Auth/passkey)**
 **Origem:** definição do dono
 
@@ -132,12 +140,14 @@ conversarem.
 #### Fluxos
 
 **Equipe (`User`)** — não existe autocadastro.
+
 1. A primeira conta (OWNER) é criada por script de bootstrap, uma única vez
 2. A OWNER cria as demais contas da equipe pelo painel
 3. Papéis: `OWNER` · `PROFESSIONAL` · `ASSISTANT`
 4. Login: e-mail ou usuário + senha
 
 **Cliente (`ClientAccount`)** — primeiro acesso por CPF + data de nascimento.
+
 1. Cliente informa **CPF + data de nascimento**
 2. O sistema busca a ficha pelo CPF dentro da organização:
    - **Ficha existe e a data confere** → define usuário e senha → conta ativada e
@@ -165,6 +175,7 @@ pessoalmente) torna o ataque implausível, e porque qualquer verificação mais 
 custaria dinheiro (SMS) ou fricção que o dono não quer.
 
 **Mitigações implementadas:**
+
 - Limite de tentativas por CPF e por IP, com bloqueio progressivo
 - **Notificação à profissional a cada ativação ou autocadastro**, com ação de
   revogar acesso em um toque
@@ -182,6 +193,7 @@ desprezível; registrado por transparência.
 ---
 
 ### DEC-009 · CPF criptografado, com hash separado para busca
+
 **Data:** 2026-07-31 · **Status:** ✅ Aceita
 
 O CPF é a chave natural da cliente e será guardado assim:
@@ -198,6 +210,7 @@ Custa cerca de 30 linhas em um value object e elimina o pior cenário de LGPD.
 ---
 
 ### DEC-010 · Armazenamento de fotos — Cloudflare R2 + compressão no cliente
+
 **Data:** 2026-07-31 · **Status:** ✅ Aceita · **Substitui D-02 (Vercel Blob)**
 **Origem:** exigência do dono de solução gratuita
 
@@ -222,6 +235,7 @@ trocar um adapter, sem tocar em nenhuma feature.
 ---
 
 ### DEC-011 · Identidade da marca — "Ro" de Rosiele
+
 **Data:** 2026-07-31 · **Status:** ✅ Aceita · **Resolve D-04**
 
 **RoHair = Rosiele + Hair.** O nome carrega o nome da profissional.
@@ -236,6 +250,7 @@ primeira pessoa da Rosiele, não institucional.
 ## Decisões pendentes
 
 ### D-03 · Domínio próprio
+
 **Status:** ⏳ Sem domínio no momento · **Bloqueia:** Fase 5 (parcial), Fase 14
 
 Ainda não há domínio. Seguimos no subdomínio da Vercel até a Fase 5, quando o PWA
@@ -244,6 +259,7 @@ instalável e o portal público da cliente tornam um domínio próprio desejáve
 Sugestões a avaliar: `rohair.app` · `rohair.com.br` · `rosielehair.com.br`
 
 ### D-05 · Poder de agendamento da cliente no portal
+
 **Status:** ⏳ Aguardando · **Bloqueia:** Fase 12
 
 A cliente pode **agendar direto** na agenda, ou apenas **solicitar um horário**
@@ -256,6 +272,7 @@ conversa do WhatsApp. Agendamento direto pode ser habilitado depois, por
 configuração, quando houver horários realmente livres e bem definidos.
 
 ### D-06 · Escopo do Portal da Cliente
+
 **Status:** ⏳ Aguardando · **Bloqueia:** Fase 12
 
 Proposta de escopo em [03-ROADMAP.md](03-ROADMAP.md#fase-12) — a confirmar.

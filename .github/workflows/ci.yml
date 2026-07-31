@@ -1,0 +1,102 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Um push novo cancela a execução anterior do mesmo branch: sem fila de builds
+# obsoletos consumindo minutos à toa.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '22'
+
+jobs:
+  qualidade:
+    name: Tipos, lint, formato e testes
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci
+
+      # Os quatro passos são independentes e rodam sempre, mesmo após falha:
+      # ver todos os problemas de uma vez vale mais do que parar no primeiro.
+      - name: Verificar tipos
+        run: npm run typecheck
+
+      - name: Lint (inclui fronteiras entre camadas)
+        if: '!cancelled()'
+        run: npm run lint
+
+      - name: Verificar formatação
+        if: '!cancelled()'
+        run: npm run format:check
+
+      - name: Testes unitários
+        if: '!cancelled()'
+        run: npm run test
+
+  build:
+    name: Build de produção
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Compilar
+        run: npm run build
+        env:
+          NEXT_PUBLIC_APP_URL: https://rohair.vercel.app
+          APP_ENV: preview
+
+  e2e:
+    name: Testes ponta a ponta
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Instalar navegadores do Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Executar suíte E2E
+        run: npm run test:e2e
+        env:
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
+          APP_ENV: local
+
+      - name: Publicar relatório
+        uses: actions/upload-artifact@v4
+        if: '!cancelled()'
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

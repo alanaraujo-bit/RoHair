@@ -1,0 +1,183 @@
+/**
+ * Áurea — Design Tokens
+ *
+ * Semente do design system do RoHair. A biblioteca completa nasce na Fase 2;
+ * o que existe aqui é a base de cor, tipografia, forma e movimento que já
+ * sustenta duas identidades de tema.
+ *
+ * Cor em OKLCH por escolha deliberada: a luminância é perceptualmente uniforme,
+ * o que permite garantir contraste por cálculo em vez de por tentativa.
+ *
+ * Os dois temas NÃO são um a inversão do outro:
+ *   Porcelana (light) — branco quente, sombra difusa, ouro rosé metálico
+ *   Veludo    (dark)  — base ameixa levemente arroxeada, nunca cinza neutro;
+ *                       elevação por luminosidade, não por borda
+ */
+
+@layer theme {
+  :root {
+    /* ---- Porcelana (tema claro) ---- */
+    --aurea-canvas: oklch(98.8% 0.006 25);
+    --aurea-canvas-subtle: oklch(97% 0.009 25);
+    --aurea-surface: oklch(100% 0 0);
+    --aurea-surface-raised: oklch(100% 0 0);
+
+    --aurea-border: oklch(92% 0.008 25);
+    --aurea-border-strong: oklch(86% 0.013 25);
+
+    --aurea-ink: oklch(26% 0.02 20);
+    --aurea-ink-muted: oklch(48% 0.015 20);
+    --aurea-ink-subtle: oklch(63% 0.012 20);
+
+    --aurea-rose: oklch(66% 0.13 12);
+    --aurea-rose-strong: oklch(56% 0.15 12);
+    --aurea-rose-soft: oklch(96.5% 0.018 15);
+    --aurea-gold: oklch(76% 0.08 55);
+
+    --aurea-success: oklch(58% 0.13 155);
+    --aurea-warning: oklch(70% 0.13 75);
+    --aurea-danger: oklch(56% 0.18 22);
+
+    --aurea-shadow-sm: 0 1px 2px oklch(26% 0.02 20 / 0.05);
+    --aurea-shadow-md:
+      0 4px 16px -4px oklch(26% 0.02 20 / 0.08),
+      0 2px 6px -2px oklch(26% 0.02 20 / 0.04);
+    --aurea-shadow-lg:
+      0 24px 48px -12px oklch(26% 0.02 20 / 0.12),
+      0 8px 16px -8px oklch(26% 0.02 20 / 0.06);
+
+    --aurea-glow: oklch(66% 0.13 12 / 0.14);
+    color-scheme: light;
+  }
+
+  /* ---- Veludo (tema escuro) ---- */
+  /* Aplicado por preferência do sistema, salvo escolha explícita pelo tema claro */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      --aurea-canvas: oklch(17% 0.02 340);
+      --aurea-canvas-subtle: oklch(20% 0.022 340);
+      --aurea-surface: oklch(22.5% 0.024 340);
+      --aurea-surface-raised: oklch(26% 0.026 340);
+
+      --aurea-border: oklch(30% 0.025 340);
+      --aurea-border-strong: oklch(39% 0.03 340);
+
+      --aurea-ink: oklch(96% 0.008 340);
+      --aurea-ink-muted: oklch(75% 0.016 340);
+      --aurea-ink-subtle: oklch(59% 0.018 340);
+
+      --aurea-rose: oklch(77% 0.11 15);
+      --aurea-rose-strong: oklch(85% 0.1 18);
+      --aurea-rose-soft: oklch(28% 0.042 350);
+      --aurea-gold: oklch(83% 0.07 60);
+
+      --aurea-success: oklch(74% 0.14 155);
+      --aurea-warning: oklch(82% 0.13 78);
+      --aurea-danger: oklch(70% 0.17 20);
+
+      --aurea-shadow-sm: 0 1px 2px oklch(8% 0.01 340 / 0.4);
+      --aurea-shadow-md:
+        0 4px 16px -4px oklch(8% 0.01 340 / 0.5),
+        0 2px 6px -2px oklch(8% 0.01 340 / 0.3);
+      --aurea-shadow-lg:
+        0 24px 48px -12px oklch(8% 0.01 340 / 0.6),
+        0 8px 16px -8px oklch(8% 0.01 340 / 0.4);
+
+      --aurea-glow: oklch(77% 0.11 15 / 0.2);
+      color-scheme: dark;
+    }
+  }
+
+  /* Escolha explícita do tema escuro — vence a preferência do sistema */
+  :root[data-theme='dark'] {
+    --aurea-canvas: oklch(17% 0.02 340);
+    --aurea-canvas-subtle: oklch(20% 0.022 340);
+    --aurea-surface: oklch(22.5% 0.024 340);
+    --aurea-surface-raised: oklch(26% 0.026 340);
+
+    --aurea-border: oklch(30% 0.025 340);
+    --aurea-border-strong: oklch(39% 0.03 340);
+
+    --aurea-ink: oklch(96% 0.008 340);
+    --aurea-ink-muted: oklch(75% 0.016 340);
+    --aurea-ink-subtle: oklch(59% 0.018 340);
+
+    --aurea-rose: oklch(77% 0.11 15);
+    --aurea-rose-strong: oklch(85% 0.1 18);
+    --aurea-rose-soft: oklch(28% 0.042 350);
+    --aurea-gold: oklch(83% 0.07 60);
+
+    --aurea-success: oklch(74% 0.14 155);
+    --aurea-warning: oklch(82% 0.13 78);
+    --aurea-danger: oklch(70% 0.17 20);
+
+    --aurea-shadow-sm: 0 1px 2px oklch(8% 0.01 340 / 0.4);
+    --aurea-shadow-md:
+      0 4px 16px -4px oklch(8% 0.01 340 / 0.5), 0 2px 6px -2px oklch(8% 0.01 340 / 0.3);
+    --aurea-shadow-lg:
+      0 24px 48px -12px oklch(8% 0.01 340 / 0.6),
+      0 8px 16px -8px oklch(8% 0.01 340 / 0.4);
+
+    --aurea-glow: oklch(77% 0.11 15 / 0.2);
+    color-scheme: dark;
+  }
+}
+
+/**
+ * Ponte para o Tailwind. `inline` faz o Tailwind referenciar as variáveis acima
+ * em vez de congelar o valor — é o que permite trocar de tema sem recompilar.
+ */
+@theme inline {
+  --color-canvas: var(--aurea-canvas);
+  --color-canvas-subtle: var(--aurea-canvas-subtle);
+  --color-surface: var(--aurea-surface);
+  --color-surface-raised: var(--aurea-surface-raised);
+
+  --color-line: var(--aurea-border);
+  --color-line-strong: var(--aurea-border-strong);
+
+  --color-ink: var(--aurea-ink);
+  --color-ink-muted: var(--aurea-ink-muted);
+  --color-ink-subtle: var(--aurea-ink-subtle);
+
+  --color-rose: var(--aurea-rose);
+  --color-rose-strong: var(--aurea-rose-strong);
+  --color-rose-soft: var(--aurea-rose-soft);
+  --color-gold: var(--aurea-gold);
+
+  --color-success: var(--aurea-success);
+  --color-warning: var(--aurea-warning);
+  --color-danger: var(--aurea-danger);
+
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-xs: 0.375rem;
+  --radius-sm: 0.625rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.75rem;
+  --radius-2xl: 2.25rem;
+
+  --shadow-soft: var(--aurea-shadow-sm);
+  --shadow-lifted: var(--aurea-shadow-md);
+  --shadow-floating: var(--aurea-shadow-lg);
+
+  /* Movimento: curvas de mola, não ease-in-out. A sensação nativa vem da física */
+  --ease-spring: linear(
+    0,
+    0.0026 3.3%,
+    0.0175 8.2%,
+    0.0817 16.7%,
+    0.2103 25.5%,
+    0.5241 38.7%,
+    0.7418 47.8%,
+    0.8556 53.9%,
+    0.9424 60.8%,
+    0.9885 67.4%,
+    1.0087 74.6%,
+    1.0071 84.3%,
+    1
+  );
+  --ease-out-soft: cubic-bezier(0.32, 0.72, 0, 1);
+}

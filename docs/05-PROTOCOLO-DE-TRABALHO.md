@@ -40,12 +40,14 @@ O problema: a janela de conversa é volátil. A solução: **o repositório é a
 memória**.
 
 **Toda sessão nova começa lendo, nesta ordem:**
+
 1. `CLAUDE.md` (carregado automaticamente)
 2. `docs/00-ESTADO-ATUAL.md`
 3. `docs/04-DECISOES.md`
 4. A fase atual em `docs/03-ROADMAP.md`
 
 **Toda sessão termina atualizando:**
+
 1. O snapshot e o "Próximo passo imediato" em `00-ESTADO-ATUAL.md`
 2. Uma nova entrada no "Log de sessões"
 3. `04-DECISOES.md`, se algo foi decidido

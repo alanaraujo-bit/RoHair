@@ -76,7 +76,7 @@ apresenta objetivo, arquitetura e decisões, e **espera aprovação explícita**
 - Regra de dependência entre camadas é imposta por lint, não por disciplina.
 - Nenhum acesso a Prisma fora de `infrastructure/`.
 - Dinheiro sempre em centavos (`Int`). Datas sempre UTC no banco.
-- Comentário só quando explica *por quê*, nunca *o quê*.
+- Comentário só quando explica _por quê_, nunca _o quê_.
 
 **Produto**
 

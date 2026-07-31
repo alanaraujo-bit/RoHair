@@ -16,25 +16,30 @@ partir do CRUD. Toda decisão de UX é validada contra essa cena.
 ## Princípios (usados como critério de aceite)
 
 ### 1. Regra dos 3 toques
+
 Qualquer ação do dia a dia — iniciar atendimento, dar baixa em produto, receber
 pagamento, agendar retorno — acontece em no máximo 3 toques a partir da tela
 inicial. Se precisou de mais, o desenho está errado.
 
 ### 2. O app trabalha, a usuária confirma
+
 O sistema propõe: preço sugerido, duração estimada pelo histórico daquela
 cliente, produtos que ela costuma usar, data de retorno ideal. A usuária confirma
 ou ajusta. Ela nunca digita do zero aquilo que já é inferível.
 
 ### 3. Nada de tela morta
+
 Todo estado vazio propõe uma ação. Todo carregamento é skeleton com a forma real
 do conteúdo. Toda ação responde em menos de 100ms, mesmo com rede ruim — se
 preciso, de forma otimista.
 
 ### 4. Honestidade de estado
+
 O app nunca finge que salvou. Nunca mostra número que não bate. Nunca esconde
 erro. Confiança é o único ativo que não se recupera.
 
 ### 5. Elegância é função, não enfeite
+
 Animação existe para explicar de onde a coisa veio e para onde foi. Cor existe
 para hierarquizar. Nenhum efeito entra por ser bonito — entra por comunicar.
 
@@ -43,12 +48,14 @@ para hierarquizar. Nenhum efeito entra por ser bonito — entra por comunicar.
 ## Usuárias
 
 ### Persona primária — a profissional
+
 Autônoma, atende em casa ou em espaço alugado. Trabalha com escova, hidratação e
 progressiva. Usa iPhone. Faz tudo sozinha: agenda pelo WhatsApp, anota preço em
 caderno ou bloco de notas, não sabe direito quanto lucra por atendimento porque
 não conta o custo do produto.
 
 **Dores reais:**
+
 - Não sabe o lucro real, só o faturamento
 - Perde cliente por não lembrar de chamar de volta
 - Descobre que o produto acabou no meio do atendimento
@@ -56,6 +63,7 @@ não conta o custo do produto.
 - Esquece preferência e histórico de cliente que não vê há meses
 
 **O que ela contrata o RoHair para fazer:**
+
 1. "Me diga o que eu tenho hoje" — clareza sobre o dia, em um olhar
 2. "Registre o que eu fiz sem me atrapalhar" — atendimento com mãos ocupadas
 3. "Me diga se estou ganhando dinheiro" — lucro real, não faturamento
@@ -63,6 +71,7 @@ não conta o custo do produto.
 5. "Não me deixe faltar produto" — estoque que avisa antes de acabar
 
 ### Persona secundária — a cliente
+
 **Usuária direta do produto**, com aplicativo próprio (Fase 12). Não é
 espectadora: tem conta, entra e usa.
 
@@ -72,6 +81,7 @@ aparece de uma vez. Se ainda não, ela mesma se cadastra — e, quando a Rosiele
 lançar o atendimento, a ficha já está lá.
 
 **O que ela contrata o RoHair para fazer:**
+
 1. "Me mostre a minha evolução" — o antes e depois de cada visita, no tempo. É o
    coração emocional do portal
 2. "Quando é meu horário?" — sem procurar conversa antiga no WhatsApp

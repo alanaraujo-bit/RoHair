@@ -16,6 +16,6 @@ Use o [TEMPLATE.md](TEMPLATE.md).
 
 ## Índice
 
-| ADR | Título | Status | Data |
-|---|---|---|---|
-| — | *nenhum ADR ainda; o ADR-0001 será escrito na Fase 0* | — | — |
+| ADR                                     | Título                      | Status | Data       |
+| --------------------------------------- | --------------------------- | ------ | ---------- |
+| [0001](ADR-0001-fundacao-do-projeto.md) | Fundação técnica do projeto | Aceito | 2026-07-31 |

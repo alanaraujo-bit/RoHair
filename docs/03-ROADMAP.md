@@ -6,35 +6,37 @@
 
 **Status geral:** ver [00-ESTADO-ATUAL.md](00-ESTADO-ATUAL.md).
 
-| # | Fase | Público | Status |
-|---|---|---|---|
-| 0 | Fundação de Infraestrutura | — | 🟡 |
-| 1 | Descoberta & Documentação de Produto | — | ⬜ |
-| 2 | Design System "Áurea" | — | ⬜ |
-| 3 | Modelagem de Dados & Camada de Domínio | — | ⬜ |
-| 4 | Identidade, Autenticação & Permissões | ambos | ⬜ |
-| 5 | App Shell & PWA | ambos | ⬜ |
-| 6 | Clientes | painel | ⬜ |
-| 7 | Serviços & Estoque | painel | ⬜ |
-| 8 | Agenda Inteligente | painel | ⬜ |
-| 9 | Atendimento | painel | ⬜ |
-| 10 | Financeiro | painel | ⬜ |
-| 11 | Dashboard, Estatísticas & Insights | painel | ⬜ |
-| 12 | **Portal da Cliente** | portal | ⬜ |
-| 13 | Offline-first & Sincronização | ambos | ⬜ |
-| 14 | Notificações | ambos | ⬜ |
-| 15 | Hardening | — | ⬜ |
-| 16 | Comercialização | — | ⬜ |
+| #   | Fase                                   | Público | Status |
+| --- | -------------------------------------- | ------- | ------ |
+| 0   | Fundação de Infraestrutura             | —       | 🟡     |
+| 1   | Descoberta & Documentação de Produto   | —       | ⬜     |
+| 2   | Design System "Áurea"                  | —       | ⬜     |
+| 3   | Modelagem de Dados & Camada de Domínio | —       | ⬜     |
+| 4   | Identidade, Autenticação & Permissões  | ambos   | ⬜     |
+| 5   | App Shell & PWA                        | ambos   | ⬜     |
+| 6   | Clientes                               | painel  | ⬜     |
+| 7   | Serviços & Estoque                     | painel  | ⬜     |
+| 8   | Agenda Inteligente                     | painel  | ⬜     |
+| 9   | Atendimento                            | painel  | ⬜     |
+| 10  | Financeiro                             | painel  | ⬜     |
+| 11  | Dashboard, Estatísticas & Insights     | painel  | ⬜     |
+| 12  | **Portal da Cliente**                  | portal  | ⬜     |
+| 13  | Offline-first & Sincronização          | ambos   | ⬜     |
+| 14  | Notificações                           | ambos   | ⬜     |
+| 15  | Hardening                              | —       | ⬜     |
+| 16  | Comercialização                        | —       | ⬜     |
 
 ---
 
 ## Fase 0
+
 ### Fundação de Infraestrutura
 
 **Objetivo.** Ter um esqueleto de projeto em que qualquer commit vira um deploy
 verificado, sem que nada precise rodar na máquina do dono. Nada de UI aqui.
 
 **Entregáveis**
+
 - Projeto Next.js (App Router) com TypeScript `strict` + `noUncheckedIndexedAccess`
 - Tailwind v4 configurado com `@theme` (tokens virão na Fase 2)
 - ESLint 9 flat config + Prettier + `eslint-plugin-boundaries` (regra de camadas)
@@ -48,6 +50,7 @@ verificado, sem que nada precise rodar na máquina do dono. Nada de UI aqui.
 - `ADR-0001` registrando as decisões de fundação
 
 **DoD**
+
 - [ ] Um PR falha o CI se houver erro de tipo, lint ou teste
 - [ ] Push na `main` gera deploy automático na Vercel
 - [ ] Um PR gera preview deployment acessível pelo celular
@@ -57,12 +60,14 @@ verificado, sem que nada precise rodar na máquina do dono. Nada de UI aqui.
 ---
 
 ## Fase 1
+
 ### Descoberta & Documentação de Produto
 
 **Objetivo.** Saber exatamente o que será construído e por quê, antes de desenhar
 qualquer pixel. Esta fase é feita **junto com a usuária real** (Rosiele).
 
 **Entregáveis**
+
 - Personas: a profissional (usuária primária) e a cliente (usuária do portal)
 - Jobs to be Done de cada uma, por momento do dia
 - Mapa do dia real: da abertura da agenda ao fechamento do caixa
@@ -74,6 +79,7 @@ qualquer pixel. Esta fase é feita **junto com a usuária real** (Rosiele).
 - Backlog completo, priorizado, rastreável até as fases
 
 **DoD**
+
 - [ ] Cada fase de 6 a 14 tem escopo fechado e escrito
 - [ ] Nenhuma tela do roadmap está sem wireframe
 - [ ] O modelo de domínio foi validado contra 5 cenários reais de atendimento
@@ -82,6 +88,7 @@ qualquer pixel. Esta fase é feita **junto com a usuária real** (Rosiele).
 ---
 
 ## Fase 2
+
 ### Design System "Áurea"
 
 **Objetivo.** Construir a linguagem visual autoral do RoHair. Não é tema sobre
@@ -89,6 +96,7 @@ shadcn — é sistema próprio, com shadcn servindo apenas de base acessível pa
 alguns primitivos.
 
 **Entregáveis**
+
 - Identidade da marca: **"Ro" de Rosiele** (ver DEC-011) — monograma, ícone do
   app, splash, tom de voz na primeira pessoa
 - Design tokens em OKLCH: cor, tipografia, espaçamento, raio, sombra, movimento
@@ -103,6 +111,7 @@ alguns primitivos.
 - Teste automatizado de contraste nos dois temas
 
 **DoD**
+
 - [ ] Nenhum componente usa cor hard-coded — só tokens
 - [ ] Todo primitivo passa em contraste AA nos dois temas
 - [ ] Todo primitivo é navegável e operável por teclado
@@ -111,12 +120,14 @@ alguns primitivos.
 ---
 
 ## Fase 3
+
 ### Modelagem de Dados & Camada de Domínio
 
 **Objetivo.** Traduzir o modelo de domínio da Fase 1 em schema e código de
 negócio testável, sem nenhuma dependência de framework.
 
 **Entregáveis**
+
 - Schema Prisma completo com índices, constraints e soft delete
 - Separação `User` (equipe) × `Client` (ficha) × `ClientAccount` (credencial)
 - Constraint `EXCLUDE USING gist` para impedir sobreposição de agendamentos
@@ -132,6 +143,7 @@ negócio testável, sem nenhuma dependência de framework.
 - Seeds realistas para desenvolvimento
 
 **DoD**
+
 - [ ] Domínio testado sem banco, em menos de 2 segundos
 - [ ] Nenhum import de Prisma fora de `infrastructure/`
 - [ ] Migrations aplicam limpo em banco vazio
@@ -141,18 +153,21 @@ negócio testável, sem nenhuma dependência de framework.
 ---
 
 ## Fase 4
+
 ### Identidade, Autenticação & Permissões
 
 **Objetivo.** Dois públicos, dois domínios de identidade, isolamento correto — o
 erro mais caro de corrigir depois. Modelo completo em **DEC-008**.
 
 **Entregáveis — equipe (`User`)**
+
 - Bootstrap da primeira conta OWNER por script, executado uma única vez
 - Criação de contas da equipe pelo painel (sem autocadastro)
 - Papéis `OWNER` · `PROFESSIONAL` · `ASSISTANT` com permissões declarativas
 - Login por e-mail ou usuário + senha
 
 **Entregáveis — cliente (`ClientAccount`)**
+
 - Tela de primeiro acesso: CPF + data de nascimento
 - Ficha encontrada e data confere → criação de usuário e senha, conta **acoplada
   ao histórico existente**
@@ -162,6 +177,7 @@ erro mais caro de corrigir depois. Modelo completo em **DEC-008**.
 - Recuperação de senha pela mesma porta (CPF + nascimento), sem e-mail e sem SMS
 
 **Entregáveis — transversais**
+
 - Argon2id, política de senha e verificação contra listas de senhas vazadas
 - Limite de tentativas por CPF e por IP, com bloqueio progressivo (Redis)
 - Notificação à profissional a cada ativação ou autocadastro, com revogar acesso
@@ -172,6 +188,7 @@ erro mais caro de corrigir depois. Modelo completo em **DEC-008**.
 - `AuditLog` de todo acesso e de toda ativação de conta
 
 **DoD**
+
 - [ ] Teste automatizado prova que organização A não enxerga dado da organização B
 - [ ] Teste automatizado prova que uma sessão de cliente não alcança dado de outra
       cliente nem qualquer rota do painel
@@ -183,12 +200,14 @@ erro mais caro de corrigir depois. Modelo completo em **DEC-008**.
 ---
 
 ## Fase 5
+
 ### App Shell & PWA
 
 **Objetivo.** A casca dos dois aplicativos. É aqui que o RoHair deixa de parecer
 site.
 
 **Entregáveis**
+
 - Dois app shells por route group: `(painel)` e `(portal)`, cada um com sua
   navegação e sua identidade dentro do mesmo design system
 - Roteamento pós-login por tipo de conta
@@ -202,6 +221,7 @@ site.
 - Sistema de toast, loading e feedback global
 
 **DoD**
+
 - [ ] Instalado no iPhone, não há qualquer indício visual de navegador
 - [ ] Nenhum scroll horizontal, nenhum bounce indesejado, nenhum zoom acidental
 - [ ] App abre offline e mostra estado offline elegante
@@ -210,12 +230,14 @@ site.
 ---
 
 ## Fase 6
+
 ### Clientes
 
 **Objetivo.** A ficha da cliente como o ativo mais valioso do negócio, e o ponto
 de encontro entre as duas pontas do produto.
 
 **Entregáveis**
+
 - Cadastro: nome, **CPF**, **data de nascimento**, telefone, foto, preferências,
   observações
 - Busca por CPF que **encontra ficha autocadastrada** em vez de duplicar
@@ -231,6 +253,7 @@ de encontro entre as duas pontas do produto.
 - LGPD: consentimento de foto e de dados, exportação e exclusão
 
 **DoD**
+
 - [ ] Digitar um CPF já autocadastrado traz a ficha existente, nunca uma nova
 - [ ] Agendar a partir da ficha em no máximo 3 toques
 - [ ] Foto de 4 MB da câmera vira menos de 200 KB antes de subir
@@ -240,11 +263,13 @@ de encontro entre as duas pontas do produto.
 ---
 
 ## Fase 7
+
 ### Serviços & Estoque
 
 **Objetivo.** Catálogo e insumos — a base para preço, duração e margem reais.
 
 **Entregáveis**
+
 - Catálogo de serviços com variantes (comprimento, espessura), preço e duração
 - Produtos: categoria, fornecedor, custo, quantidade, unidade de medida
 - Consumo padrão por serviço (base do custo real e da baixa automática)
@@ -253,6 +278,7 @@ de encontro entre as duas pontas do produto.
 - Cálculo de custo por atendimento e margem por serviço
 
 **DoD**
+
 - [ ] Finalizar um atendimento dá baixa automática correta no estoque
 - [ ] Toda movimentação é rastreável até a origem
 - [ ] Alerta de estoque baixo dispara na regra configurada
@@ -260,11 +286,13 @@ de encontro entre as duas pontas do produto.
 ---
 
 ## Fase 8
+
 ### Agenda Inteligente
 
 **Objetivo.** O centro de gravidade do painel.
 
 **Entregáveis**
+
 - Visões dia, semana e mês, com transição fluida entre elas
 - Criação de agendamento com duração sugerida por serviço e por cliente
 - Detecção de conflito na UI + garantia no banco
@@ -275,6 +303,7 @@ de encontro entre as duas pontas do produto.
 - Estados: agendado, confirmado, em atendimento, concluído, faltou, cancelado
 
 **DoD**
+
 - [ ] Impossível criar dois agendamentos sobrepostos, mesmo em corrida
 - [ ] Navegar entre semanas é instantâneo (dados pré-carregados)
 - [ ] Reagendar por arrasto funciona com precisão no toque do iPhone
@@ -282,11 +311,13 @@ de encontro entre as duas pontas do produto.
 ---
 
 ## Fase 9
+
 ### Atendimento
 
 **Objetivo.** O momento de verdade. Mãos ocupadas, cliente na cadeira.
 
 **Entregáveis**
+
 - Iniciar, pausar, retomar e finalizar, com cronômetro persistente
 - Cronômetro modelado como intervalos imutáveis — sobrevive a fechar o app
 - Registro de produtos utilizados com sugestão baseada no histórico
@@ -297,6 +328,7 @@ de encontro entre as duas pontas do produto.
 - Widget persistente de atendimento em andamento
 
 **DoD**
+
 - [ ] Fechar o app no meio do atendimento não perde um segundo do cronômetro
 - [ ] Do "iniciar" ao "finalizar" em no máximo 3 toques
 - [ ] Finalizar gera receita, baixa de estoque e histórico numa única transação
@@ -304,11 +336,13 @@ de encontro entre as duas pontas do produto.
 ---
 
 ## Fase 10
+
 ### Financeiro
 
 **Objetivo.** Clareza sobre dinheiro, sem exigir conhecimento contábil.
 
 **Entregáveis**
+
 - Entradas automáticas a partir dos atendimentos
 - Saídas manuais e recorrentes, com categorias
 - Fluxo de caixa por dia, semana e mês
@@ -318,6 +352,7 @@ de encontro entre as duas pontas do produto.
 - Fechamento de caixa diário
 
 **DoD**
+
 - [ ] Todo valor exibido é rastreável até a transação de origem
 - [ ] Nenhum cálculo em ponto flutuante
 - [ ] Relatório do mês bate com a soma dos atendimentos, ao centavo
@@ -325,11 +360,13 @@ de encontro entre as duas pontas do produto.
 ---
 
 ## Fase 11
+
 ### Dashboard, Estatísticas & Insights
 
 **Objetivo.** Transformar dados em decisão. Esta fase é o "uau" comercial.
 
 **Entregáveis**
+
 - Dashboard com receita, lucro, clientes, agenda do dia e tempo médio
 - Gráficos autorais sobre uma camada de primitivos própria
 - Comparativos período a período
@@ -340,6 +377,7 @@ de encontro entre as duas pontas do produto.
 - Insight é acionável: todo card leva a uma ação concreta
 
 **DoD**
+
 - [ ] Dashboard carrega em menos de 1s com 2 anos de dados
 - [ ] Todo insight tem ação associada e pode ser dispensado
 - [ ] Gráficos legíveis nos dois temas e acessíveis por leitor de tela
@@ -347,18 +385,20 @@ de encontro entre as duas pontas do produto.
 ---
 
 ## Fase 12
+
 ### Portal da Cliente
 
 **Objetivo.** A outra ponta do produto. A cliente vê o próprio cuidado com o
 cabelo virar história — e a Rosiele ganha um canal que tira a conversa do
 WhatsApp.
 
-**Escopo proposto** *(a confirmar — D-06)*
+**Escopo proposto** _(a confirmar — D-06)_
+
 - **Meu próximo horário**, com confirmação de presença em um toque
 - **Minhas visitas** — histórico com serviço, data, duração e valor
 - **Meus antes e depois** — a galeria da própria evolução, com comparador de
   arrastar. Este é o coração emocional do portal
-- **Solicitar horário** *(a confirmar — D-05)*: pedido que a Rosiele aprova, em
+- **Solicitar horário** _(a confirmar — D-05)_: pedido que a Rosiele aprova, em
   vez de agendamento direto na agenda
 - **Minha ficha** — preferências e observações que ela escolhe compartilhar
 - **Meu cuidado** — recomendações da Rosiele e lembrete do retorno ideal
@@ -366,11 +406,13 @@ WhatsApp.
 - Central de privacidade: consentimento de foto, exportar e excluir dados (LGPD)
 
 **Entregáveis técnicos**
+
 - App shell próprio, navegação própria, manifest de PWA próprio
 - Todas as consultas com escopo forçado à cliente autenticada
 - Sem qualquer rota compartilhada com o painel
 
 **DoD**
+
 - [ ] Uma cliente entra, vê o próprio antes e depois e sai sem precisar de ajuda
 - [ ] Nenhuma consulta do portal consegue alcançar dado de outra cliente
 - [ ] O portal instala como app próprio no iPhone
@@ -379,12 +421,14 @@ WhatsApp.
 ---
 
 ## Fase 13
+
 ### Offline-first & Sincronização
 
 **Objetivo.** Funcionar no salão com sinal ruim. A base já foi preparada nas
 Fases 3 e 5.
 
 **Entregáveis**
+
 - Persistência local (IndexedDB) do que importa: agenda do dia, clientes, atendimento
 - Fila de comandos (outbox) com repetição e backoff
 - Resolução de conflito determinística, com registro do que foi resolvido
@@ -392,6 +436,7 @@ Fases 3 e 5.
 - Testes de cenário: modo avião no meio do atendimento
 
 **DoD**
+
 - [ ] Atendimento completo é feito offline e sincroniza sem perda
 - [ ] Nenhum dado é dado como salvo antes da confirmação do servidor
 - [ ] Conflito nunca sobrescreve silenciosamente
@@ -399,11 +444,13 @@ Fases 3 e 5.
 ---
 
 ## Fase 14
+
 ### Notificações
 
 **Objetivo.** Lembrar sem incomodar — nas duas pontas.
 
 **Entregáveis**
+
 - Web Push com VAPID (iOS ≥16.4, app instalado)
 - **Profissional:** lembrete de agendamento, aniversário de cliente, estoque
   baixo, cliente inativa, fechamento do dia, ativação de conta de cliente
@@ -413,6 +460,7 @@ Fases 3 e 5.
 - Janela de silêncio respeitada
 
 **DoD**
+
 - [ ] Push chega no iPhone instalado, com o app fechado
 - [ ] Toda notificação pode ser desligada individualmente
 - [ ] Nenhuma notificação fora da janela configurada
@@ -420,11 +468,13 @@ Fases 3 e 5.
 ---
 
 ## Fase 15
+
 ### Hardening
 
 **Objetivo.** Deixar pronto para uso real e diário.
 
 **Entregáveis**
+
 - Playwright cobrindo os fluxos críticos ponta a ponta, nos dois públicos
 - Auditoria de performance com orçamento verificado no CI
 - Auditoria de acessibilidade (axe + teclado + VoiceOver)
@@ -435,6 +485,7 @@ Fases 3 e 5.
 - Documentação de operação
 
 **DoD**
+
 - [ ] Fluxos críticos verdes no CI
 - [ ] Core Web Vitals dentro do orçamento em 4G
 - [ ] Zero violação axe crítica ou séria
@@ -443,11 +494,13 @@ Fases 3 e 5.
 ---
 
 ## Fase 16
+
 ### Comercialização
 
 **Objetivo.** Transformar o sistema da Rosiele em produto para milhares.
 
 **Entregáveis**
+
 - Onboarding guiado e importação de clientes
 - Planos, limites e billing (Stripe)
 - Múltiplos profissionais por organização, com agenda por profissional
@@ -456,6 +509,7 @@ Fases 3 e 5.
 - Analytics de produto e telemetria de uso
 
 **DoD**
+
 - [ ] Uma profissional nova se cadastra e agenda o primeiro atendimento sozinha
 - [ ] Assinatura, upgrade e cancelamento funcionam ponta a ponta
 - [ ] Nenhum limite arquitetural impede 10.000 organizações
