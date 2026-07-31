@@ -109,7 +109,31 @@ Justificativas completas em [04-DECISOES.md](04-DECISOES.md) e [adr/](adr/).
 
 ## 5. Próximo passo imediato
 
-> **Fase 0 concluída.** Apresentar a Fase 1 — Descoberta para aprovação.
+> **Fase 0 concluída.** O próximo passo é **apresentar a Fase 1 — Descoberta
+> para aprovação**, e só então executá-la.
+
+### Como retomar em uma sessão nova
+
+1. Ler este arquivo, depois [04-DECISOES.md](04-DECISOES.md) e a Fase 1 em
+   [03-ROADMAP.md](03-ROADMAP.md)
+2. Subir o ambiente com `npm run dev` (o servidor não sobrevive à troca de
+   sessão — precisa ser iniciado de novo)
+3. Apresentar objetivo, método e entregáveis da Fase 1 e **esperar aprovação**
+
+### O que a Fase 1 exige, e por que ela é diferente
+
+A Fase 1 **não tem código**. É descoberta, e depende de informação que só a
+Rosiele tem. O agente não deve inventar persona nem fluxo: o valor da fase está
+em partir do dia real de trabalho dela.
+
+O que precisa ser levantado com ela: como agenda hoje e onde anota; quanto tempo
+acha que leva cada serviço e quanto leva de verdade; o que faz quando descobre
+que um produto acabou; como decide o preço; o que nunca sabe e gostaria de saber;
+o que mais a irrita no dia; e o que ela mostraria com orgulho para uma cliente.
+
+Se o dono preferir conversar com ela sem o agente no meio, a primeira entrega da
+Fase 1 é um **roteiro de perguntas** — e depois as respostas viram wireframe,
+modelo de domínio e backlog.
 
 ### Manutenção agendada
 
