@@ -8,16 +8,16 @@
 
 ## Snapshot
 
-| Campo                  | Valor                                                             |
-| ---------------------- | ----------------------------------------------------------------- |
-| **Última atualização** | 2026-07-31                                                        |
-| **Fase atual**         | Fase 0 — Fundação de Infraestrutura                               |
-| **Status da fase**     | ✅ Concluída (falta apenas o token do R2)                         |
-| **Fases concluídas**   | Planejamento · Identidade e acesso · Fase 0                       |
-| **Bloqueios**          | Token de API do Cloudflare R2 · decisão sobre repositório público |
-| **Local**              | http://localhost:3000 (`npm run dev`)                             |
-| **Produção**           | https://rohair.vercel.app                                         |
-| **CI**                 | ✅ Verde — qualidade, build e E2E                                 |
+| Campo                  | Valor                                                   |
+| ---------------------- | ------------------------------------------------------- |
+| **Última atualização** | 2026-07-31                                              |
+| **Fase atual**         | Fase 0 — Fundação de Infraestrutura                     |
+| **Status da fase**     | ✅ Concluída                                            |
+| **Fases concluídas**   | Planejamento · Identidade e acesso · Fase 0             |
+| **Bloqueios**          | Nenhum. Uma decisão aberta: visibilidade do repositório |
+| **Local**              | http://localhost:3000 (`npm run dev`)                   |
+| **Produção**           | https://rohair.vercel.app                               |
+| **CI**                 | ✅ Verde — qualidade, build e E2E                       |
 
 **Legenda de status:** ⬜ não iniciada · 🟡 aguardando aprovação · 🔵 em andamento · ✅ concluída · 🔴 bloqueada
 
@@ -32,11 +32,12 @@
 | **Railway**       | Projeto `RoHair` · id `9f922271-3454-48fd-8e00-3ee27c5a2975`    |
 | **PostgreSQL 18** | Online · proxy TCP público ativo · `uuidv7()` nativo disponível |
 | **Redis**         | Online · proxy TCP público ativo                                |
-| **Cloudflare R2** | Bucket `rohair-media` criado · **token de API pendente**        |
+| **Cloudflare R2** | Bucket `rohair-media` · token escopado · acesso verificado      |
 
 Variáveis já configuradas na Vercel (produção e preview): `APP_ENV`,
 `NEXT_PUBLIC_APP_URL`, `DATABASE_URL`, `REDIS_URL`, `CPF_HASH_SECRET`,
-`CPF_ENCRYPTION_KEY`.
+`CPF_ENCRYPTION_KEY`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`,
+`R2_SECRET_ACCESS_KEY`, `R2_BUCKET`.
 
 Localmente, tudo vive em `.env.local` — ignorado pelo git, nunca versionado.
 
@@ -108,16 +109,25 @@ Justificativas completas em [04-DECISOES.md](04-DECISOES.md) e [adr/](adr/).
 
 ## 5. Próximo passo imediato
 
-> **Duas pendências do dono, e então apresentar a Fase 1 para aprovação.**
+> **Fase 0 concluída.** Apresentar a Fase 1 — Descoberta para aprovação.
 
-1. **Token de API do Cloudflare R2** — no painel do R2, _Manage API Tokens_ →
-   _Create Token_ com permissão _Object Read & Write_ no bucket `rohair-media`.
-   São necessários `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID` e `R2_SECRET_ACCESS_KEY`.
-   Só passam a ser obrigatórios na Fase 6.
+### Manutenção agendada
 
-2. **Visibilidade do repositório** — está **público**. Para um produto que será
-   vendido, o padrão é privado. Não é urgente (não há segredo versionado), mas é
-   decisão do dono. Alterar em _Settings → General → Danger Zone_.
+| Quando          | O quê                                                               |
+| --------------- | ------------------------------------------------------------------- |
+| Antes da Fase 6 | **Rotacionar o token do R2.** As chaves foram trocadas por mensagem |
+|                 | em 2026-07-31 e estão no histórico da conversa. Enquanto o bucket   |
+|                 | está vazio o risco é nulo; quando entrarem fotos de clientes, deixa |
+|                 | de ser. Trocar é criar um token novo com o mesmo escopo, atualizar  |
+|                 | `.env.local` e a Vercel, e apagar o antigo.                         |
+| Até 2027-07-31  | **Vencimento do token do R2** (TTL de 1 ano). Vencido sem troca, o  |
+|                 | upload de fotos para de funcionar em produção.                      |
+
+### Decisão aberta
+
+**Visibilidade do repositório** — está **público**. Para um produto que será
+vendido, o padrão é privado. Não há segredo versionado, então não é urgente.
+Alterar em _Settings → General → Danger Zone_.
 
 ## 6. Decisões pendentes
 
@@ -141,6 +151,21 @@ Justificativas completas em [04-DECISOES.md](04-DECISOES.md) e [adr/](adr/).
 ## 8. Log de sessões
 
 Ordem cronológica inversa — mais recente no topo.
+
+### 2026-07-31 (5) — Cloudflare R2 verificado · Fase 0 fechada
+
+- Token de API do R2 criado com permissão **Object Read & Write**, escopado ao
+  bucket `rohair-media`, TTL de 1 ano, sem filtro de IP.
+- **Acesso verificado por script próprio** (SigV4 com `node:crypto`, sem
+  instalar dependência): gravar, ler, conferir integridade byte a byte, apagar.
+- O primeiro teste de escopo deu 404 ao tentar um bucket inexistente — o que
+  prova nada, porque 404 é "não existe", não "negado". Refeito com `ListBuckets`,
+  que retornou **403**: o token realmente não enxerga outros buckets.
+- Credenciais do R2 configuradas na Vercel (produção e preview).
+- As chaves do R2 foram enviadas por mensagem e estão no histórico da conversa.
+  Registrada manutenção: **rotacionar antes da Fase 6**, quando entrarem fotos
+  reais de clientes.
+- **Fase 0 concluída.** Resta apenas a decisão sobre o repositório ser público.
 
 ### 2026-07-31 (4) — Fase 0 concluída · infraestrutura no ar
 

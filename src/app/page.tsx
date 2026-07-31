@@ -65,8 +65,8 @@ const FOUNDATION: readonly FoundationItem[] = [
   },
   {
     title: 'Cloudflare R2',
-    detail: 'Bucket rohair-media criado — falta o token de API',
-    status: 'andamento',
+    detail: 'Bucket rohair-media · escrita, leitura e escopo verificados',
+    status: 'pronto',
   },
 ] as const;
 
