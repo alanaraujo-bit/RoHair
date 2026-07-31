@@ -84,8 +84,11 @@ jobs:
 
       - run: npm ci
 
+      # WebKit é obrigatório, não opcional: o projeto "iphone" do Playwright usa
+      # o motor do Safari. Sem ele, a plataforma principal do produto ficaria
+      # justamente fora da suíte que deveria protegê-la.
       - name: Instalar navegadores do Playwright
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium webkit
 
       - name: Executar suíte E2E
         run: npm run test:e2e
