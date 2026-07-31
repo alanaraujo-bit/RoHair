@@ -1,0 +1,16 @@
+# Fim de linha normalizado para LF no repositório.
+# Sem isto, o mesmo arquivo aparece como modificado dependendo de quem edita —
+# e o CI (Linux) diverge da máquina de desenvolvimento (Windows).
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.pdf binary
+
+package-lock.json linguist-generated=true
