@@ -25,7 +25,10 @@ Nasce para uma profissional. É construído, desde a primeira linha, para milhar
 
 ## Estado atual
 
-> 📍 **Fase 0 — Fundação de Infraestrutura** · aguardando aprovação para iniciar
+> 📍 **Fase 1 — Descoberta & Documentação de Produto** · em andamento
+>
+> Fase 0 concluída: aplicação no ar em https://rohair.vercel.app, CI verde,
+> PostgreSQL, Redis e R2 provisionados.
 >
 > Consulte **[docs/00-ESTADO-ATUAL.md](docs/00-ESTADO-ATUAL.md)** para o estado
 > exato do projeto. Esse arquivo é sempre a fonte de verdade.
@@ -38,9 +41,13 @@ Nasce para uma profissional. É construído, desde a primeira linha, para milhar
 | [docs/00-ESTADO-ATUAL.md](docs/00-ESTADO-ATUAL.md)                   | **Onde o projeto está agora.** Comece por aqui        |
 | [docs/01-VISAO-PRODUTO.md](docs/01-VISAO-PRODUTO.md)                 | Posicionamento, princípios, personas, anti-objetivos  |
 | [docs/02-ARQUITETURA.md](docs/02-ARQUITETURA.md)                     | Stack, camadas, tenancy, decisões de banco, PWA       |
-| [docs/03-ROADMAP.md](docs/03-ROADMAP.md)                             | As 16 fases, com entregáveis e definição de pronto    |
+| [docs/03-ROADMAP.md](docs/03-ROADMAP.md)                             | As 17 fases, com entregáveis e definição de pronto    |
 | [docs/04-DECISOES.md](docs/04-DECISOES.md)                           | Decisões tomadas e pendentes                          |
 | [docs/05-PROTOCOLO-DE-TRABALHO.md](docs/05-PROTOCOLO-DE-TRABALHO.md) | Como dono e agente trabalham juntos                   |
+| [docs/06-GLOSSARIO.md](docs/06-GLOSSARIO.md)                         | Vocabulário do domínio da beleza e do produto         |
+| [docs/07-FLUXOS.md](docs/07-FLUXOS.md)                               | Fluxos das duas pontas e os pontos de encontro        |
+| [docs/08-MODELO-DE-DOMINIO.md](docs/08-MODELO-DE-DOMINIO.md)         | Agregados, invariantes e perguntas em aberto          |
+| [docs/descoberta/](docs/descoberta/)                                 | Roteiro e respostas da conversa com a Rosiele         |
 | [docs/adr/](docs/adr/)                                               | Architecture Decision Records                         |
 
 ## Stack

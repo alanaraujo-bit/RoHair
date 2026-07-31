@@ -276,3 +276,47 @@ configuração, quando houver horários realmente livres e bem definidos.
 **Status:** ⏳ Aguardando · **Bloqueia:** Fase 12
 
 Proposta de escopo em [03-ROADMAP.md](03-ROADMAP.md#fase-12) — a confirmar.
+
+### D-07 · Como as duas pontas se encontram quando a ficha não tem CPF
+
+**Status:** ⏳ Aguardando · **Bloqueia:** Fases 3, 4 e 6
+**Origem:** ACHADO-01 da Fase 1A — ver [07-FLUXOS.md](07-FLUXOS.md#6-três-buracos-encontrados-ao-escrever-este-documento)
+
+A DEC-008 supõe que a ficha da cliente tem CPF. Na prática, a Rosiele não pede CPF
+de ninguém hoje. Se a ficha existente não tiver CPF, a cliente que se autocadastrar
+vira uma **ficha duplicada** — e o momento mais valioso do produto, o histórico de
+dois anos aparecendo de uma vez, nunca acontece.
+
+**Recomendação: fusão assistida + CPF opcional pedido com insistência.** O
+autocadastro sempre cria ficha nova; o painel sugere candidatas por nome e telefone
+e a Rosiele funde com um toque.
+
+**Por quê:** casar automaticamente por telefone expõe o histórico de uma pessoa
+para outra quando o número tiver sido reaproveitado — risco inaceitável para um
+produto que guarda foto de cliente. A Rosiele conhece as clientes pelo nome; ela é
+o melhor desambiguador disponível, e é grátis.
+
+**Consequências se aceita:** fusão de fichas vira funcionalidade de primeira classe
+da Fase 6; `Client` ganha `mergedIntoId`; o índice único de CPF passa a ser
+**parcial** (`WHERE cpf_hash IS NOT NULL`), o que muda o schema da Fase 3.
+
+### D-08 · Rota de escape quando a ativação da cliente falha
+
+**Status:** ⏳ Aguardando · **Bloqueia:** Fase 4
+**Origem:** ACHADO-02 e ACHADO-03 da Fase 1A
+
+A ativação exige CPF **e** data de nascimento conferindo. Dois casos deixam a
+cliente presa para sempre, sem explicação:
+
+- A ficha existe mas **não tem** data de nascimento — não há contra o que comparar
+- A data foi **digitada errada** pela Rosiele — a cliente digita a correta, o
+  sistema nega e ainda a bloqueia progressivamente
+
+**Recomendação: aprovação manual como rota de escape.** Quando a ficha é encontrada
+mas a validação não conclui, em vez de negar, o fluxo pede liberação à Rosiele —
+"pedimos para a Rosiele liberar seu acesso" — com notificação de um toque no
+painel. Um beco sem saída vira uma espera de minutos.
+
+**Exige também** notificar a profissional das tentativas **falhas**, não só das
+bem-sucedidas. A notificação **não pode** conter a data de nascimento tentada: isso
+transformaria o painel em um oráculo para descobrir dado de terceiros.

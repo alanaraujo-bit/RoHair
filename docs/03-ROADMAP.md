@@ -8,8 +8,8 @@
 
 | #   | Fase                                   | Público | Status |
 | --- | -------------------------------------- | ------- | ------ |
-| 0   | Fundação de Infraestrutura             | —       | 🟡     |
-| 1   | Descoberta & Documentação de Produto   | —       | ⬜     |
+| 0   | Fundação de Infraestrutura             | —       | ✅     |
+| 1   | Descoberta & Documentação de Produto   | —       | 🟡     |
 | 2   | Design System "Áurea"                  | —       | ⬜     |
 | 3   | Modelagem de Dados & Camada de Domínio | —       | ⬜     |
 | 4   | Identidade, Autenticação & Permissões  | ambos   | ⬜     |
@@ -51,11 +51,13 @@ verificado, sem que nada precise rodar na máquina do dono. Nada de UI aqui.
 
 **DoD**
 
-- [ ] Um PR falha o CI se houver erro de tipo, lint ou teste
-- [ ] Push na `main` gera deploy automático na Vercel
-- [ ] Um PR gera preview deployment acessível pelo celular
-- [ ] `npm run dev` sobe na máquina do dono sem erro
-- [ ] `docs/00-ESTADO-ATUAL.md` atualizado
+- [x] Um PR falha o CI se houver erro de tipo, lint ou teste
+- [x] Push na `main` gera deploy automático na Vercel
+- [ ] Um PR gera preview deployment acessível pelo celular — **não exercitado**:
+      as variáveis de preview estão configuradas, mas nenhum PR foi aberto ainda.
+      Será verificado no primeiro PR real (Fase 2)
+- [x] `npm run dev` sobe na máquina do dono sem erro
+- [x] `docs/00-ESTADO-ATUAL.md` atualizado
 
 ---
 
@@ -66,23 +68,38 @@ verificado, sem que nada precise rodar na máquina do dono. Nada de UI aqui.
 **Objetivo.** Saber exatamente o que será construído e por quê, antes de desenhar
 qualquer pixel. Esta fase é feita **junto com a usuária real** (Rosiele).
 
-**Entregáveis**
+Sem código. Dividida em duas sub-etapas porque parte do trabalho depende de
+informação que só a Rosiele tem.
+
+#### Fase 1A — o que não depende dela · ✅ concluída
+
+- **1.1** [Roteiro de conversa](descoberta/roteiro-rosiele.md) — para o Alan
+  conduzir, sem o agente no meio
+- **1.2** [Glossário do domínio](06-GLOSSARIO.md) — rascunho, com o que confirmar
+- **1.3** [Fluxos das duas pontas](07-FLUXOS.md) — identidade e pontos de encontro
+- **1.4** [Modelo de domínio v0](08-MODELO-DE-DOMINIO.md) — agregados, invariantes
+  e as dez perguntas que o modelo faz à Rosiele
+
+#### Fase 1B — o que depende das respostas · ⬜ bloqueada pela conversa
 
 - Personas: a profissional (usuária primária) e a cliente (usuária do portal)
 - Jobs to be Done de cada uma, por momento do dia
 - Mapa do dia real: da abertura da agenda ao fechamento do caixa
-- Mapa de fluxos completo, das duas pontas, incluindo os pontos de encontro
-  (autocadastro → aparece no painel; atendimento → aparece no portal)
-- Wireframes de baixa fidelidade de todas as telas principais
-- Glossário do domínio da beleza (escova, hidratação, progressiva, retoque…)
-- Modelo de domínio: entidades, relações, invariantes de negócio
+- Glossário v1, com o vocabulário real dela
+- Modelo de domínio v1, validado contra os cinco atendimentos reais
+- Mapa de fluxos completo, incluindo os fluxos de negócio
+- Wireframes de baixa fidelidade de todas as telas principais, em Markdown
+  versionado (alta fidelidade é trabalho da Fase 2)
+- Escopo fechado das Fases 6 a 14, resolvendo D-05, D-06, D-07 e D-08
 - Backlog completo, priorizado, rastreável até as fases
 
 **DoD**
 
+- [x] O modelo de domínio v0 declara explicitamente o que não sabe
 - [ ] Cada fase de 6 a 14 tem escopo fechado e escrito
 - [ ] Nenhuma tela do roadmap está sem wireframe
 - [ ] O modelo de domínio foi validado contra 5 cenários reais de atendimento
+- [ ] D-05, D-06, D-07 e D-08 resolvidas e registradas
 - [ ] Documentos revisados e aprovados pelo dono
 
 ---
@@ -175,6 +192,9 @@ erro mais caro de corrigir depois. Modelo completo em **DEC-008**.
   `SELF_REGISTERED` e sinalizada no painel
 - Acessos seguintes por usuário + senha
 - Recuperação de senha pela mesma porta (CPF + nascimento), sem e-mail e sem SMS
+- **Rota de escape por aprovação manual** quando a ficha existe mas a validação não
+  conclui — ficha sem data de nascimento, ou data digitada errada
+  (ver [D-08](04-DECISOES.md#d-08--rota-de-escape-quando-a-ativação-da-cliente-falha))
 
 **Entregáveis — transversais**
 
@@ -241,7 +261,9 @@ de encontro entre as duas pontas do produto.
 - Cadastro: nome, **CPF**, **data de nascimento**, telefone, foto, preferências,
   observações
 - Busca por CPF que **encontra ficha autocadastrada** em vez de duplicar
-- Prevenção de duplicidade por CPF, com fusão de fichas quando necessário
+- **Fusão de fichas assistida** — o painel sugere candidatas por nome e telefone e
+  a Rosiele funde com um toque, preservando todo o histórico das duas
+  (ver [D-07](04-DECISOES.md#d-07--como-as-duas-pontas-se-encontram-quando-a-ficha-não-tem-cpf))
 - Bandeja de novos cadastros vindos do portal, para a Rosiele confirmar
 - Indicador de "tem conta no app" e ação de revogar acesso
 - Ficha completa: histórico de atendimentos, produtos usados, valor gasto,

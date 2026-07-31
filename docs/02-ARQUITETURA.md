@@ -129,7 +129,7 @@ milhares de organizações.
 
 | Decisão                                    | Justificativa                                                                                                                         |
 | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
-| **UUIDv7** gerado na aplicação             | Ordenável por tempo → localidade de índice de um inteiro sequencial, sem expor volume de negócio                                      |
+| **UUIDv7** gerado pelo Postgres 18         | `uuidv7()` é nativo na versão provisionada no Railway — não é preciso gerar na aplicação. Ordenável por tempo → localidade de índice de um inteiro sequencial, sem expor volume de negócio |
 | **Dinheiro em centavos (`Int`)**           | Ponto flutuante em dinheiro é bug garantido. Formatação só através do value object `Money`                                            |
 | **Datas em UTC**, timezone na organização  | Mata a classe de bugs "o faturamento do dia mudou depois da meia-noite"                                                               |
 | **`EXCLUDE USING gist` sobre `tstzrange`** | Duas requisições simultâneas não conseguem, fisicamente, criar horários sobrepostos. Validação na aplicação é UX; garantia é do banco |
