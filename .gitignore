@@ -1,0 +1,69 @@
+# Dependências
+node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/versions
+
+# Next.js
+.next/
+out/
+build/
+dist/
+
+# Produção / deploy
+.vercel/
+.turbo/
+
+# Variáveis de ambiente
+.env
+.env.*
+!.env.example
+
+# Testes
+coverage/
+.nyc_output/
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/blob-report/
+
+# Prisma
+prisma/*.db
+prisma/*.db-journal
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Cache de ferramentas
+.eslintcache
+.cache/
+*.tsbuildinfo
+next-env.d.ts
+
+# Service Worker gerado (Serwist)
+public/sw.js
+public/sw.js.map
+public/swe-worker-*.js
+
+# Storybook
+storybook-static/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.idea/
+*.swp
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
