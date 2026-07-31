@@ -54,14 +54,19 @@ const FOUNDATION: readonly FoundationItem[] = [
     status: 'pronto',
   },
   {
-    title: 'PostgreSQL e Redis no Railway',
-    detail: 'Depende de você autorizar o Railway no repositório',
-    status: 'pendente',
+    title: 'PostgreSQL 18 e Redis no Railway',
+    detail: 'Online, com proxy público e uuidv7() nativo disponível',
+    status: 'pronto',
   },
   {
     title: 'Deploy automático na Vercel',
-    detail: 'Depende de você conectar a Vercel ao repositório',
-    status: 'pendente',
+    detail: 'Em produção · rohair.vercel.app · variáveis configuradas',
+    status: 'pronto',
+  },
+  {
+    title: 'Cloudflare R2',
+    detail: 'Bucket rohair-media criado — falta o token de API',
+    status: 'andamento',
   },
 ] as const;
 
