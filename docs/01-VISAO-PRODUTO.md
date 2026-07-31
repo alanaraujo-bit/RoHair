@@ -62,11 +62,26 @@ não conta o custo do produto.
 4. "Não me deixe perder cliente" — quem sumiu, quem faz aniversário, quem volta
 5. "Não me deixe faltar produto" — estoque que avisa antes de acabar
 
-### Persona secundária — a cliente final
-Não usa o app hoje. A partir da Fase 15, poderá agendar por uma página pública.
-Mesmo antes disso, **ela sente o produto**: recebe lembrete, é chamada pelo nome,
-tem preferência lembrada, vê a foto do antes e depois. A qualidade do RoHair
-aparece na experiência dela.
+### Persona secundária — a cliente
+**Usuária direta do produto**, com aplicativo próprio (Fase 12). Não é
+espectadora: tem conta, entra e usa.
+
+Acessa pela primeira vez com **CPF e data de nascimento**, cria usuário e senha, e
+a partir daí entra direto. Se a Rosiele já a tinha cadastrado, todo o histórico
+aparece de uma vez. Se ainda não, ela mesma se cadastra — e, quando a Rosiele for
+lançar o atendimento, a ficha já está lá.
+
+**O que ela contrata o RoHair para fazer:**
+1. "Me mostre a minha evolução" — o antes e depois de cada visita, no tempo. É o
+   coração emocional do portal
+2. "Quando é meu horário?" — sem procurar conversa antiga no WhatsApp
+3. "O que ela usou no meu cabelo?" — histórico do próprio cuidado
+4. "Quero marcar" — sem depender de a Rosiele estar com o celular na mão
+5. "Quando eu devo voltar?" — o retorno ideal, sem parecer cobrança
+
+**Por que isso importa comercialmente:** quase nenhum concorrente dá aplicativo à
+cliente final. Uma cliente que abre o app para rever o próprio antes e depois é
+uma cliente que não troca de profissional.
 
 ---
 
@@ -82,6 +97,11 @@ outro serviço é cadastro, nunca desenvolvimento.
 ---
 
 ## Identidade
+
+**RoHair = Rosiele + Hair.** O nome carrega o nome da profissional — e por isso a
+marca não pode ser genérica. O monograma **"Ro"** é o núcleo da identidade: ícone
+do app, splash, marca d'água opcional nas fotos, elemento de carregamento. O tom
+de voz é pessoal, na primeira pessoa da Rosiele, nunca institucional.
 
 Elegante · feminina · sofisticada · premium · minimalista · orgânica · leve.
 

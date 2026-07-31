@@ -1,29 +1,30 @@
 # Roadmap — Do início ao fim
 
-> 16 fases. Cada uma tem objetivo, entregáveis e **Definição de Pronto (DoD)**.
+> 17 fases. Cada uma tem objetivo, entregáveis e **Definição de Pronto (DoD)**.
 > Uma fase só é marcada ✅ quando **todos** os itens do DoD estão verdadeiros.
 > Nenhuma fase começa sem aprovação explícita do dono do produto.
 
 **Status geral:** ver [00-ESTADO-ATUAL.md](00-ESTADO-ATUAL.md).
 
-| # | Fase | Status |
-|---|---|---|
-| 0 | Fundação de Infraestrutura | 🟡 |
-| 1 | Descoberta & Documentação de Produto | ⬜ |
-| 2 | Design System "Áurea" | ⬜ |
-| 3 | Modelagem de Dados & Camada de Domínio | ⬜ |
-| 4 | Autenticação, Tenancy & Permissões | ⬜ |
-| 5 | App Shell & PWA | ⬜ |
-| 6 | Clientes | ⬜ |
-| 7 | Serviços & Estoque | ⬜ |
-| 8 | Agenda Inteligente | ⬜ |
-| 9 | Atendimento | ⬜ |
-| 10 | Financeiro | ⬜ |
-| 11 | Dashboard, Estatísticas & Insights | ⬜ |
-| 12 | Offline-first & Sincronização | ⬜ |
-| 13 | Notificações | ⬜ |
-| 14 | Hardening | ⬜ |
-| 15 | Comercialização | ⬜ |
+| # | Fase | Público | Status |
+|---|---|---|---|
+| 0 | Fundação de Infraestrutura | — | 🟡 |
+| 1 | Descoberta & Documentação de Produto | — | ⬜ |
+| 2 | Design System "Áurea" | — | ⬜ |
+| 3 | Modelagem de Dados & Camada de Domínio | — | ⬜ |
+| 4 | Identidade, Autenticação & Permissões | ambos | ⬜ |
+| 5 | App Shell & PWA | ambos | ⬜ |
+| 6 | Clientes | painel | ⬜ |
+| 7 | Serviços & Estoque | painel | ⬜ |
+| 8 | Agenda Inteligente | painel | ⬜ |
+| 9 | Atendimento | painel | ⬜ |
+| 10 | Financeiro | painel | ⬜ |
+| 11 | Dashboard, Estatísticas & Insights | painel | ⬜ |
+| 12 | **Portal da Cliente** | portal | ⬜ |
+| 13 | Offline-first & Sincronização | ambos | ⬜ |
+| 14 | Notificações | ambos | ⬜ |
+| 15 | Hardening | — | ⬜ |
+| 16 | Comercialização | — | ⬜ |
 
 ---
 
@@ -42,6 +43,7 @@ verificado, sem que nada precise rodar na máquina do dono. Nada de UI aqui.
 - GitHub Actions: `typecheck` · `lint` · `test` · `build` em todo PR
 - Railway: PostgreSQL e Redis provisionados (staging e produção)
 - Vercel conectado ao repositório, auto-deploy da `main`, preview por PR
+- Conta Cloudflare R2 criada e bucket configurado (ou fallback, ver DEC-010)
 - Vitest e Playwright instalados e rodando em CI (com um teste de fumaça cada)
 - `ADR-0001` registrando as decisões de fundação
 
@@ -58,20 +60,21 @@ verificado, sem que nada precise rodar na máquina do dono. Nada de UI aqui.
 ### Descoberta & Documentação de Produto
 
 **Objetivo.** Saber exatamente o que será construído e por quê, antes de desenhar
-qualquer pixel. Esta fase é feita **junto com a usuária real** (a esposa do dono).
+qualquer pixel. Esta fase é feita **junto com a usuária real** (Rosiele).
 
 **Entregáveis**
-- Personas: a profissional (usuária primária) e a cliente final (usuária indireta)
-- Jobs to be Done: o que ela contrata o RoHair para fazer, por momento do dia
+- Personas: a profissional (usuária primária) e a cliente (usuária do portal)
+- Jobs to be Done de cada uma, por momento do dia
 - Mapa do dia real: da abertura da agenda ao fechamento do caixa
-- Mapa de fluxos completo (agendar, atender, receber, repor estoque, fechar mês)
+- Mapa de fluxos completo, das duas pontas, incluindo os pontos de encontro
+  (autocadastro → aparece no painel; atendimento → aparece no portal)
 - Wireframes de baixa fidelidade de todas as telas principais
 - Glossário do domínio da beleza (escova, hidratação, progressiva, retoque…)
 - Modelo de domínio: entidades, relações, invariantes de negócio
 - Backlog completo, priorizado, rastreável até as fases
 
 **DoD**
-- [ ] Cada fase de 6 a 13 tem escopo fechado e escrito
+- [ ] Cada fase de 6 a 14 tem escopo fechado e escrito
 - [ ] Nenhuma tela do roadmap está sem wireframe
 - [ ] O modelo de domínio foi validado contra 5 cenários reais de atendimento
 - [ ] Documentos revisados e aprovados pelo dono
@@ -86,12 +89,14 @@ shadcn — é sistema próprio, com shadcn servindo apenas de base acessível pa
 alguns primitivos.
 
 **Entregáveis**
+- Identidade da marca: **"Ro" de Rosiele** (ver DEC-011) — monograma, ícone do
+  app, splash, tom de voz na primeira pessoa
 - Design tokens em OKLCH: cor, tipografia, espaçamento, raio, sombra, movimento
 - **Tema Light "Porcelana"** e **Tema Dark "Veludo"**, cada um desenhado do zero
 - Escala tipográfica fluida; display serifada para números, sans para UI
 - Primitivos: Button, Input, Select, Sheet, Dialog, Drawer, Toast, Card, Badge,
   Avatar, Skeleton, EmptyState, Tabs, SegmentedControl, Switch, DatePicker,
-  TimePicker, Money, Chip, ContextMenu, SwipeAction, FAB
+  TimePicker, Money, Chip, ContextMenu, SwipeAction, FAB, CpfInput, PasswordField
 - Biblioteca de ícones autorais do domínio da beleza
 - Sistema de movimento: springs padronizados, `prefers-reduced-motion`
 - Storybook com todos os estados de cada primitivo
@@ -113,59 +118,86 @@ negócio testável, sem nenhuma dependência de framework.
 
 **Entregáveis**
 - Schema Prisma completo com índices, constraints e soft delete
+- Separação `User` (equipe) × `Client` (ficha) × `ClientAccount` (credencial)
 - Constraint `EXCLUDE USING gist` para impedir sobreposição de agendamentos
+- Índice único `(organizationId, cpfHash)` na ficha da cliente
 - Migrations versionadas, aplicadas por CI
-- Value objects: `Money`, `TimeRange`, `PhoneNumber`, `Duration`
+- Value objects: `Money`, `TimeRange`, `Cpf`, `PhoneNumber`, `Duration`
+- `Cpf` com validação de dígitos verificadores, HMAC para busca e AES-GCM para
+  exibição (DEC-009)
 - Entidades e regras de negócio puras, com testes unitários
 - Interfaces de repositório (ports) + implementações Prisma (adapters)
 - `Result<T, E>` — erros como valor, exceções só para o inesperado
-- Camada de comandos serializáveis (preparação para o offline da Fase 12)
+- Camada de comandos serializáveis (preparação para o offline da Fase 13)
 - Seeds realistas para desenvolvimento
 
 **DoD**
 - [ ] Domínio testado sem banco, em menos de 2 segundos
 - [ ] Nenhum import de Prisma fora de `infrastructure/`
 - [ ] Migrations aplicam limpo em banco vazio
+- [ ] CPF inválido é rejeitado antes de chegar ao banco
 - [ ] Cobertura do domínio acima de 90%
 
 ---
 
 ## Fase 4
-### Autenticação, Tenancy & Permissões
+### Identidade, Autenticação & Permissões
 
-**Objetivo.** Identidade e isolamento de dados corretos desde o começo — o erro
-mais caro de corrigir depois.
+**Objetivo.** Dois públicos, dois domínios de identidade, isolamento correto — o
+erro mais caro de corrigir depois. Modelo completo em **DEC-008**.
 
-**Entregáveis**
-- Login por passkey (Face ID no iPhone) com OTP por e-mail como alternativa
-- Organizações, membros e papéis (Owner, Professional, Assistant)
+**Entregáveis — equipe (`User`)**
+- Bootstrap da primeira conta OWNER por script, executado uma única vez
+- Criação de contas da equipe pelo painel (sem autocadastro)
+- Papéis `OWNER` · `PROFESSIONAL` · `ASSISTANT` com permissões declarativas
+- Login por e-mail ou usuário + senha
+
+**Entregáveis — cliente (`ClientAccount`)**
+- Tela de primeiro acesso: CPF + data de nascimento
+- Ficha encontrada e data confere → criação de usuário e senha, conta **acoplada
+  ao histórico existente**
+- Ficha não encontrada → fluxo de autocadastro, ficha criada como
+  `SELF_REGISTERED` e sinalizada no painel
+- Acessos seguintes por usuário + senha
+- Recuperação de senha pela mesma porta (CPF + nascimento), sem e-mail e sem SMS
+
+**Entregáveis — transversais**
+- Argon2id, política de senha e verificação contra listas de senhas vazadas
+- Limite de tentativas por CPF e por IP, com bloqueio progressivo (Redis)
+- Notificação à profissional a cada ativação ou autocadastro, com revogar acesso
 - Prisma Client Extension injetando `organizationId` automaticamente
 - Row Level Security no Postgres como segunda barreira
 - Contexto de requisição via `AsyncLocalStorage`
-- Middleware de sessão, rate limiting (Redis) e proteção de rotas
-- Fluxo de recuperação de acesso e de convite de membro
-- Testes de isolamento: organização A **não** enxerga dado da organização B
+- Sessão da cliente com escopo restrito aos próprios dados
+- `AuditLog` de todo acesso e de toda ativação de conta
 
 **DoD**
-- [ ] Teste automatizado prova que vazamento entre organizações é impossível
-- [ ] Login por Face ID funciona no iPhone com o app instalado
-- [ ] Rota sem sessão nunca renderiza dado privado, nem por um frame
+- [ ] Teste automatizado prova que organização A não enxerga dado da organização B
+- [ ] Teste automatizado prova que uma sessão de cliente não alcança dado de outra
+      cliente nem qualquer rota do painel
+- [ ] Cliente cadastrada pela Rosiele ativa a conta e vê o histórico anterior
+- [ ] Cliente que se autocadastrou aparece no painel marcada como novo cadastro
+- [ ] Força bruta em CPF é bloqueada e registrada
+- [ ] Nenhuma rota renderiza dado privado sem sessão válida, nem por um frame
 
 ---
 
 ## Fase 5
 ### App Shell & PWA
 
-**Objetivo.** A casca do aplicativo. É aqui que o RoHair deixa de parecer site.
+**Objetivo.** A casca dos dois aplicativos. É aqui que o RoHair deixa de parecer
+site.
 
 **Entregáveis**
+- Dois app shells por route group: `(painel)` e `(portal)`, cada um com sua
+  navegação e sua identidade dentro do mesmo design system
+- Roteamento pós-login por tipo de conta
 - Layout raiz com safe areas, `100dvh`, sem bounce, sem callout, sem zoom no input
-- Navegação inferior com transições reais entre rotas
 - Bottom sheets com arrasto e rubber-banding, drawers, modais, FAB contextual
 - Gestos: swipe em lista, long-press → context menu, pull-to-refresh próprio
 - Service Worker (Serwist): precache, estratégias por rota, tela offline
 - Manifest, ícones (todos os tamanhos), splash screens iOS
-- Fluxo de instalação desenhado (não banner genérico), com detecção de iOS
+- Fluxo de instalação desenhado, com detecção de iOS
 - Alternância de tema com persistência e respeito ao tema do sistema
 - Sistema de toast, loading e feedback global
 
@@ -173,29 +205,36 @@ mais caro de corrigir depois.
 - [ ] Instalado no iPhone, não há qualquer indício visual de navegador
 - [ ] Nenhum scroll horizontal, nenhum bounce indesejado, nenhum zoom acidental
 - [ ] App abre offline e mostra estado offline elegante
-- [ ] Lighthouse PWA 100
+- [ ] Lighthouse PWA 100 nas duas experiências
 
 ---
 
 ## Fase 6
 ### Clientes
 
-**Objetivo.** A ficha da cliente como o ativo mais valioso do negócio.
+**Objetivo.** A ficha da cliente como o ativo mais valioso do negócio, e o ponto
+de encontro entre as duas pontas do produto.
 
 **Entregáveis**
-- Cadastro: foto, telefone, aniversário, preferências, observações
-- Busca instantânea, ordenação e filtros
+- Cadastro: nome, **CPF**, **data de nascimento**, telefone, foto, preferências,
+  observações
+- Busca por CPF que **encontra ficha autocadastrada** em vez de duplicar
+- Prevenção de duplicidade por CPF, com fusão de fichas quando necessário
+- Bandeja de novos cadastros vindos do portal, para a Rosiele confirmar
+- Indicador de "tem conta no app" e ação de revogar acesso
 - Ficha completa: histórico de atendimentos, produtos usados, valor gasto,
   tempo médio, frequência, última visita
-- Galeria antes/depois com upload otimizado e comparador
+- Galeria antes/depois com compressão no dispositivo e comparador
+- Controle de visibilidade da foto: cliente vê, ou só a profissional vê
 - Notas com carimbo de data e autor
 - Ações rápidas: agendar, ligar, WhatsApp, iniciar atendimento
-- Estados vazios com ação
-- LGPD: consentimento para foto, exportação e exclusão de dados
+- LGPD: consentimento de foto e de dados, exportação e exclusão
 
 **DoD**
+- [ ] Digitar um CPF já autocadastrado traz a ficha existente, nunca uma nova
 - [ ] Agendar a partir da ficha em no máximo 3 toques
-- [ ] Upload de foto funciona com rede fraca e mostra progresso real
+- [ ] Foto de 4 MB da câmera vira menos de 200 KB antes de subir
+- [ ] Upload funciona com rede fraca e mostra progresso real
 - [ ] Lista com 1.000 clientes rola a 60fps no iPhone
 
 ---
@@ -223,7 +262,7 @@ mais caro de corrigir depois.
 ## Fase 8
 ### Agenda Inteligente
 
-**Objetivo.** O centro de gravidade do produto.
+**Objetivo.** O centro de gravidade do painel.
 
 **Entregáveis**
 - Visões dia, semana e mês, com transição fluida entre elas
@@ -308,6 +347,38 @@ mais caro de corrigir depois.
 ---
 
 ## Fase 12
+### Portal da Cliente
+
+**Objetivo.** A outra ponta do produto. A cliente vê o próprio cuidado com o
+cabelo virar história — e a Rosiele ganha um canal que tira a conversa do
+WhatsApp.
+
+**Escopo proposto** *(a confirmar — D-06)*
+- **Meu próximo horário**, com confirmação de presença em um toque
+- **Minhas visitas** — histórico com serviço, data, duração e valor
+- **Meus antes e depois** — a galeria da própria evolução, com comparador de
+  arrastar. Este é o coração emocional do portal
+- **Solicitar horário** *(a confirmar — D-05)*: pedido que a Rosiele aprova, em
+  vez de agendamento direto na agenda
+- **Minha ficha** — preferências e observações que ela escolhe compartilhar
+- **Meu cuidado** — recomendações da Rosiele e lembrete do retorno ideal
+- Aniversário e reconhecimento de fidelidade
+- Central de privacidade: consentimento de foto, exportar e excluir dados (LGPD)
+
+**Entregáveis técnicos**
+- App shell próprio, navegação própria, manifest de PWA próprio
+- Todas as consultas com escopo forçado à cliente autenticada
+- Sem qualquer rota compartilhada com o painel
+
+**DoD**
+- [ ] Uma cliente entra, vê o próprio antes e depois e sai sem precisar de ajuda
+- [ ] Nenhuma consulta do portal consegue alcançar dado de outra cliente
+- [ ] O portal instala como app próprio no iPhone
+- [ ] Ação da cliente aparece no painel da Rosiele sem recarregar
+
+---
+
+## Fase 13
 ### Offline-first & Sincronização
 
 **Objetivo.** Funcionar no salão com sinal ruim. A base já foi preparada nas
@@ -327,16 +398,18 @@ Fases 3 e 5.
 
 ---
 
-## Fase 13
+## Fase 14
 ### Notificações
 
-**Objetivo.** Lembrar sem incomodar.
+**Objetivo.** Lembrar sem incomodar — nas duas pontas.
 
 **Entregáveis**
 - Web Push com VAPID (iOS ≥16.4, app instalado)
-- Lembretes de agendamento para a profissional e para a cliente
-- Aniversários, estoque baixo, cliente inativa, fechamento do dia
-- Central de preferências granular por tipo e horário
+- **Profissional:** lembrete de agendamento, aniversário de cliente, estoque
+  baixo, cliente inativa, fechamento do dia, ativação de conta de cliente
+- **Cliente:** lembrete do próprio horário, confirmação de solicitação, retorno
+  recomendado, aniversário
+- Central de preferências granular por tipo e horário, nos dois lados
 - Janela de silêncio respeitada
 
 **DoD**
@@ -346,15 +419,16 @@ Fases 3 e 5.
 
 ---
 
-## Fase 14
+## Fase 15
 ### Hardening
 
 **Objetivo.** Deixar pronto para uso real e diário.
 
 **Entregáveis**
-- Playwright cobrindo os fluxos críticos ponta a ponta
+- Playwright cobrindo os fluxos críticos ponta a ponta, nos dois públicos
 - Auditoria de performance com orçamento verificado no CI
 - Auditoria de acessibilidade (axe + teclado + VoiceOver)
+- **Revisão de segurança dedicada** ao fluxo de identidade da cliente
 - Sentry, logs estruturados e métricas de negócio
 - Backup e restauração testados de verdade
 - Conformidade LGPD: política, consentimento, exportação, exclusão
@@ -368,16 +442,16 @@ Fases 3 e 5.
 
 ---
 
-## Fase 15
+## Fase 16
 ### Comercialização
 
-**Objetivo.** Transformar o sistema da esposa em produto para milhares.
+**Objetivo.** Transformar o sistema da Rosiele em produto para milhares.
 
 **Entregáveis**
 - Onboarding guiado e importação de clientes
 - Planos, limites e billing (Stripe)
 - Múltiplos profissionais por organização, com agenda por profissional
-- Página pública de agendamento da cliente final
+- Portal da cliente com identidade por organização
 - Painel administrativo interno
 - Analytics de produto e telemetria de uso
 

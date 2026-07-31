@@ -10,10 +10,16 @@
 
 ## O que é
 
-RoHair não é uma agenda com relatórios. É o software que acompanha o dia inteiro
-de uma profissional da beleza — da agenda ao atendimento, do estoque ao lucro
-real — desenhado a partir do momento em que ela está com as mãos ocupadas e a
-cliente na cadeira.
+RoHair não é uma agenda com relatórios. São **dois aplicativos que conversam**:
+
+- **Painel** — a profissional acompanha agenda, atendimento, estoque e lucro real,
+  desenhado a partir do momento em que ela está com as mãos ocupadas e a cliente
+  na cadeira
+- **Portal da Cliente** — a cliente entra com CPF na primeira vez, cria sua senha,
+  e passa a ver o próprio histórico e a própria evolução em fotos de antes e depois
+
+O ponto de encontro entre os dois é o CPF: a ficha existe sem a conta, e a conta
+se acopla ao histórico quando a cliente chega.
 
 Nasce para uma profissional. É construído, desde a primeira linha, para milhares.
 
