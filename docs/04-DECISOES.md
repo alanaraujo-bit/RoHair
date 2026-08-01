@@ -320,6 +320,56 @@ um sistema perfeito para a Rosiele e inútil para a segunda cliente.
 
 ---
 
+### DEC-014 · Entregar tela em produção, não apresentar fase
+
+**Data:** 2026-08-01 · **Status:** ✅ Aceita · **Origem:** interrupção do dono
+**Substitui o ritmo de trabalho da DEC-006**
+
+O dono parou o trabalho no meio da Fase 3 com estas palavras:
+
+> _"Tá enrolando muito, eu não tô vendo nada acontecer, não tô vendo o projeto
+> sendo feito, não tô vendo telas. (…) Eu quero que você lance tudo em produção
+> e teste em produção mesmo."_
+
+**Ele estava certo.** Três fases inteiras — descoberta, design system e domínio —
+foram entregues antes de existir uma única tela navegável. Cada uma tinha
+justificativa própria e todas produziram coisa útil; somadas, produziram um
+projeto que o dono não conseguia ver.
+
+**Decisão:** a unidade de trabalho passa a ser **tela funcionando em produção**.
+
+| Saiu                                | Entrou                                    |
+| ----------------------------------- | ----------------------------------------- |
+| Apresentar fase e esperar "pode ir" | Construir, subir, avisar                  |
+| Fase como portão                    | Roadmap como mapa                         |
+| Revisar no fim da fase              | Revisar a tela no ar, pelo iPhone         |
+| ADR para cada decisão               | ADR só para decisão estrutural de verdade |
+
+**O que NÃO muda:** zero `any`, camadas por lint, contraste AA verificado, regra
+dos 3 toques, `00-ESTADO-ATUAL.md` sempre atualizado. Cortar cerimônia não é
+cortar qualidade — e a regra "nunca a solução mais rápida, sempre a melhor"
+continua inegociável.
+
+**Custo aceito:** construir fora da ordem do roadmap. O painel foi ao ar **sem
+autenticação**, o que normalmente viria antes. Está registrado como dívida no
+`00-ESTADO-ATUAL.md` e é a próxima coisa a ser feita.
+
+---
+
+### DEC-015 · Nada roda na máquina do dono
+
+**Data:** 2026-08-01 · **Status:** ✅ Aceita · **Origem:** repreensão do dono
+
+A regra existia desde o começo, mas de forma frouxa — "apenas `npm run dev`".
+Foi endurecida depois de eu tentar subir um contêiner Docker local para testar
+uma migration.
+
+**Nada de Docker, banco local ou servidor na máquina dele.** Ele não precisa nem
+do `npm run dev`: revisa em produção, pelo iPhone. Comandos locais existem só
+para o agente verificar antes de subir, e não deixam nada de pé.
+
+---
+
 ## Decisões pendentes
 
 ### D-03 · Domínio próprio

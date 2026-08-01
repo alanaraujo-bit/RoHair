@@ -1,404 +1,256 @@
 # Estado Atual do Projeto
 
-> **Este é o arquivo mais importante do repositório.**
-> É a fonte única de verdade sobre onde o projeto está. Deve ser atualizado ao
-> final de toda unidade de trabalho, sem exceção.
+> **Este é o arquivo mais importante do repositório.** Leia inteiro antes de
+> qualquer ação. Ele existe para que uma janela de contexto nova saiba
+> exatamente onde continuar, sem precisar de nenhum histórico de conversa.
+
+---
+
+## ⚡ Leia isto primeiro
+
+**O ritmo de trabalho mudou em 2026-08-01 (DEC-014).**
+
+> **Não apresente fase. Não peça aprovação. Construa a tela, suba para produção,
+> teste lá, e avise o que subiu.**
+
+O dono interrompeu o ciclo anterior porque três fases inteiras se passaram antes
+de existir uma tela navegável. Ele estava certo. O roadmap virou **mapa**, não
+portão.
+
+**E nada roda na máquina dele** (DEC-015). Nem Docker, nem banco local, nem
+servidor. Ele revisa em produção, pelo iPhone.
 
 ---
 
 ## Snapshot
 
-| Campo                  | Valor                                               |
-| ---------------------- | --------------------------------------------------- |
-| **Última atualização** | 2026-07-31                                          |
-| **Fase atual**         | Fase 3 — Modelagem de Dados & Camada de Domínio     |
-| **Status da fase**     | 🟡 Apresentada, aguardando aprovação                |
-| **Fases concluídas**   | Planejamento · Fase 0 · Fase 1 · **Fase 2**         |
-| **Bloqueios**          | Nenhum                                              |
-| **Local**              | http://localhost:3000 (`npm run dev`)               |
-| **Produção**           | https://rohair.vercel.app                           |
-| **Catálogo Áurea**     | https://rohair.vercel.app/design ← **revisar aqui** |
-| **CI**                 | ✅ Verde — qualidade, build e E2E                   |
-
-**Legenda de status:** ⬜ não iniciada · 🟡 aguardando aprovação · 🔵 em andamento · ✅ concluída · 🔴 bloqueada
+| Campo                     | Valor                                                     |
+| ------------------------- | --------------------------------------------------------- |
+| **Última atualização**    | 2026-08-01                                                |
+| **O que está no ar**      | **https://rohair.vercel.app/painel** ← painel funcionando |
+| Catálogo do design system | https://rohair.vercel.app/design                          |
+| Banco                     | Railway · Postgres 18 · **migrado e populado**            |
+| CI                        | ✅ Verde — qualidade, banco, build, E2E                   |
+| **Dívida crítica**        | 🔴 **O painel está aberto na internet, sem login**        |
+| Trabalho em andamento     | Construir as telas que faltam do painel                   |
 
 ---
 
-## 1. Infraestrutura provisionada
+## 1. O que JÁ FUNCIONA em produção
 
-| Serviço           | Estado                                                          |
-| ----------------- | --------------------------------------------------------------- |
-| **GitHub**        | `alanaraujo-bit/RoHair` — ⚠️ **público** (ver seção 5)          |
-| **Vercel**        | Projeto `rohair` no escopo `aionixdev`, ligado ao repositório   |
-| **Railway**       | Projeto `RoHair` · id `9f922271-3454-48fd-8e00-3ee27c5a2975`    |
-| **PostgreSQL 18** | Online · proxy TCP público ativo · `uuidv7()` nativo disponível |
-| **Redis**         | Online · proxy TCP público ativo                                |
-| **Cloudflare R2** | Bucket `rohair-media` · token escopado · acesso verificado      |
+Quatro telas navegáveis, lendo o Postgres real. **Não é mock.**
 
-Variáveis já configuradas na Vercel (produção e preview): `APP_ENV`,
-`NEXT_PUBLIC_APP_URL`, `DATABASE_URL`, `REDIS_URL`, `CPF_HASH_SECRET`,
-`CPF_ENCRYPTION_KEY`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`,
-`R2_SECRET_ACCESS_KEY`, `R2_BUCKET`.
+| Rota                    | O que faz                                                                        |
+| ----------------------- | -------------------------------------------------------------------------------- |
+| `/painel`               | "Sobrou hoje" em destaque, agenda do dia, alertas de estoque e de cliente sumida |
+| `/painel/agenda`        | Grade por hora das 9h às 20h, com "vaga" nos espaços livres                      |
+| `/painel/clientes`      | Lista ordenada por **quem precisa de ação**, não alfabética                      |
+| `/painel/clientes/[id]` | Ficha: alerta de química no topo, estatísticas, histórico                        |
+| `/design`               | Catálogo dos 19 primitivos do design system, nos dois temas                      |
 
-Localmente, tudo vive em `.env.local` — ignorado pelo git, nunca versionado.
+### Dados de demonstração já no banco
 
-## 2. O que existe hoje no repositório
+Organização **Rosiele Hair**, com 6 clientes (Carla, Juliana, Márcia, Ana
+Beatriz, Paula, Denise), catálogo de 4 serviços, 4 produtos, agenda de hoje com
+2 horários, e histórico que dispara os dois alertas.
+
+Regerar a qualquer momento com `npm run db:seed` — a semente é **idempotente**.
+
+---
+
+## 2. O que NÃO existe ainda
+
+| Falta                | Impacto                                                                                                                                                         |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🔴 **Autenticação**  | O painel está aberto na internet. Os dados são fictícios, então não há vazamento real — mas isto tem que ser resolvido antes de qualquer dado verdadeiro entrar |
+| Botões sem ação      | "Agendar", "WhatsApp" e "Iniciar atendimento" na ficha ainda não fazem nada                                                                                     |
+| Tela de atendimento  | Cronômetro, anamnese, checkout — o coração do produto                                                                                                           |
+| Estoque e financeiro | Rotas `/painel/estoque` e `/painel/dinheiro` não existem (já há link para a primeira)                                                                           |
+| Portal da cliente    | Nada construído                                                                                                                                                 |
+| PWA                  | Sem manifest, sem service worker, sem fluxo de instalação                                                                                                       |
+
+---
+
+## 3. Próximo passo imediato
+
+**Construir, nesta ordem — sem apresentar nada, sem pedir aprovação:**
+
+1. **Login e sessão.** O painel aberto é a única coisa que impede o uso real. O
+   modelo já está decidido em [DEC-008](04-DECISOES.md#dec-008): `User` e
+   `ClientAccount` em tabelas separadas, Argon2id, cookie `httpOnly`. O schema já
+   existe no banco; falta o fluxo, o middleware e o script da primeira OWNER.
+2. **Tela de atendimento** — a mais importante do produto. Anamnese, portão do
+   teste de mecha, cronômetro, checkout com o lucro na hora. O agregado de
+   domínio **já está pronto e testado** em
+   `src/features/attendance/domain/attendance.ts`; falta a interface.
+3. **Estoque e financeiro**, para os alertas terem para onde levar.
+4. **Portal da cliente.**
+
+O desenho de cada tela está em [12-WIREFRAMES.md](12-WIREFRAMES.md); a
+prioridade, em [13-BACKLOG.md](13-BACKLOG.md).
+
+---
+
+## 4. Onde as coisas estão no código
 
 ```
-RoHair/
-├── CLAUDE.md · README.md · .gitignore · .gitattributes · .env.example
-├── package.json                  Next 16.2 · React 19.2 · Tailwind 4 · Zod 4
-├── tsconfig.json                 strict + 6 flags adicionais de rigor
-├── eslint.config.mjs             Camadas, Prisma restrito, zero any
-├── .prettierrc.json · .prettierignore
-├── vitest.config.mts             Duas suítes: domain (node) e ui (jsdom)
-├── playwright.config.ts          iPhone (WebKit) primeiro, Android, desktop
-├── .github/workflows/ci.yml      Qualidade · build · E2E
-├── e2e/                          fundacao.spec.ts · aurea.spec.ts (9 testes)
-├── docs/                         (índice no README)
-│   ├── 00 a 05                   estado · visão · arquitetura · roadmap ·
-│   │                             decisões · protocolo
-│   ├── 06-GLOSSARIO.md           Fase 1A · vocabulário do domínio
-│   ├── 07-FLUXOS.md              Fase 1A · as duas pontas
-│   ├── 08-MODELO-DE-DOMINIO.md   Fase 1A · agregados e invariantes (v0)
-│   ├── 09-CONFIGURACAO.md        Fase 1B · semente, configuração, aprendizado
-│   ├── 10-CENARIOS.md            Fase 1B · validação do modelo · 5 buracos
-│   ├── 11-PERSONAS.md            Fase 1B · personas e JTBD
-│   ├── 12-WIREFRAMES.md          Fase 1B · as 16 telas
-│   ├── 13-BACKLOG.md             Fase 1B · 42 itens priorizados
-│   ├── descoberta/               a conversa com a Rosiele e o que saiu dela
-│   └── adr/                      ADR-0001 fundação · ADR-0002 Áurea
-└── src/
-    ├── app/
-    │   ├── layout · page · globals.css
-    │   └── design/               catálogo vivo do Áurea
-    ├── core/env/env.ts           Validação de ambiente com Zod (+ testes)
-    └── shared/
-        ├── ui/brand/monogram.tsx
-        ├── ui/icons/             14 ícones autorais do domínio
-        ├── ui/primitives/        19 primitivos (Fase 2)
-        ├── ui/styles/            tokens · base · color.ts (+ teste de contraste)
-        ├── ui/theme/             store externa · hook · alternador
-        └── utils/                cn · format-money (+ testes)
+src/
+  app/
+    painel/                 ← AS TELAS QUE ESTÃO NO AR
+      layout.tsx              casca com navegação inferior
+      page.tsx                Hoje
+      agenda/page.tsx
+      clientes/page.tsx
+      clientes/[id]/page.tsx  ficha
+    design/                 catálogo do design system
+  core/
+    kernel/                 Result · Money · Cpf · Duration · TimeRange ·
+                            Quantity · PhoneNumber — o único módulo que o
+                            domínio pode importar. Não importa nada.
+    crypto/cpf-crypto.ts    HMAC + AES-GCM do CPF
+    db/client.ts            único lugar que instancia o Prisma
+    db/generated/           cliente gerado (gitignored, feito no postinstall)
+    env/env.ts              validação de ambiente com Zod
+  features/
+    attendance/domain/      agregado pronto e testado, AINDA SEM TELA
+    clients/                porta do repositório + adapter Prisma
+    painel/                 leituras das telas que estão no ar
+  shared/ui/
+    primitives/             19 primitivos do Áurea
+    icons/                  14 ícones autorais do domínio da beleza
+    styles/                 tokens.css · base.css · color.ts + teste de contraste
+    theme/                  alternador Porcelana/Veludo
+prisma/
+  schema.prisma             22 modelos
+  migrations/               inclui SETE BLOCOS DE SQL ESCRITOS À MÃO
+  seed.ts · seed-catalog.ts semente idempotente + catálogo do domínio
 ```
 
-`src/features/` ainda não existe — nasce na Fase 3, com a primeira feature real.
+**Cuidado com a migration:** os sete blocos no fim do `migration.sql` — EXCLUDE
+gist, índices parciais, CHECKs — **não são regenerados** por
+`prisma migrate diff`. Recriar a migration do zero exige reanexá-los.
 
-**Catálogo do design system:** https://rohair.vercel.app/design
+---
 
-## 3. O produto em uma frase
+## 5. Comandos
 
-RoHair são **dois aplicativos que conversam**: o **Painel** da Rosiele (agenda,
-atendimento, estoque, financeiro) e o **Portal da Cliente** (histórico, antes e
-depois, agendamento). O ponto de encontro é o **CPF**.
+| Comando                                            | O que faz                                              |
+| -------------------------------------------------- | ------------------------------------------------------ |
+| `npm run verify`                                   | Tipos + lint + testes. **Rodar sempre antes de subir** |
+| `npm run build`                                    | Build de produção                                      |
+| `npm run db:seed`                                  | Repopula o banco (idempotente)                         |
+| `npm run db:deploy`                                | Aplica migrations                                      |
+| `git push`                                         | Commit direto na `main` → CI → deploy automático       |
+| `npx vercel logs https://rohair.vercel.app --json` | Erro de runtime em produção                            |
+| `npx vercel ls rohair`                             | Estado dos deploys                                     |
 
-## 4. O que já está decidido e não se rediscute
+`DATABASE_URL` e demais segredos vivem em `.env.local`, nunca versionado.
+
+---
+
+## 6. Decisões que não se rediscutem
 
 Justificativas completas em [04-DECISOES.md](04-DECISOES.md) e [adr/](adr/).
 
 **Produto**
 
-- Dois públicos, dois app shells, **um só código** (DEC-007)
-- Marca: **RoHair = Rosiele + Hair**; monograma "Ro" é o núcleo da identidade (DEC-011)
-
-**Identidade e acesso** (DEC-008)
-
-- `User` (equipe) e `ClientAccount` (cliente) em **tabelas separadas**
-- `Client` (ficha) existe sem conta; a conta **se acopla** ao histórico depois
-- Equipe: sem autocadastro. Primeira OWNER por script; as demais criadas no painel
-- Cliente, primeiro acesso: **CPF + data de nascimento** → cria usuário e senha
-- Cliente sem ficha: **autocadastro**, e aparece marcada como nova no painel
-- Recuperação de senha pela mesma porta — sem e-mail, sem SMS
-- Sessão própria em cookie `httpOnly` + Argon2id
-- CPF com HMAC para busca e AES-GCM para exibição (DEC-009)
+- **O número grande do painel é "sobrou", nunca "entrou"** — faturamento é a
+  ilusão que ela já tem, e o app não pode ser mais uma fonte dela
+- Alerta de química no topo da ficha, acima de qualquer métrica — é segurança
+- Reprovar no teste de mecha é desfecho de sucesso, não erro
+- Lista de clientes ordenada por ação, nunca alfabética
+- 🗣️ Vocabulário dela: **"vaga"**, **"nutrição"**, **frasco**
+- Fusão de fichas é sugerida, nunca automática (D-07)
+- O sistema chega sabendo o domínio; ela seleciona (DEC-013)
+- Dois públicos, dois app shells, um só código (DEC-007)
 
 **Técnico**
 
-- Next.js 16 (App Router) · React 19 · TypeScript strict · Tailwind 4 (OKLCH)
-- Serwist para service worker (DEC-001)
-- **RSC + Server Actions** como padrão; TanStack Query só nas ilhas (DEC-002)
-- Multi-tenancy por `organizationId` desde o dia 1 (DEC-003)
-- Camadas feature-first impostas por lint (DEC-004, ADR-0001)
-- Fotos: **Cloudflare R2** + compressão no dispositivo (DEC-010)
-- Dinheiro em centavos · datas UTC · soft delete · audit log
-- **IDs:** `uuidv7()` nativo do Postgres 18 — não precisa gerar na aplicação
-- Conflito de agenda impedido por `EXCLUDE USING gist`
-- Design system autoral **"Áurea"**, dois temas com identidade própria
+- Commit direto na `main`, sem PR (DEC-012)
+- Shared kernel em `core/kernel`; o domínio só importa ele (ADR-0003)
+- `app` é a raiz de composição — única camada que enxerga `infrastructure`
+- Overlay com `<dialog>` nativo, não Radix (ADR-0002)
+- Par `action`/`on-action`: nunca `text-white` sobre cor de marca
+- Dinheiro em centavos · datas UTC · dia do atendimento = finalização (INV-18)
+- Prisma só em `infrastructure/` e `core/db`, imposto por lint
 
-## 5. Próximo passo imediato
+---
 
-> ### 🟡 Fase 3 executada. Falta o seu aceite.
->
-> Não há o que revisar na tela: esta fase não tem interface. O que existe para
-> conferir é o **CI verde**, com o job novo `Migrations e garantias do banco`.
->
-> **Com a aprovação, a Fase 4 — Identidade, Autenticação & Permissões — é
-> apresentada.**
+## 7. Armadilhas conhecidas
 
-### O que a Fase 3 entregou
+| Armadilha                                                          | O que fazer                                                                                  |
+| ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
+| Deploy da Vercel travado em "Deploying outputs"                    | Já aconteceu e bloqueou a fila por 15min. `npx vercel remove <url> --yes` e o próximo anda   |
+| `DATABASE_URL` da Vercel estava quebrado (host `base`)             | Corrigido em 2026-08-01. Se aparecer P1001, conferir a variável antes de suspeitar do código |
+| `vercel env pull` não traz valor de variável Encrypted             | Use `vercel env ls` só para conferir existência                                              |
+| `npm audit`: 2 vulnerabilidades altas em `next` via `sharp`        | Pré-existente, não introduzida por nós. Tratar na Fase 15                                    |
+| Aviso do `eslint-plugin-boundaries` sobre "legacy selector syntax" | Ruído conhecido, não é erro                                                                  |
+| Repositório **público** no GitHub                                  | Decisão aberta do dono. Não há segredo versionado                                            |
+| Rotacionar o token do R2                                           | Antes de entrar foto real de cliente. TTL vence em 2027-07-31                                |
 
-| Entregue                      | Detalhe                                                                                                                   |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| **Shared kernel**             | `Result`, `Money`, `Cpf`, `Duration`, `TimeRange`, `Quantity`, `PhoneNumber` — o único módulo que o domínio pode importar |
-| **116 testes em 245ms**       | Domínio sem banco, sem DOM, sem framework                                                                                 |
-| **Cobertura 92,7%**           | Statements; 96,9% de linhas                                                                                               |
-| **Agregado de atendimento**   | Sete invariantes viraram código: INV-06, 07, 08, 16, 17, 18, 19                                                           |
-| **Schema Prisma**             | 22 modelos, tudo escopado por `organizationId`                                                                            |
-| **Sete blocos de SQL manual** | O que o Prisma não expressa — ver abaixo                                                                                  |
-| **Postgres 18 efêmero no CI** | Migration exercitada em banco vazio a cada commit                                                                         |
-| **Catálogo semente**          | A DEC-013 virou dado: 18 serviços, 9 produtos, retorno por curvatura                                                      |
+---
 
-### O SQL que o Prisma não expressa
+## 8. Mapa dos documentos
 
-Sete blocos escritos à mão no fim da migration, sob um cabeçalho que avisa que
-não são regenerados:
+| Documento                                                  | Para quê                                                 |
+| ---------------------------------------------------------- | -------------------------------------------------------- |
+| [01-VISAO-PRODUTO.md](01-VISAO-PRODUTO.md)                 | Posicionamento, princípios, anti-objetivos               |
+| [02-ARQUITETURA.md](02-ARQUITETURA.md)                     | Stack, camadas, tenancy, PWA                             |
+| [03-ROADMAP.md](03-ROADMAP.md)                             | **Mapa** do que falta construir                          |
+| [04-DECISOES.md](04-DECISOES.md)                           | DEC-001 a DEC-015 e pendências                           |
+| [05-PROTOCOLO-DE-TRABALHO.md](05-PROTOCOLO-DE-TRABALHO.md) | Como trabalhamos (reescrito)                             |
+| [06-GLOSSARIO.md](06-GLOSSARIO.md)                         | Vocabulário da beleza e do produto                       |
+| [07-FLUXOS.md](07-FLUXOS.md)                               | Identidade das duas pontas — **base da próxima entrega** |
+| [08-MODELO-DE-DOMINIO.md](08-MODELO-DE-DOMINIO.md)         | Agregados e as 20 invariantes                            |
+| [09-CONFIGURACAO.md](09-CONFIGURACAO.md)                   | Catálogo semente e o que o sistema aprende               |
+| [10-CENARIOS.md](10-CENARIOS.md)                           | Os cinco cenários e os cinco buracos que acharam         |
+| [11-PERSONAS.md](11-PERSONAS.md)                           | Personas e Jobs to be Done                               |
+| [12-WIREFRAMES.md](12-WIREFRAMES.md)                       | **As 16 telas — o desenho do que construir**             |
+| [13-BACKLOG.md](13-BACKLOG.md)                             | 42 itens priorizados                                     |
+| [descoberta/](descoberta/)                                 | A conversa com a Rosiele e o que saiu dela               |
+| [adr/](adr/)                                               | ADR-0001 fundação · 0002 Áurea · 0003 domínio            |
 
-| Protege                                | Como                                         |
-| -------------------------------------- | -------------------------------------------- |
-| INV-01 · agendamentos não se sobrepõem | `EXCLUDE USING gist` com `tstzrange [)`      |
-| INV-03 · CPF único quando existe       | Índice único **parcial**                     |
-| INV-07 · um cronômetro aberto          | Índice único parcial                         |
-| INV-19 · filho sem preço               | `CHECK`                                      |
-| Sanidade                               | `CHECK` de intervalo e de valor não negativo |
+---
 
-O intervalo semiaberto `[)` é a mesma semântica de `overlaps()` no kernel — as
-duas precisam concordar, ou a tela diria uma coisa e o banco outra.
+## 9. A frase que orienta o produto inteiro
 
-### A migration foi verificada — no CI, contra Postgres 18 real
+> 🗣️ **"Fim do dia estou com dinheiro mas fim do mês não tenho mais devido
+> comprar algo que está faltando."** — Rosiele
 
-Não deu para testar nesta máquina (Docker instalado, daemon parado), então a
-verificação aconteceu onde ela precisa viver de qualquer forma. O job
-`Migrations e garantias do banco` passou em todos os passos:
+Ela enxerga **caixa**, não lucro. E compra produto sempre **depois** da falta.
+Os dois problemas são o mesmo: o custo do produto não está ligado ao atendimento
+que o consumiu.
 
-| Passo                                 | Resultado |
-| ------------------------------------- | --------- |
-| Aplicar migrations em banco vazio     | ✅        |
-| **Reaplicar** — prova de idempotência | ✅        |
-| Garantias que só o banco pode dar     | ✅        |
+**Critério de sucesso do produto:** no fim do mês, ela não é mais surpreendida.
 
-O último passo é o que importa: `EXCLUDE USING gist` recusando sobreposição,
-aceitando horários encostados, ignorando cancelados — e uma **corrida real** de
-dois agendamentos simultâneos em que exatamente um passa.
+É por isso que o painel mostra "sobrou" e não "entrou", que o lucro aparece no
+checkout de cada atendimento, e que o alerta de estoque fala em atendimentos
+restantes em vez de quantidade.
 
-### Três dependências novas
+---
 
-A Fase 2 fechou em zero; aqui não havia caminho honesto sem ORM: `prisma`,
-`@prisma/client` + `@prisma/adapter-pg` e `pg`. O Prisma 7 exige driver adapter,
-e o `pg` com pool é o certo para o proxy TCP do Railway.
+## 10. Log de sessões
 
-### O que a Fase 2 entregou
+Ordem cronológica inversa — mais recente no topo.
 
-| Entregue                     | Detalhe                                               |
-| ---------------------------- | ----------------------------------------------------- |
-| **19 primitivos**            | Derivados dos 16 wireframes, não de lista genérica    |
-| **14 ícones autorais**       | Grade de 24, traço 1.5, só contorno, `currentColor`   |
-| **Par `action`/`on-action`** | Garante AA de texto sobre a marca nos dois temas      |
-| **Teste de contraste**       | Lê o `tokens.css` real e recalcula · 37 testes verdes |
-| **Catálogo `/design`**       | No pipeline de produção, não em Storybook             |
-| **6 testes E2E**             | Modalidade nativa, teclado, alvo de toque             |
-| **Zero dependências novas**  | Nenhum pacote adicionado na fase inteira              |
+### 2026-08-01 — O dono parou o processo. O aplicativo foi ao ar.
 
-### As quatro reprovações de contraste que o teste achou
-
-A paleta da Fase 0 **não passava em AA**, e ninguém tinha percebido porque
-contraste conferido a olho sempre parece bom:
-
-| Par                              | Era    | Precisa | Correção                         |
-| -------------------------------- | ------ | ------- | -------------------------------- |
-| branco sobre rosa (Veludo)       | 2.17:1 | 4.5:1   | Nasce o par `action`/`on-action` |
-| `border-strong` sobre superfície | 1.54:1 | 3:1     | Borda interativa escurecida      |
-| `border-strong` (Veludo)         | 1.77:1 | 3:1     | Clareada para 53%                |
-| `ink-subtle` sobre fundo         | 3.39:1 | 4.5:1   | Escurecido para 55%              |
-
-O mais grave era o primeiro: **todo botão primário do tema escuro** teria texto
-ilegível. É o tipo de erro que só aparece com o produto pronto na mão da usuária.
-
-### Duas trocas de escopo durante a execução
-
-Registradas em [ADR-0002](adr/ADR-0002-design-system-aurea.md):
-
-1. **Catálogo em rota do app, não Storybook.** O Storybook mantém build, CSS e
-   fontes próprios — com Tailwind v4 e `next/font` ele poderia passar enquanto o
-   aplicativo quebra. **Isto contraria o que foi aprovado**; reversível a
-   qualquer momento, sem desfazer nada.
-2. **`<dialog>` nativo, não Radix.** A plataforma já dá foco preso, `Esc`, inerte
-   e camada superior desde o Safari 15.4. Provado por E2E com `:modal`.
-
-### O que a Fase 0 já tinha deixado pronto
-
-| Já existe                                                                        | Onde                           |
-| -------------------------------------------------------------------------------- | ------------------------------ |
-| Tokens de cor em OKLCH, dois temas desenhados separadamente                      | `shared/ui/styles/tokens.css`  |
-| **Porcelana** (branco quente, ouro rosé) e **Veludo** (base ameixa, nunca cinza) | idem                           |
-| Tipografia: **Fraunces** display + **Inter** UI, já carregadas por `next/font`   | `app/layout.tsx`               |
-| Escala de raio, três níveis de sombra por tema                                   | tokens.css                     |
-| Curva de mola (`--ease-spring`) e `--ease-out-soft`                              | tokens.css                     |
-| Ponte `@theme inline` — troca de tema sem recompilar                             | tokens.css                     |
-| Alternador de tema com `useSyncExternalStore`                                    | `shared/ui/theme/`             |
-| Monograma "Ro"                                                                   | `shared/ui/brand/monogram.tsx` |
-
-A Fase 2 completou em cima disso em vez de recomeçar — e foi ao medir esta base
-que as quatro reprovações de contraste apareceram.
-
-### A virada: descoberta virou configuração
-
-Eu tinha escrito uma segunda rodada de perguntas — preço, duração, custo, horário,
-forma de pagamento. **O dono cortou, com razão.**
-
-Nada disso é descoberta: é **campo de cadastro**. E o método não escalava — se cada
-profissional precisasse de entrevista para o sistema funcionar, o RoHair seria
-consultoria, não produto. A Fase 16 supõe que uma profissional nova se cadastra e
-agenda sozinha.
-
-O produto passa a **chegar sabendo o domínio da beleza**: catálogo semente de
-serviços, produtos e unidades, que ela seleciona e ajusta. É o princípio 2 da visão
-— _"o app trabalha, a usuária confirma"_ — aplicado ao cadastro, que era o único
-lugar onde não estava sendo aplicado.
-
-Registrado em [DEC-013](04-DECISOES.md#dec-013) e detalhado em
-[09-CONFIGURACAO.md](09-CONFIGURACAO.md).
-
-**Efeito colateral: a fase destravou.** D-05 virou chave de configuração, D-06 se
-resolveu em escopo, e M-01 a M-12 encontraram destino — arquitetura, configuração
-ou aprendizado do sistema. Nenhuma depende de entrevista.
-
-### Para que serviu a conversa com a Rosiele
-
-Ela aconteceu, foi lida ([leitura-01.md](descoberta/leitura-01.md)) e **não vai se
-repetir**. O que entregou de valor foi conhecimento de **domínio**, que serve a
-todas as profissionais:
-
-- `HairAssessment` e o estado `ENCERRADO_SEM_SERVICO` — arquitetura que eu não teria
-  descoberto sozinho
-- O vocabulário: **nutrição** em vez de hidratação, **"vaga"** em vez de horário,
-  frasco antes de mililitro, curvatura como eixo de preço
-- A ordem certa do catálogo semente
-- A tese do produto, na frase abaixo
-
-### A frase que vale a fase inteira
-
-> **"Fim do dia estou com dinheiro mas fim do mês não tenho mais devido comprar
-> algo que está faltando."**
-
-Ela disse isso sozinha, sem ser perguntada sobre lucro. É a tese do produto na voz
-da usuária: ela enxerga **caixa**, não lucro; e a compra de produto é **reativa**,
-sempre depois da falta. Os dois problemas são o mesmo — o custo do produto não está
-ligado ao atendimento que o consumiu.
-
-**Consequência de prioridade:** o número de destaque do painel **não pode ser
-faturamento**. Faturamento é exatamente a ilusão que ela já tem. O RoHair tem que
-mostrar **o que sobrou**.
-
-### O que a rodada 1 mudou no modelo
-
-| Mudança                                                                             | Origem                                                                                                                                    |
-| ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| **`HairAssessment` — entidade nova**                                                | Ela descreveu a mesma anamnese duas vezes, sem ser perguntada: já fez alisamento, qual produto, quando, se está quebrando, se está caindo |
-| **`ENCERRADO_SEM_SERVICO` — estado novo**                                           | _"Teste de mecha pra ver se o cabelo suporta o produto"_ — um teste que pode reprovar, e o modelo não previa reprovação                   |
-| **M-08 resolvida**                                                                  | Química anterior é **portão de segurança**, não histórico                                                                                 |
-| **M-09 corrigida**                                                                  | Preço varia por **curvatura**, não por comprimento. Minha hipótese estava no eixo errado                                                  |
-| **Vocabulário**                                                                     | Ela diz **nutrição**, não hidratação. E **"vaga"**, não horário nem agendamento                                                           |
-| **[D-06](04-DECISOES.md#d-06--escopo-do-portal-da-cliente) parcialmente resolvida** | _"Deixo as orientações dos produtos e o tempo do retoque"_ — o "Meu cuidado" do portal já existe, falado                                  |
-
-### O que a Fase 1 entregou
-
-| #    | Item                                | Documento                                                      |
-| ---- | ----------------------------------- | -------------------------------------------------------------- |
-| 1.1  | Roteiro de conversa                 | [descoberta/roteiro-rosiele.md](descoberta/roteiro-rosiele.md) |
-| 1.2  | Glossário do domínio                | [06-GLOSSARIO.md](06-GLOSSARIO.md)                             |
-| 1.3  | Fluxos das duas pontas              | [07-FLUXOS.md](07-FLUXOS.md)                                   |
-| 1.4  | Modelo de domínio **v1**            | [08-MODELO-DE-DOMINIO.md](08-MODELO-DE-DOMINIO.md)             |
-| 1.5  | Modelo de configuração              | [09-CONFIGURACAO.md](09-CONFIGURACAO.md)                       |
-| 1.6  | Cinco cenários · 5 buracos achados  | [10-CENARIOS.md](10-CENARIOS.md)                               |
-| 1.7  | Personas e JTBD                     | [11-PERSONAS.md](11-PERSONAS.md)                               |
-| 1.8  | 16 wireframes                       | [12-WIREFRAMES.md](12-WIREFRAMES.md)                           |
-| 1.9  | Escopo fechado das Fases 4 e 6 a 12 | [03-ROADMAP.md](03-ROADMAP.md)                                 |
-| 1.10 | Backlog de 42 itens                 | [13-BACKLOG.md](13-BACKLOG.md)                                 |
-
-### As cinco decisões que a Fase 1 travou
-
-1. **O número grande é "sobrou", nunca "entrou".** Faturamento é a ilusão que ela
-   já tem; o app não pode ser mais uma fonte dela
-2. **O lucro aparece no checkout de cada atendimento**, não no fim do mês — o
-   antídoto direto para a frase dela
-3. **O alerta de química vem antes de tudo na ficha.** É segurança física, não
-   histórico
-4. **Reprovar no teste de mecha é sucesso**, e consome produto de verdade
-5. **A fusão de fichas é sugerida, nunca automática** — casar por telefone exporia
-   histórico de terceiros
-
-### Os cinco buracos que os cenários acharam
-
-| #      | O que quebrava                                                     |
-| ------ | ------------------------------------------------------------------ |
-| GAP-01 | O teste de mecha consome produto, e o modelo dizia que não         |
-| GAP-02 | Serviço composto quebrava a baixa de estoque e a margem            |
-| GAP-03 | Fundir duas fichas com conta violava a unicidade da credencial     |
-| GAP-04 | Nada dizia a que dia pertence a receita que atravessa a meia-noite |
-| GAP-05 | Anamnese obrigatória contradizia a configuração que a desliga      |
-
-GAP-02 e GAP-04 quebrariam DoDs de fases inteiras **em silêncio** — nenhum
-apareceria em teste unitário, porque o modelo estava internamente coerente.
-
-### Como retomar em uma sessão nova
-
-1. Ler este arquivo, depois [04-DECISOES.md](04-DECISOES.md),
-   [09-CONFIGURACAO.md](09-CONFIGURACAO.md) e a Fase 2 em
-   [03-ROADMAP.md](03-ROADMAP.md)
-2. **Se o dono já aprovou a Fase 1** → apresentar a **Fase 2 — Design System
-   "Áurea"** e esperar aprovação. Não começar antes
-3. **Se ainda não aprovou** → não avançar. A Fase 1 tem um item de DoD aberto, e é
-   o aceite dele
-4. **Não escrever novos roteiros de pergunta.** Se aparecer uma dúvida sobre como a
-   profissional trabalha, a resposta é uma das três: decidir na arquitetura, virar
-   campo de configuração, ou o sistema medir pelo uso
-   ([DEC-013](04-DECISOES.md#dec-013))
-5. `npm run dev` se precisar de ambiente visual (o servidor não sobrevive à troca
-   de sessão)
-
-### Manutenção agendada
-
-| Quando          | O quê                                                               |
-| --------------- | ------------------------------------------------------------------- |
-| Antes da Fase 6 | **Rotacionar o token do R2.** As chaves foram trocadas por mensagem |
-|                 | em 2026-07-31 e estão no histórico da conversa. Enquanto o bucket   |
-|                 | está vazio o risco é nulo; quando entrarem fotos de clientes, deixa |
-|                 | de ser. Trocar é criar um token novo com o mesmo escopo, atualizar  |
-|                 | `.env.local` e a Vercel, e apagar o antigo.                         |
-| Até 2027-07-31  | **Vencimento do token do R2** (TTL de 1 ano). Vencido sem troca, o  |
-|                 | upload de fotos para de funcionar em produção.                      |
-
-### Decisão aberta
-
-**Visibilidade do repositório** — está **público**. Para um produto que será
-vendido, o padrão é privado. Não há segredo versionado, então não é urgente.
-Alterar em _Settings → General → Danger Zone_.
-
-## 6. Decisões pendentes
-
-| #    | Decisão                              | Recomendação                                            | Bloqueia                  |
-| ---- | ------------------------------------ | ------------------------------------------------------- | ------------------------- |
-| D-03 | Domínio próprio                      | Sem domínio hoje; seguir em `rohair.vercel.app`         | Fase 5 (parcial), Fase 14 |
-| D-05 | Cliente agenda direto ou solicita?   | **Solicita** — preserva o controle da agenda da Rosiele | Fase 12                   |
-| D-06 | Escopo do Portal da Cliente          | Proposta na Fase 12 do roadmap                          | Fase 12                   |
-| D-07 | Encontro das pontas sem CPF na ficha | **Fusão assistida** pela Rosiele, CPF opcional          | Fases 3, 4 e 6            |
-| D-08 | Escape quando a ativação falha       | **Aprovação manual** em vez de negar                    | Fase 4                    |
-
-D-05 a D-08 são resolvidas pela conversa com a Rosiele — as perguntas
-correspondentes já estão no [roteiro](descoberta/roteiro-rosiele.md).
-
-## 7. Comandos
-
-| Comando            | O que faz                                           |
-| ------------------ | --------------------------------------------------- |
-| `npm run dev`      | Sobe em http://localhost:3000 (único comando local) |
-| `npm run verify`   | Tipos + lint + testes — o mesmo que o CI roda       |
-| `npm run test:e2e` | Playwright (baixa navegadores na primeira vez)      |
-| `npm run format`   | Prettier                                            |
-| `railway status`   | Estado dos serviços no Railway                      |
-| `vercel ls rohair` | Deploys da Vercel                                   |
-
-## 8. Log de sessões
+- **Interrupção:** _"Tá enrolando muito, não tô vendo telas. (…) Lance tudo em
+  produção e teste em produção mesmo."_ Ele estava certo — três fases sem uma
+  tela. Virou **DEC-014**, e este documento e o `CLAUDE.md` foram reescritos.
+- **Repreensão justa:** eu tinha tentado subir um contêiner Docker na máquina
+  dele. Virou **DEC-015** — nada roda lá, nem `npm run dev`.
+- **Migrations aplicadas em produção** e semente idempotente rodada no Railway.
+- **Quatro telas no ar**, lendo o banco real: Hoje, Agenda, Clientes e Ficha.
+- **Dois problemas que só apareceram por colocar no ar:**
+  - O `DATABASE_URL` da Vercel apontava para um host chamado literalmente
+    `base` — placeholder colado errado na Fase 0. O painel dava 500 com P1001.
+  - Um deploy travou 15 minutos em "Deploying outputs" e bloqueou a fila.
+- **O lint de fronteiras pegou dois erros reais**: `application` importando
+  utilitário de `shared`, e `app` sem permissão para ver `infrastructure` — mas
+  `app` é a raiz de composição e precisa escolher o adapter concreto.
+- Roadmap passou a refletir a realidade: Fases 5, 6 e 8 parcialmente no ar,
+  **Fase 4 marcada como vermelha** porque o painel está sem login.
 
 Ordem cronológica inversa — mais recente no topo.
 

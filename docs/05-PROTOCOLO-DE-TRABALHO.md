@@ -4,34 +4,32 @@ Como o dono do produto e o agente trabalham juntos neste projeto.
 
 ---
 
-## 1. O ciclo de uma fase
+## 1. O ciclo de trabalho — reescrito em 2026-08-01 (DEC-014)
 
 ```
   ┌─────────────────────────────────────────────────────────┐
-  │  1. APRESENTAR   objetivo · arquitetura · decisões       │
-  │  2. APROVAR      o dono aprova, ajusta ou recusa         │
-  │  3. EXECUTAR     agente executa a fase inteira           │
-  │  4. REVISAR      dono valida contra o DoD                │
-  │  5. REGISTRAR    docs atualizados + commit               │
+  │  1. CONSTRUIR    tela funcionando, ponta a ponta         │
+  │  2. SUBIR        commit direto na main → produção        │
+  │  3. VERIFICAR    testar na URL real, com dado real       │
+  │  4. AVISAR       dizer o que subiu e o que ainda falta   │
+  │  5. REGISTRAR    00-ESTADO-ATUAL.md atualizado           │
   └─────────────────────────────────────────────────────────┘
 ```
 
-**Passo 1 — Apresentar.** Antes de escrever qualquer linha, o agente apresenta o
-que vai fazer, como vai fazer, quais alternativas descartou e por quê.
+**O que saiu:** apresentar fase e esperar "pode ir". O dono interrompeu o ciclo
+anterior porque três fases se passaram sem uma tela existir.
 
-**Passo 2 — Aprovar.** Nada começa sem "pode ir". Aprovação de uma fase não é
-aprovação da seguinte.
+**A unidade de trabalho é tela funcionando em produção**, não documento nem
+fase. O roadmap virou mapa do que construir, não portão.
 
-**Passo 3 — Executar.** Dentro de uma fase aprovada, o agente executa até o fim
-sem pedir permissão a cada passo. Se encontrar algo que muda o escopo, interrompe
-e avisa.
+**Rapidez é sobre cortar cerimônia, não qualidade.** Zero `any`, camadas por
+lint, AA, regra dos 3 toques — tudo continua.
 
-**Passo 4 — Revisar.** O dono valida contra a Definição de Pronto da fase, **em
-produção**, pelo próprio iPhone. Não há preview deployment: sem PR, o que ele vê é
-o que está no ar (DEC-012).
+**Passo 3 — Verificar.** O agente testa na URL de produção antes de avisar. O
+dono confere depois, pelo iPhone.
 
-**Passo 5 — Registrar.** [00-ESTADO-ATUAL.md](00-ESTADO-ATUAL.md) atualizado,
-decisões registradas, commit feito. Só então a próxima fase é apresentada.
+**Passo 5 — Registrar.** [00-ESTADO-ATUAL.md](00-ESTADO-ATUAL.md) atualizado e
+commitado junto com o código. Curto: o que subiu, o que falta, o que quebrou.
 
 ---
 
@@ -45,7 +43,7 @@ memória**.
 1. `CLAUDE.md` (carregado automaticamente)
 2. `docs/00-ESTADO-ATUAL.md`
 3. `docs/04-DECISOES.md`
-4. A fase atual em `docs/03-ROADMAP.md`
+4. `docs/03-ROADMAP.md` — como mapa do que falta construir, não como portão
 
 **Toda sessão termina atualizando:**
 
@@ -68,9 +66,10 @@ sem precisar de nenhum contexto da conversa anterior.
 
 ## 3. Regras de execução
 
-**Na máquina do dono roda apenas `npm run dev`**, para acompanhamento visual em
-tempo real. Build, testes E2E, migrations e auditorias rodam em CI, Vercel ou
-Railway. Nenhuma instalação local sem justificativa e sem pedir.
+**Nada roda na máquina do dono.** Nem Docker, nem banco local, nem servidor —
+ele revisa direto em produção, pelo iPhone. Comandos locais existem só para o
+agente verificar antes de subir. Build, E2E, migrations e auditorias em CI,
+Vercel ou Railway.
 
 **Git — commit direto na `main`.** Sem branch por fase, **sem Pull Request**
 (DEC-012). O agente commita e dá push na `main`; o CI roda no push e a Vercel
@@ -87,16 +86,18 @@ escopo — nunca qualidade. Não existe "depois a gente arruma".
 
 ## 4. Quando o agente deve parar e perguntar
 
-- Quando a decisão é de produto e não de engenharia (o que a usuária prefere)
-- Quando duas soluções técnicas são legítimas e a escolha muda o produto
-- Quando algo descoberto durante a execução muda o escopo da fase
-- Quando uma decisão já registrada em `04-DECISOES.md` precisaria ser revogada
+Curto de propósito. Perguntar demais foi o problema.
+
+- A ação é destrutiva ou irreversível (apagar dado real, trocar credencial)
+- Duas soluções legítimas mudam o produto de forma **visível para a usuária**
+- Uma decisão registrada em `04-DECISOES.md` precisaria ser revogada
 
 ## 5. Quando o agente NÃO deve perguntar
 
-- Detalhe de implementação dentro de uma fase já aprovada
-- Escolha entre duas soluções equivalentes — decide e registra
-- Confirmação de passo intermediário de trabalho já autorizado
+- **Antes de começar a construir uma tela.** Constrói e sobe
+- Detalhe de implementação, escolha entre soluções equivalentes
+- Confirmação de passo intermediário
+- Permissão para subir para produção — é o padrão, não a exceção
 
 ---
 

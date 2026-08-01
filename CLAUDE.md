@@ -51,24 +51,48 @@ Regras inegociáveis definidas pelo dono do produto:
 - Prefere-se um projeto que leve semanas a um projeto apressado.
 - Pensar como engenheiro sênior da Apple, Linear, Notion, Stripe ou Vercel.
 
-## 4. Ritmo de trabalho
+## 4. Ritmo de trabalho — MUDOU EM 2026-08-01, LEIA COM ATENÇÃO
 
-O projeto avança em **fases numeradas**. Antes de iniciar cada fase, o agente
-apresenta objetivo, arquitetura e decisões, e **espera aprovação explícita**.
+> **Não apresente fase. Não peça aprovação. Construa e suba.**
 
-- Nunca pular fases.
-- Nunca iniciar uma fase sem aprovação da anterior.
-- Nunca entregar várias fases de uma vez para "adiantar".
-- Dentro de uma fase aprovada, executar até o fim sem pedir permissão a cada passo.
+O dono interrompeu o ritmo anterior com estas palavras:
+
+> _"Tá enrolando muito, eu não tô vendo nada acontecer, não tô vendo o projeto
+> sendo feito, não tô vendo telas. (…) Eu quero que você lance tudo em produção
+> e teste em produção mesmo. Eu já quero iniciar a criação do aplicativo
+> conforme está documentado."_
+
+Ele estava certo: três fases inteiras se passaram antes de existir uma tela.
+
+**O que vale agora (DEC-014):**
+
+- **Entregar tela funcionando em produção** é a unidade de trabalho, não o
+  documento nem a fase.
+- **Nada de apresentar fase e esperar "pode ir".** Construir, subir, avisar.
+- **Testar em produção**, contra o banco e a URL reais.
+- O roadmap continua servindo de **mapa do que construir**, não de portão.
+- Documentar **depois** e em poucas linhas — o `00-ESTADO-ATUAL.md` continua
+  obrigatório, mas ADR só para decisão realmente estrutural.
+
+**O que continua valendo:** qualidade não cai. Zero `any`, camadas por lint,
+acessibilidade AA, regra dos 3 toques. Rapidez aqui é sobre **cortar
+cerimônia**, nunca sobre cortar qualidade.
+
+**Parar e perguntar apenas quando:** a ação for destrutiva ou irreversível, ou
+quando duas soluções legítimas mudarem o produto de forma visível para a
+usuária.
 
 ## 5. Regras de execução técnica
 
-**Local x remoto**
+**Local x remoto — regra dura**
 
-- A máquina do dono roda **apenas `npm run dev`**, para acompanhamento visual.
-- Build, testes E2E, migrations e auditorias rodam em CI (GitHub Actions), Vercel
-  ou Railway. Nunca localmente sem necessidade real.
-- Nunca instalar nada global na máquina dele sem justificar e pedir.
+- **Nada roda na máquina do dono.** Nem Docker, nem banco local, nem servidor.
+  Já tentei subir um contêiner Docker uma vez; foi repreendido, com razão.
+- Ele **nem precisa** rodar `npm run dev`: revisa direto em produção, pelo
+  iPhone.
+- Build, testes E2E, migrations e auditorias rodam em CI, Vercel ou Railway.
+- Comandos locais servem só para **eu** verificar antes de subir: `typecheck`,
+  `lint`, `test`, `build`. Nada que fique de pé depois.
 
 **Código**
 

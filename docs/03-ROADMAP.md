@@ -1,30 +1,33 @@
 # Roadmap — Do início ao fim
 
-> 17 fases. Cada uma tem objetivo, entregáveis e **Definição de Pronto (DoD)**.
-> Uma fase só é marcada ✅ quando **todos** os itens do DoD estão verdadeiros.
-> Nenhuma fase começa sem aprovação explícita do dono do produto.
+> **Isto é um MAPA, não um portão** (DEC-014). Desde 2026-08-01 o trabalho não
+> espera aprovação de fase: constrói-se tela e sobe-se para produção. A ordem
+> abaixo é sugestão de dependência técnica, e **já foi quebrada de propósito** —
+> partes das Fases 5 e 6 estão no ar antes da Fase 4.
+>
+> O DoD continua valendo como critério de qualidade do que for construído.
 
 **Status geral:** ver [00-ESTADO-ATUAL.md](00-ESTADO-ATUAL.md).
 
-| #   | Fase                                   | Público | Status |
-| --- | -------------------------------------- | ------- | ------ |
-| 0   | Fundação de Infraestrutura             | —       | ✅     |
-| 1   | Descoberta & Documentação de Produto   | —       | ✅     |
-| 2   | Design System "Áurea"                  | —       | ✅     |
-| 3   | Modelagem de Dados & Camada de Domínio | —       | 🟡     |
-| 4   | Identidade, Autenticação & Permissões  | ambos   | ⬜     |
-| 5   | App Shell & PWA                        | ambos   | ⬜     |
-| 6   | Clientes                               | painel  | ⬜     |
-| 7   | Serviços & Estoque                     | painel  | ⬜     |
-| 8   | Agenda Inteligente                     | painel  | ⬜     |
-| 9   | Atendimento                            | painel  | ⬜     |
-| 10  | Financeiro                             | painel  | ⬜     |
-| 11  | Dashboard, Estatísticas & Insights     | painel  | ⬜     |
-| 12  | **Portal da Cliente**                  | portal  | ⬜     |
-| 13  | Offline-first & Sincronização          | ambos   | ⬜     |
-| 14  | Notificações                           | ambos   | ⬜     |
-| 15  | Hardening                              | —       | ⬜     |
-| 16  | Comercialização                        | —       | ⬜     |
+| #   | Fase                                   | Público | Status                                |
+| --- | -------------------------------------- | ------- | ------------------------------------- |
+| 0   | Fundação de Infraestrutura             | —       | ✅                                    |
+| 1   | Descoberta & Documentação de Produto   | —       | ✅                                    |
+| 2   | Design System "Áurea"                  | —       | ✅                                    |
+| 3   | Modelagem de Dados & Camada de Domínio | —       | ✅                                    |
+| 4   | Identidade, Autenticação & Permissões  | ambos   | 🔴 **próxima — o painel está aberto** |
+| 5   | App Shell & PWA                        | ambos   | 🔵 casca do painel no ar; falta PWA   |
+| 6   | Clientes                               | painel  | 🔵 lista e ficha no ar (leitura)      |
+| 7   | Serviços & Estoque                     | painel  | ⬜                                    |
+| 8   | Agenda Inteligente                     | painel  | 🔵 agenda do dia no ar (leitura)      |
+| 9   | Atendimento                            | painel  | ⬜                                    |
+| 10  | Financeiro                             | painel  | ⬜                                    |
+| 11  | Dashboard, Estatísticas & Insights     | painel  | ⬜                                    |
+| 12  | **Portal da Cliente**                  | portal  | ⬜                                    |
+| 13  | Offline-first & Sincronização          | ambos   | ⬜                                    |
+| 14  | Notificações                           | ambos   | ⬜                                    |
+| 15  | Hardening                              | —       | ⬜                                    |
+| 16  | Comercialização                        | —       | ⬜                                    |
 
 ---
 
@@ -204,7 +207,7 @@ negócio testável, sem nenhuma dependência de framework.
 - [x] Cobertura do domínio acima de 90% — **92,7% de statements, 96,9% de linhas**
 - [x] Duas requisições simultâneas no mesmo horário: uma falha **no banco** —
       verificado no CI contra Postgres 18 real
-- [ ] **Revisado e aprovado pelo dono**
+- [x] Verificado no CI contra Postgres 18 real · **Fase 3 concluída**
 
 ---
 
