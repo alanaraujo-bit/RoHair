@@ -1,23 +1,20 @@
-# Modelo de domínio — v0.5
+# Modelo de domínio — v1
 
-> **Entregável 1.4 da Fase 1.** 🚧 **Este documento é um rascunho feito para ser
-> destruído.** Atualizado com a primeira rodada de respostas da Rosiele — ver
-> [leitura-01.md](descoberta/leitura-01.md).
+> **Entregáveis 1.4 e 1.6 da Fase 1.** Validado contra
+> [cinco cenários](10-CENARIOS.md), que expuseram **cinco buracos** — todos
+> corrigidos aqui. É esta versão que vira schema Prisma na Fase 3.
 >
-> Ele deriva apenas do que já está decidido — não da realidade da Rosiele, que
-> ainda não foi ouvida. Sua função não é estar certo: é **ser específico o
-> suficiente para estar errado de um jeito visível**, e assim gerar as perguntas
-> certas.
->
-> Um modelo vago sobrevive a qualquer entrevista porque não afirma nada. Este
-> afirma. Na Fase 1B ele é confrontado com cinco atendimentos reais e reescrito
-> como **v1**; só a v1 vira schema Prisma na Fase 3.
+> Duas fontes o formaram: as decisões já registradas, e a
+> [conversa com a Rosiele](descoberta/leitura-01.md), que trouxe `HairAssessment`
+> e o portão do teste de mecha. Nada aqui depende de perguntar a alguém como
+> trabalha — o que varia por profissional é
+> [configuração](09-CONFIGURACAO.md), não modelo.
 
 | Marca | Significa |
 | ----- | --------- |
 | 🔒 | **Travado** por decisão registrada. Não se rediscute sem revogar a decisão |
-| ⚠️ | **Hipótese minha.** Pode cair inteira depois da conversa |
-| ❓ | **Depende de resposta.** A pergunta está na seção 7 |
+| 🗣️ | Veio da conversa com a Rosiele |
+| ⚠️ | Hipótese do domínio, não confirmada por uso real |
 
 ---
 
@@ -41,7 +38,7 @@ erDiagram
     Client ||--o{ AppointmentRequest : "solicitou"
 
     Appointment ||--o| Attendance : "virou, ou não"
-    Service ||--o{ ServiceVariant : "por comprimento"
+    Service ||--o{ ServiceVariant : "por curvatura"
     Service ||--o{ ServiceProductUsage : "consumo padrão"
 
     Attendance ||--|| HairAssessment : "anamnese — abre a visita"
@@ -89,7 +86,7 @@ estado inválido irrepresentável.
 | `TimeRange` | Início e fim em UTC. `end > start` sempre. Sabe dizer se intersecta outro |
 | `Duration` | Minutos, positivo |
 | `PhoneNumber` | E.164 normalizado, com formatação brasileira na exibição |
-| `Quantity` ❓ | Quantidade + unidade. A unidade depende de M-05 |
+| `Quantity` | Quantidade + unidade. 🗣️ Frasco e aplicação primeiro; conversão interna |
 
 ---
 
@@ -143,8 +140,13 @@ cada visita, e o histórico se perderia — justamente o histórico que evita
 sobrepor química incompatível. A ficha **exibe a anamnese mais recente**; nunca
 guarda uma cópia própria.
 
-> **INV-16** — todo `Attendance` tem exatamente uma `HairAssessment`, criada na
-> abertura. Não existe atendimento sem anamnese.
+> **INV-16** — atendimento com **serviço químico** tem exatamente uma
+> `HairAssessment`, criada na abertura. Fora disso ela é opcional e segue a
+> configuração da profissional: quem só faz corte nunca vê essa tela.
+
+⚠️ A primeira versão desta invariante exigia anamnese em **todo** atendimento, o
+que contradizia a configuração e obrigaria uma escova simples a passar por
+avaliação química. Corrigido por [GAP-05](10-CENARIOS.md).
 
 ### 4.3 O teste de mecha é um portão que pode reprovar 🗣️
 
@@ -173,6 +175,11 @@ stateDiagram-v2
 seguro**, e provavelmente o momento em que ela mais protege a cliente. O painel
 deve tratá-lo como trabalho bem feito, nunca como falha.
 
+**Ele consome produto.** O teste de mecha gasta um pouco do que estava sendo
+testado, então há `ProductUsage` e há baixa de estoque — custo sem receita, que é a
+verdade do que aconteceu. O que não existe é `AttendanceItem` do serviço impedido
+(INV-17).
+
 Esta é a resposta ao caso 2 do roteiro — "um atendimento que deu errado" — que ela
 respondeu com *"kkkkkkkkk nunca deu"*. Ela está certa: para ela isso é
 procedimento normal. É o modelo que precisava enxergar.
@@ -198,7 +205,29 @@ pausa do almoço?".
 > **INV-06** — dois `TimeEntry` do mesmo atendimento nunca se sobrepõem.
 > **INV-07** — no máximo um `TimeEntry` com `endedAt` nulo por atendimento.
 
-### 4.5 Preço é congelado no atendimento 🔒
+### 4.5 Serviço composto: preço no pai, custo nas folhas 🗣️
+
+`AttendanceItem` referencia a si mesmo por `parentItemId`. Um atendimento de
+"escova com nutrição" grava o item pai, com o preço, e as etapas como filhas, com o
+consumo.
+
+| Nível | Carrega |
+| ----- | ------- |
+| Item pai | `unitPriceCents` — o que a cliente paga |
+| Itens folha | `ProductUsage` e o custo — o que a baixa de estoque usa |
+
+**Por quê.** O preço é do pacote; o consumo é da etapa. Gravar só o pai não dá
+baixa em nada, porque o consumo padrão está nas etapas. Gravar só as folhas perde o
+preço ou obriga a ratear por chute, e a margem por serviço vira ficção.
+
+> **INV-19** — o preço vive no pai, o custo e a baixa vivem nas folhas. Nunca nos
+> dois, ou o valor é contado em dobro.
+
+Descoberto pelo [cenário 3](10-CENARIOS.md#cenário-3--o-encaixe-que-virou-três-coisas).
+Sem isso, o DoD da Fase 7 — *"finalizar dá baixa automática correta"* — falharia em
+silêncio no caso mais comum da Rosiele.
+
+### 4.6 Preço é congelado no atendimento 🔒
 
 `AttendanceItem` guarda `unitPriceCents` copiado do serviço no momento do
 lançamento — nunca uma referência viva ao preço atual.
@@ -210,7 +239,7 @@ centavo; sem snapshot, ele muda toda vez que ela mexe no catálogo.
 O mesmo vale para o custo do produto em `ProductUsage`: `unitCostCents` é copiado,
 senão a margem histórica dança quando o fornecedor aumenta o preço.
 
-### 4.6 Estoque negativo é permitido, e é intencional ⚠️
+### 4.7 Estoque negativo é permitido, e é intencional ⚠️
 
 Se o registro diz 2 frascos e ela usou 3, a verdade é 3. O sistema **não** pode
 recusar a baixa nem travar a finalização do atendimento.
@@ -221,7 +250,7 @@ obrigaria a Rosiele a mentir para o app com a cliente na cadeira, e no minuto em
 que ela mente uma vez o estoque inteiro deixa de valer. Melhor aceitar o negativo e
 sinalizar: "o registro está atrás da realidade, quer acertar?".
 
-### 4.7 O que existe sem organização: nada 🔒
+### 4.8 O que existe sem organização: nada 🔒
 
 > **INV-12** — toda entidade tem `organizationId`, injetado por Prisma Client
 > Extension e protegido por RLS. Não há exceção, nem em tabela de apoio.
@@ -237,7 +266,7 @@ o contrato entre a Fase 1 e a Fase 3.
 | - | ---------- | ---------------- |
 | INV-01 | Dois agendamentos do mesmo profissional nunca se sobrepõem | 🔒 `EXCLUDE USING gist` — banco. A checagem na UI é só UX |
 | INV-02 | CPF inválido pelos dígitos verificadores nunca é gravado | VO `Cpf` |
-| INV-03 | `cpfHash` é único por organização — **índice parcial**, `WHERE cpf_hash IS NOT NULL` | Banco ❓ depende de D-07 |
+| INV-03 | `cpfHash` é único por organização — **índice parcial**, `WHERE cpf_hash IS NOT NULL` | Banco · D-07 |
 | INV-04 | Todo valor monetário é `Int` em centavos | VO `Money` |
 | INV-05 | Preço e custo são snapshot, nunca referência viva | `AttendanceItem`, `ProductUsage` |
 | INV-06 | Intervalos de cronômetro não se sobrepõem | Agregado `Attendance` |
@@ -250,8 +279,11 @@ o contrato entre a Fase 1 e a Fase 3.
 | INV-13 | Toda data é UTC no banco; fuso vive na organização | 🔒 Arquitetura |
 | INV-14 | Revogar conta nunca altera a ficha | Fronteira de agregados |
 | INV-15 | Soft delete de cliente preserva o histórico financeiro, que é imutável | Agregado `Transaction` |
-| INV-16 | Todo `Attendance` tem exatamente uma `HairAssessment` | 🗣️ Agregado `Attendance` |
-| INV-17 | Atendimento com teste de mecha reprovado nunca gera `ProductUsage` do produto reprovado nem `AttendanceItem` do serviço impedido | 🗣️ Agregado `Attendance` |
+| INV-16 | Atendimento com **serviço químico** tem exatamente uma `HairAssessment`, e o teste de mecha é etapa dela. Fora disso, segue a configuração | 🗣️ Corrigida por [GAP-05](10-CENARIOS.md) |
+| INV-17 | Teste reprovado nunca gera `AttendanceItem` do serviço impedido — mas **gera `ProductUsage`** do que o teste consumiu | 🗣️ Corrigida por [GAP-01](10-CENARIOS.md) |
+| INV-18 | O atendimento pertence ao dia da **finalização**, no fuso da organização. Um só instante decide receita, baixa e histórico | [GAP-04](10-CENARIOS.md) |
+| INV-19 | Em serviço composto, o **preço** vive no item pai e o **custo e a baixa** vivem nas folhas. Nunca nos dois | [GAP-02](10-CENARIOS.md) |
+| INV-20 | Fundir fichas que ambas têm conta deixa ativa a de login mais recente; a outra é **revogada, nunca apagada**, com registro em `AuditLog` | [GAP-03](10-CENARIOS.md) |
 
 ### Três cenários adversariais que a v1 precisa passar
 
@@ -270,42 +302,43 @@ Além dos cinco casos reais da Rosiele, o modelo tem que sobreviver a:
 
 Só onde há algo não óbvio.
 
-**`Client`** — `cpfHash` e `cpfEncrypted` 🔒. `birthDate` ❓ obrigatório ou não
-(ACHADO-02). `origin` conforme a máquina de estados dos [fluxos](07-FLUXOS.md#5-estados).
-`mergedIntoId` para fusão sem perda de histórico (ACHADO-01). ⚠️ Campos de
-caracterização do cabelo dependem de G-10.
+**`Client`** — `cpfHash` e `cpfEncrypted` 🔒, ambos **opcionais** (D-07). `birthDate`
+opcional, com a rota de escape da D-08 quando faltar. `origin` conforme a máquina de
+estados dos [fluxos](07-FLUXOS.md#5-estados). `mergedIntoId` para fusão sem perda de
+histórico. 🗣️ `curvature` como lista de nomes — liso, ondulado, cacheado, crespo —
+nunca notação `3B`.
 
-**`ClientNote`** — carimbo de data e autor, sempre. ❓ Precisa de um campo de
-visibilidade para o portal (roteiro 75) e ❓ possivelmente de um tipo especial
-`SAFETY` para alerta de química (G-05), que não é nota — é aviso que aparece antes
-de iniciar o atendimento.
+**`ClientNote`** — carimbo de data e autor, sempre, mais `visibility` para o portal
+(configurável, padrão privado). O alerta de química **não** é nota: vive na
+`HairAssessment` e aparece antes de iniciar o atendimento, não enterrado no
+histórico.
 
 **`ClientPhoto`** — `kind: BEFORE | AFTER | REFERENCE`. A terceira existe porque a
-cliente manda foto de referência (roteiro 72) — e referência não é antes nem
-depois. `visibility: PROFESSIONAL_ONLY | CLIENT_VISIBLE`, padrão o primeiro
-(INV-11).
+cliente manda foto de referência — e referência não é antes nem depois.
+`visibility: PROFESSIONAL_ONLY | CLIENT_VISIBLE`, padrão o primeiro (INV-11).
 
-**`Service` e `ServiceVariant`** — ⚠️ a variante existe para comprimento e volume
-do cabelo, que é a hipótese mais forte de precificação (roteiro 42). Se a Rosiele
-cobra preço fixo, `ServiceVariant` **some do modelo** em vez de virar uma tabela
-com uma linha só.
+**`Service` e `ServiceVariant`** — a variante é **opcional e nasce desligada**: quem
+cobra preço único nunca vê essa complexidade. 🗣️ Quando ligada, o eixo padrão é
+**curvatura**. Serviço composto por `ServiceStep`, com o consumo padrão nas etapas
+(INV-19).
 
-**`Attendance`** — ❓ **um serviço ou vários?** (M-01). Modelei com
-`AttendanceItem` em lista, que suporta os dois casos; se ela nunca combina
-serviços, a lista some e o modelo simplifica muito. ❓ **Um profissional ou
-vários simultâneos?** (M-02) — se ela atende duas clientes ao mesmo tempo, o
-cronômetro deixa de ser singular e o painel inteiro muda.
+**`Attendance`** — `AttendanceItem` **sempre em lista**, com `parentItemId` para
+serviço composto. Sem invariante de atendimento único: o modelo permite dois em
+andamento, a interface começa com um
+([09-CONFIGURACAO.md § 5](09-CONFIGURACAO.md#5-o-que-não-é-configurável)).
 
-**`Payment`** — ⚠️ modelado como lista, permitindo pagamento dividido e parcial.
-❓ Depende de M-06 e M-07: fiado e cortesia precisam ser estados de primeira
-classe, ou o financeiro nunca fecha.
+**`Payment`** — lista, permitindo dividido e parcial. Fiado e cortesia são estados
+de primeira classe desde já; a interface os esconde de quem não usa.
 
 **`StockMovement`** — append-only, com `reason: PURCHASE | USAGE | LOSS |
 ADJUSTMENT | EXPIRY`. A quantidade atual é derivada da soma, nunca um campo
 mutável — assim toda movimentação é rastreável até a origem, que é DoD da Fase 7.
+A baixa por atendimento é calculada sobre as **folhas** dos itens (INV-19).
 
-**`Insight`** — regra versionada, com `dismissedAt`. ⚠️ As regras concretas
-dependem inteiramente do bloco 6 do roteiro; inventá-las agora seria adivinhação.
+**`Insight`** — regra versionada, com `dismissedAt`. As duas primeiras regras já são
+deriváveis do que sabemos: 🗣️ **retorno vencido** (serviço + curvatura) e
+**produto acabando** — que juntas atacam a frase do fim do mês. As demais nascem do
+uso, na Fase 11.
 
 ---
 
