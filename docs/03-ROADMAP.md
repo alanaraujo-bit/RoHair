@@ -10,8 +10,8 @@
 | --- | -------------------------------------- | ------- | ------ |
 | 0   | Fundação de Infraestrutura             | —       | ✅     |
 | 1   | Descoberta & Documentação de Produto   | —       | ✅     |
-| 2   | Design System "Áurea"                  | —       | 🟡     |
-| 3   | Modelagem de Dados & Camada de Domínio | —       | ⬜     |
+| 2   | Design System "Áurea"                  | —       | ✅     |
+| 3   | Modelagem de Dados & Camada de Domínio | —       | 🟡     |
 | 4   | Identidade, Autenticação & Permissões  | ambos   | ⬜     |
 | 5   | App Shell & PWA                        | ambos   | ⬜     |
 | 6   | Clientes                               | painel  | ⬜     |
@@ -161,6 +161,9 @@ precisa dele — componente "para o caso de precisar" é dívida visual.
 - [x] Catálogo publicado e acessível pelo celular do dono, em `/design`
 - [x] `prefers-reduced-motion` respeitado em 100% das animações
 - [x] Zero dependências novas
+- [x] **Revisado e aprovado pelo dono** — 2026-07-31
+
+**Fase 2 concluída.**
 
 ---
 

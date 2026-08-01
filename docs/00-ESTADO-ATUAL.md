@@ -8,17 +8,17 @@
 
 ## Snapshot
 
-| Campo                  | Valor                                                    |
-| ---------------------- | -------------------------------------------------------- |
-| **Última atualização** | 2026-07-31                                               |
-| **Fase atual**         | Fase 2 — Design System "Áurea"                           |
-| **Status da fase**     | 🟡 **Executada — aguardando sua revisão**                |
-| **Fases concluídas**   | Planejamento · Identidade e acesso · Fase 0 · **Fase 1** |
-| **Bloqueios**          | Nenhum                                                   |
-| **Local**              | http://localhost:3000 (`npm run dev`)                    |
-| **Produção**           | https://rohair.vercel.app                                |
-| **Catálogo Áurea**     | https://rohair.vercel.app/design ← **revisar aqui**      |
-| **CI**                 | ✅ Verde — qualidade, build e E2E                        |
+| Campo                  | Valor                                               |
+| ---------------------- | --------------------------------------------------- |
+| **Última atualização** | 2026-07-31                                          |
+| **Fase atual**         | Fase 3 — Modelagem de Dados & Camada de Domínio     |
+| **Status da fase**     | 🟡 Apresentada, aguardando aprovação                |
+| **Fases concluídas**   | Planejamento · Fase 0 · Fase 1 · **Fase 2**         |
+| **Bloqueios**          | Nenhum                                              |
+| **Local**              | http://localhost:3000 (`npm run dev`)               |
+| **Produção**           | https://rohair.vercel.app                           |
+| **Catálogo Áurea**     | https://rohair.vercel.app/design ← **revisar aqui** |
+| **CI**                 | ✅ Verde — qualidade, build e E2E                   |
 
 **Legenda de status:** ⬜ não iniciada · 🟡 aguardando aprovação · 🔵 em andamento · ✅ concluída · 🔴 bloqueada
 
@@ -127,14 +127,12 @@ Justificativas completas em [04-DECISOES.md](04-DECISOES.md) e [adr/](adr/).
 
 ## 5. Próximo passo imediato
 
-> ### 🟡 Fase 2 executada. Revisar o catálogo pelo iPhone.
+> ### 🟡 Fase 3 — Modelagem de Dados apresentada, aguardando aprovação.
 >
-> **https://rohair.vercel.app/design**
+> A Fase 2 foi aprovada em 2026-07-31 e está fechada. O catálogo do Áurea está
+> em **https://rohair.vercel.app/design**.
 >
-> Troque o tema no canto superior direito e mexa nos primitivos — o catálogo é
-> interativo. Todos os itens do DoD estão cumpridos; falta o seu aceite.
->
-> **Com a aprovação, a Fase 3 — Modelagem de Dados — é apresentada.**
+> **Nada de schema até o "pode ir".**
 
 ### O que a Fase 2 entregou
 
@@ -351,6 +349,15 @@ correspondentes já estão no [roteiro](descoberta/roteiro-rosiele.md).
 ## 8. Log de sessões
 
 Ordem cronológica inversa — mais recente no topo.
+
+### 2026-07-31 (13) — Fase 2 aprovada e fechada · Fase 3 apresentada
+
+- Dono aprovou o catálogo do Áurea. **Fase 2 concluída**, todos os itens do DoD.
+- Fase 3 apresentada, aguardando o "pode ir".
+- A decisão que a Fase 3 precisa tomar antes de qualquer schema é o **fatiamento
+  em features** — as fronteiras que o `eslint-plugin-boundaries` vai impor. Errar
+  o corte é caro: mover código entre features depois significa mover use case,
+  repositório e teste juntos.
 
 ### 2026-07-31 (12) — Fase 2 executada · Áurea de pé
 
