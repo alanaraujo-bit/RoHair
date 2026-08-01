@@ -12,9 +12,9 @@
 | ---------------------- | ------------------------------------------------------------ |
 | **Última atualização** | 2026-07-31                                                   |
 | **Fase atual**         | Fase 1 — Descoberta & Documentação de Produto                |
-| **Status da fase**     | 🔵 Fase 1A concluída · **rodada 1 lida** · Fase 1B bloqueada |
+| **Status da fase**     | 🔵 Fase 1A concluída · **Fase 1B em andamento, desbloqueada** |
 | **Fases concluídas**   | Planejamento · Identidade e acesso · Fase 0 · **Fase 1A**    |
-| **Bloqueio ativo**     | 🔴 **Rodada 2 com a Rosiele.** Faltam todos os números       |
+| **Bloqueios**          | **Nenhum.** A descoberta virou configuração (DEC-013)        |
 | **Local**              | http://localhost:3000 (`npm run dev`)                        |
 | **Produção**           | https://rohair.vercel.app                                    |
 | **CI**                 | ✅ Verde — qualidade, build e E2E                            |
@@ -60,7 +60,8 @@ RoHair/
 │   ├── 06-GLOSSARIO.md           Fase 1A · vocabulário do domínio
 │   ├── 07-FLUXOS.md              Fase 1A · as duas pontas
 │   ├── 08-MODELO-DE-DOMINIO.md   Fase 1A · agregados e invariantes (v0)
-│   ├── descoberta/               roteiros, respostas e leitura das rodadas
+│   ├── 09-CONFIGURACAO.md        Fase 1B · semente, configuração, aprendizado
+│   ├── descoberta/               a conversa com a Rosiele e o que saiu dela
 │   └── adr/ADR-0001-fundacao-do-projeto.md
 └── src/
     ├── app/                      layout · page (painel da Fase 0) · globals.css
@@ -115,26 +116,47 @@ Justificativas completas em [04-DECISOES.md](04-DECISOES.md) e [adr/](adr/).
 
 ## 5. Próximo passo imediato
 
-> ### 🔴 Mandar a [rodada 2](descoberta/roteiro-rosiele-02.md) para a Rosiele.
+> ### ▶️ Continuar a Fase 1B — nada bloqueado.
 >
-> 24 perguntas curtas, quase todas numéricas. Pode ir por mensagem, direto — foi
-> desenhada para ser respondida por escrito, que é como ela respondeu a primeira.
+> Próximo item: **os cinco cenários de atendimento** que validam o modelo (1.6),
+> depois personas, wireframes e o escopo das Fases 6 a 14.
 >
-> As respostas entram em
-> [respostas-rosiele.md](descoberta/respostas-rosiele.md), seção "Rodada 2".
+> Não há mais nada a perguntar à Rosiele.
 
-### Por que houve uma segunda rodada
+### A virada: descoberta virou configuração
 
-A rodada 1 veio **por escrito, uma linha por bloco**, respondendo aos títulos e não
-às perguntas — ela viu os cabeçalhos, que o roteiro pedia que ela não visse. Parte
-da culpa é do instrumento: o bloco "A outra ponta" queria dizer a outra ponta do
-produto, e "ponta" é palavra de cabelo. Ela respondeu sobre pontas ressecadas, com
-toda a razão.
+Eu tinha escrito uma segunda rodada de perguntas — preço, duração, custo, horário,
+forma de pagamento. **O dono cortou, com razão.**
 
-**Mesmo assim a rodada valeu muito** — ver
-[leitura-01.md](descoberta/leitura-01.md). O que ela **não** deu foi um único
-número: nenhum preço, nenhuma duração, nenhum volume de clientes, nenhum horário
-de trabalho, e nenhum dos cinco atendimentos reais que o DoD exige.
+Nada disso é descoberta: é **campo de cadastro**. E o método não escalava — se cada
+profissional precisasse de entrevista para o sistema funcionar, o RoHair seria
+consultoria, não produto. A Fase 16 supõe que uma profissional nova se cadastra e
+agenda sozinha.
+
+O produto passa a **chegar sabendo o domínio da beleza**: catálogo semente de
+serviços, produtos e unidades, que ela seleciona e ajusta. É o princípio 2 da visão
+— *"o app trabalha, a usuária confirma"* — aplicado ao cadastro, que era o único
+lugar onde não estava sendo aplicado.
+
+Registrado em [DEC-013](04-DECISOES.md#dec-013) e detalhado em
+[09-CONFIGURACAO.md](09-CONFIGURACAO.md).
+
+**Efeito colateral: a fase destravou.** D-05 virou chave de configuração, D-06 se
+resolveu em escopo, e M-01 a M-12 encontraram destino — arquitetura, configuração
+ou aprendizado do sistema. Nenhuma depende de entrevista.
+
+### Para que serviu a conversa com a Rosiele
+
+Ela aconteceu, foi lida ([leitura-01.md](descoberta/leitura-01.md)) e **não vai se
+repetir**. O que entregou de valor foi conhecimento de **domínio**, que serve a
+todas as profissionais:
+
+- `HairAssessment` e o estado `ENCERRADO_SEM_SERVICO` — arquitetura que eu não teria
+  descoberto sozinho
+- O vocabulário: **nutrição** em vez de hidratação, **"vaga"** em vez de horário,
+  frasco antes de mililitro, curvatura como eixo de preço
+- A ordem certa do catálogo semente
+- A tese do produto, na frase abaixo
 
 ### A frase que vale a fase inteira
 
@@ -161,26 +183,31 @@ mostrar **o que sobrou**.
 | **Vocabulário** | Ela diz **nutrição**, não hidratação. E **"vaga"**, não horário nem agendamento |
 | **[D-06](04-DECISOES.md#d-06--escopo-do-portal-da-cliente) parcialmente resolvida** | *"Deixo as orientações dos produtos e o tempo do retoque"* — o "Meu cuidado" do portal já existe, falado |
 
-### O que continua bloqueado, e não vou inventar
+### O que falta na Fase 1B
 
-Personas, mapa do dia, wireframes, escopo das Fases 6 a 14 e backlog. Todos
-dependem de números que ainda não temos. Escrevê-los agora seria adivinhação — que
-é exatamente o que esta fase existe para impedir.
+| # | Item | Estado |
+| - | ---- | ------ |
+| 1.5 | [Modelo de configuração](09-CONFIGURACAO.md) | ✅ |
+| 1.6 | Cinco cenários que validam o modelo | ⬜ próximo |
+| 1.7 | Personas e Jobs to be Done | ⬜ |
+| 1.8 | Wireframes, incluindo o onboarding | ⬜ |
+| 1.9 | Escopo fechado das Fases 6 a 14 | ⬜ |
+| 1.10 | Backlog priorizado | ⬜ |
 
-A Fase 2 também não começa: o design system precisa saber que telas vai servir. A
-única saída lateral continua sendo a identidade da marca
-([DEC-011](04-DECISOES.md#dec-011)), que não depende de descoberta.
+A Fase 2 continua não começando — o design system precisa saber que telas vai
+servir, e os wireframes são o item 1.8.
 
 ### Como retomar em uma sessão nova
 
-1. Ler este arquivo, depois [04-DECISOES.md](04-DECISOES.md) e a Fase 1 em
+1. Ler este arquivo, depois [04-DECISOES.md](04-DECISOES.md),
+   [09-CONFIGURACAO.md](09-CONFIGURACAO.md) e a Fase 1 em
    [03-ROADMAP.md](03-ROADMAP.md)
-2. Verificar a seção "Rodada 2" em
-   [respostas-rosiele.md](descoberta/respostas-rosiele.md)
-   - **Preenchida** → executar a Fase 1B (não precisa de nova aprovação; a Fase 1
-     inteira foi aprovada em 2026-07-31)
-   - **Vazia** → o bloqueio continua. Não começar a Fase 2
-3. `npm run dev` se precisar de ambiente visual (o servidor não sobrevive à troca
+2. Continuar a Fase 1B pelo item pendente da tabela acima. **Não precisa de nova
+   aprovação** — a Fase 1 foi aprovada em 2026-07-31
+3. **Não escrever novos roteiros de pergunta.** Se aparecer uma dúvida sobre como a
+   profissional trabalha, a resposta é uma das três: decidir na arquitetura, virar
+   campo de configuração, ou o sistema medir pelo uso ([DEC-013](04-DECISOES.md#dec-013))
+4. `npm run dev` se precisar de ambiente visual (o servidor não sobrevive à troca
    de sessão)
 
 ### Manutenção agendada
@@ -228,6 +255,27 @@ correspondentes já estão no [roteiro](descoberta/roteiro-rosiele.md).
 ## 8. Log de sessões
 
 Ordem cronológica inversa — mais recente no topo.
+
+### 2026-07-31 (9) — Descoberta vira configuração · Fase 1B destravada
+
+- **DEC-013, por correção do dono.** Eu tinha escrito uma segunda rodada de
+  perguntas pedindo preço, duração, custo e horário. Ele cortou: *"é um sistema,
+  ela vai se adaptando… na hora de cadastrar ela vai selecionando o que precisa"*.
+- Estava certo. Aquilo não era descoberta, era **campo de cadastro** — e um método
+  que exige entrevistar cada profissional não escala para a Fase 16.
+- Curioso: eu estava aplicando o princípio *"o app trabalha, a usuária confirma"*
+  em toda tela **menos** na primeira.
+- **[09-CONFIGURACAO.md](09-CONFIGURACAO.md) escrito** — três níveis: o que vem
+  pronto (catálogo semente do domínio da beleza), o que ela configura (com padrão
+  sugerido) e o que o sistema aprende medindo o uso.
+- **Decidi o que não é configurável** em vez de perguntar: atendimento simultâneo
+  permitido no modelo, serviço sempre em lista, pagamento parcial e cortesia como
+  estados de primeira classe, `Membership` desde a Fase 3. Padrão: modelo
+  permissivo, interface simples. O que é barato agora e caro depois entra já.
+- **D-05 resolvida** — virou chave de configuração, com padrão "solicitar".
+  M-01 a M-12 todas resolvidas, nenhuma dependendo de entrevista.
+- Roteiro da rodada 2 **apagado**; seu conteúdo virou o onboarding em cinco passos.
+- **A fase destravou.** Bloqueio ativo: nenhum.
 
 ### 2026-07-31 (8) — Fluxo de git simplificado
 

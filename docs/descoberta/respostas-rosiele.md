@@ -1,12 +1,12 @@
 # Respostas da Rosiele
 
-> **Status:** 🟡 primeira rodada recebida — parcial
+> **Status:** ✅ encerrado. **Rodada única** — não haverá segunda
+> ([DEC-013](../04-DECISOES.md#dec-013)).
 >
-> Matéria-prima da Fase 1B. Transcrição **verbatim**, sem edição, sem correção de
-> português. O vocabulário dela vira nome de tela, de botão e de entidade.
+> Transcrição **verbatim**, sem edição, sem correção de português. O vocabulário
+> dela virou nome de tela, de botão e de entidade.
 >
 > Leitura e consequências em [leitura-01.md](leitura-01.md).
-> Segunda rodada em [roteiro-rosiele-02.md](roteiro-rosiele-02.md).
 
 **Data:** 2026-07-31
 **Formato:** respondido por escrito, por blocos ⚠️ não foi conversa conduzida
@@ -100,6 +100,8 @@ Falha do instrumento, não dela — ver [leitura-01.md](leitura-01.md).
 
 ---
 
-## Rodada 2 — a realizar
+## Não haverá rodada 2
 
-_Ver [roteiro-rosiele-02.md](roteiro-rosiele-02.md)._
+O que faltava — preço, duração, produtos, horário, forma de pagamento — não era
+descoberta. Era **cadastro**. Virou a tela do onboarding em
+[09-CONFIGURACAO.md](../09-CONFIGURACAO.md).

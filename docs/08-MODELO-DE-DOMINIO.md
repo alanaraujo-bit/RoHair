@@ -177,10 +177,9 @@ Esta é a resposta ao caso 2 do roteiro — "um atendimento que deu errado" — 
 respondeu com *"kkkkkkkkk nunca deu"*. Ela está certa: para ela isso é
 procedimento normal. É o modelo que precisava enxergar.
 
-⚠️ **Duas perguntas abertas:** com que frequência reprova, e se ela cobra alguma
-coisa quando reprova. Perguntas 21 a 23 da
-[rodada 2](descoberta/roteiro-rosiele-02.md). A segunda decide se
-`ENCERRADO_SEM_SERVICO` gera receita.
+**Se gera cobrança é política dela**, não do produto: vira chave de configuração
+(M-11). O estado existe sempre — reprovar não pode depender de a profissional ter
+configurado alguma coisa.
 
 ### 4.4 O cronômetro é uma lista imutável de intervalos 🔒
 
@@ -310,35 +309,43 @@ dependem inteiramente do bloco 6 do roteiro; inventá-las agora seria adivinhaç
 
 ---
 
-## 7. Perguntas que este modelo faz à Rosiele
+## 7. As perguntas do modelo — todas resolvidas
 
-Cada uma muda o modelo de forma visível. Esta tabela é o motivo de o v0 existir.
+Nenhuma delas foi resolvida perguntando à Rosiele. Por
+[DEC-013](04-DECISOES.md#dec-013), a pergunta certa deixou de ser "o que ela faz?" e
+passou a ser **"quem sabe a resposta?"** — e a resposta manda a questão para a
+arquitetura, para a tela de configuração ou para o próprio uso.
 
-| # | Pergunta | Status depois da rodada 1 |
-| - | -------- | ------------------------- |
-| M-01 | Um serviço por visita ou vários? | 🟡 Nutrição e corte de pontas parecem **etapas da escova**, não itens vendidos. Se confirmar, `AttendanceItem` continua em lista mas o catálogo ganha serviços compostos · rodada 2, Partes A e B |
-| M-02 | Atende duas clientes ao mesmo tempo? | ⬜ Sem resposta. Continua sendo a pergunta que mais muda o painel |
-| M-03 | Trabalha com cronograma capilar? | ⬜ Sem resposta |
-| M-04 | Tem cliente fixa quinzenal? | 🟡 Indireto: a progressiva tem **loop de 3 meses**. Não é recorrência de agenda, mas é recorrência de negócio — o retorno é previsível |
-| M-05 | Pensa estoque em quê? | 🟡 **Frasco.** *"Um frasco dá para quantas progressivas"* é a pergunta 6 da rodada 2 |
-| M-06 | Cliente já ficou devendo? | ⬜ Sem resposta · rodada 2, pergunta 11 |
-| M-07 | Atende de graça alguém? | ⬜ Sem resposta |
-| M-08 | Precisa saber a química anterior? | ✅ **Sim, e é portão de segurança.** Gerou `HairAssessment` e o estado `ENCERRADO_SEM_SERVICO`. Resolvida |
-| M-09 | Preço varia por cabelo? | 🟡 **Varia, mas por curvatura, não por comprimento** — minha hipótese estava no eixo errado. `ServiceVariant` fica, com o eixo corrigido · rodada 2, perguntas 1 e 2 |
-| M-10 | Quando as mãos ficam livres? | ⬜ Sem resposta. Continua sendo o critério de aceite da regra dos 3 toques |
-| **M-11** | O teste de mecha reprovado gera cobrança? | 🆕 Nasceu da rodada 1 · rodada 2, pergunta 23 |
-| **M-12** | Ela trabalha sozinha? Ela escreveu "damos", "cortamos" | 🆕 Decide se `Membership` vira tela agora ou na Fase 16 · rodada 2, pergunta 31 |
+| # | Pergunta | Resolução | Onde vive |
+| - | -------- | --------- | --------- |
+| M-01 | Um serviço por visita ou vários? | **Sempre lista.** Serviço composto permite montar nutrição como etapa da escova ou como item à parte | 🏛️ Arquitetura |
+| M-02 | Atende duas clientes ao mesmo tempo? | **Modelo permite, interface começa com uma.** Sem invariante de atendimento único | 🏛️ Arquitetura |
+| M-03 | Trabalha com cronograma capilar? | Serviço composto + intervalo de retorno cobrem o caso sem entidade nova | ⚙️ Configuração |
+| M-04 | Tem cliente fixa quinzenal? | Recorrência como opção do agendamento, desligada por padrão | ⚙️ Configuração |
+| M-05 | Pensa estoque em quê? | **Frasco e aplicação primeiro**, conversão interna | ⚙️ Configuração |
+| M-06 | Cliente já ficou devendo? | `Payment` em lista desde sempre; fiado escondido até ser usado | 🏛️ Arquitetura |
+| M-07 | Atende de graça alguém? | Cortesia é estado próprio, nunca "não pago" | 🏛️ Arquitetura |
+| M-08 | Precisa saber a química anterior? | ✅ **Sim — portão de segurança.** Gerou `HairAssessment` e `ENCERRADO_SEM_SERVICO` | 🗣️ Da conversa |
+| M-09 | Preço varia por cabelo? | `ServiceVariant` opcional, eixo padrão **curvatura** | ⚙️ Configuração |
+| M-10 | Quando as mãos ficam livres? | Não se pergunta — **se mede**. O cronômetro mostra a janela real | 📈 Aprendizado |
+| M-11 | Teste reprovado gera cobrança? | O estado existe sempre; cobrar é política dela | ⚙️ Configuração |
+| M-12 | Trabalha sozinha? | `Membership` desde a Fase 3; interface só com mais de uma pessoa | 🏛️ Arquitetura |
 
-**Legenda:** ✅ resolvida · 🟡 sinal parcial · ⬜ sem resposta · 🆕 nova
+**Legenda:** 🏛️ decidido na arquitetura, não é configurável ·
+⚙️ [tela de configuração](09-CONFIGURACAO.md) · 📈 o sistema aprende ·
+🗣️ veio da conversa
+
+Detalhamento das decisões de arquitetura em
+[09-CONFIGURACAO.md § 5](09-CONFIGURACAO.md#5-o-que-não-é-configurável).
 
 ---
 
 ## 8. O que acontece agora
 
-1. ✅ Rodada 1 respondida — [leitura](descoberta/leitura-01.md). Resolveu M-08,
-   corrigiu M-09 e criou `HairAssessment`
-2. ⬜ [Rodada 2](descoberta/roteiro-rosiele-02.md) — números, uma cliente
-   específica, o teste de mecha e os dados que ela tem das clientes
-3. ⬜ Reescrita como **v1**, com M-01 a M-12 resolvidas
-4. ⬜ Confronto com os cinco atendimentos reais — DoD da Fase 1
-5. ⬜ Só então vira schema Prisma, na Fase 3
+1. ✅ Conversa com a Rosiele lida — [leitura](descoberta/leitura-01.md). Gerou
+   `HairAssessment`, `ENCERRADO_SEM_SERVICO` e o vocabulário
+2. ✅ M-01 a M-12 resolvidas por arquitetura, configuração ou aprendizado
+   ([DEC-013](04-DECISOES.md#dec-013)) — **não haverá segunda rodada**
+3. ⬜ Validação contra cinco cenários de atendimento, construídos do domínio e do
+   que ela contou — DoD da Fase 1
+4. ⬜ Promoção a **v1** e, só então, schema Prisma na Fase 3

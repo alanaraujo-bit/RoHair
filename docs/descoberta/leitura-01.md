@@ -161,7 +161,7 @@ acumulado.
 **Vocabulário — ela diz "nutrição", não "hidratação".** Toda a documentação lista o
 escopo como "escova, hidratação, progressiva". As palavras dela são **progressiva,
 nutrição, escova**. Corrigido no glossário. Se ela faz hidratação com esse nome,
-é uma pergunta da rodada 2 — mas o padrão da interface passa a ser o termo dela.
+não muda nada: os três estão na semente do catálogo, e ela marca o que faz.
 
 **Produtos nomeados:** *Let Me Be* para progressiva, *Wella* para nutrição. Primeiros
 dados reais de catálogo.
@@ -169,12 +169,12 @@ dados reais de catálogo.
 **Nutrição parece ser etapa da escova, não serviço isolado.** *"Wella para nutrição
 pra escovar"* — o "pra" liga as duas: a nutrição existe para viabilizar a escova.
 Sinaliza que **M-01 tende a "vários itens por atendimento"**, mas a frase é curta
-demais para decidir. Vai para a rodada 2.
+demais para decidir — e não precisa ser decidida: serviço composto suporta as duas montagens.
 
 **Ela provavelmente não atende em casa.** *"Vou pra minha residência"* no fim do
 dia. A persona na visão de produto diz "atende em casa ou em espaço alugado" —
 o "vou pra" sugere que o trabalho é em outro lugar. ⚠️ Não vou reescrever a persona
-com base em uma preposição; virou pergunta da rodada 2.
+com base em uma preposição. Fica como observação, não como pendência.
 
 **Ela fala no plural — "damos", "cortamos".** Pode ser modo de falar, pode ser que
 alguém trabalhe com ela. A pergunta 4 do roteiro, que resolveria isso, ficou sem
@@ -222,5 +222,24 @@ o modelo de domínio não tem contra o que ser validado, e o DoD não fecha.
 Fases 6 a 14 continuam bloqueados. Escrevê-los agora seria inventar — que é
 exatamente o que esta fase existe para impedir.
 
-**Próximo passo:** [rodada 2](roteiro-rosiele-02.md) — curta, concreta, quase toda
-numérica.
+---
+
+## 8. Epílogo — não houve rodada 2
+
+Eu tinha escrito uma segunda rodada, pedindo preço, duração, custo de produto,
+horário de trabalho e forma de pagamento. **O dono cortou, com razão.**
+
+Nada disso é descoberta: é **campo de cadastro**. E o método não escalava — se cada
+profissional precisasse de uma entrevista, o RoHair seria consultoria, não produto.
+
+A seção 6 deste documento lista o que "faltava". Releia com outros olhos: quase
+tudo ali é uma tela. Preço e duração são o passo 3 do onboarding; produtos e custo
+são a tela de estoque; horário é a configuração da agenda.
+
+O que a conversa entregou de verdade — `HairAssessment`, o portão do teste de mecha,
+o vocabulário, a frase sobre o dinheiro que some no fim do mês — é conhecimento de
+**domínio**, que serve a todas as profissionais. Era só isso que ela precisava
+entregar.
+
+Ver [DEC-013](../04-DECISOES.md#dec-013) e
+[09-CONFIGURACAO.md](../09-CONFIGURACAO.md).

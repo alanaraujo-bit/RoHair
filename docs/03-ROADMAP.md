@@ -82,26 +82,34 @@ informação que só a Rosiele tem.
 - **1.4** [Modelo de domínio v0](08-MODELO-DE-DOMINIO.md) — agregados, invariantes
   e as dez perguntas que o modelo faz à Rosiele
 
-#### Fase 1B — o que depende das respostas · ⬜ bloqueada pela conversa
+#### Fase 1B — o produto se configura · 🔵 em andamento
 
-- Personas: a profissional (usuária primária) e a cliente (usuária do portal)
-- Jobs to be Done de cada uma, por momento do dia
-- Mapa do dia real: da abertura da agenda ao fechamento do caixa
-- Glossário v1, com o vocabulário real dela
-- Modelo de domínio v1, validado contra os cinco atendimentos reais
-- Mapa de fluxos completo, incluindo os fluxos de negócio
-- Wireframes de baixa fidelidade de todas as telas principais, em Markdown
-  versionado (alta fidelidade é trabalho da Fase 2)
-- Escopo fechado das Fases 6 a 14, resolvendo D-05, D-06, D-07 e D-08
-- Backlog completo, priorizado, rastreável até as fases
+**Reenquadrada por [DEC-013](04-DECISOES.md#dec-013).** Não haverá segunda rodada de
+perguntas. Preço, duração, produto e horário são **campo de cadastro**, não achado
+de pesquisa — e um método que exige entrevistar cada profissional não é produto.
+
+- **1.5** [Modelo de configuração](09-CONFIGURACAO.md) — ✅ catálogo semente, o que
+  ela configura, o que o sistema aprende, e o que **não** é configurável
+- **1.6** Cinco cenários de atendimento, construídos do domínio e do que ela
+  contou, usados para validar o modelo — DoD
+- **1.7** Personas e Jobs to be Done, escritos do domínio da beleza e não de uma
+  pessoa só
+- **1.8** Wireframes de baixa fidelidade em Markdown versionado (alta fidelidade é
+  Fase 2), incluindo **o onboarding** como tela de primeira classe
+- **1.9** Escopo fechado das Fases 6 a 14
+- **1.10** Backlog priorizado, rastreável até as fases
 
 **DoD**
 
 - [x] O modelo de domínio v0 declara explicitamente o que não sabe
+- [x] Toda pergunta do modelo (M-01 a M-12) tem destino: arquitetura, configuração
+      ou aprendizado — nenhuma depende de entrevista
+- [x] D-05 resolvida (virou configuração) · D-06 resolvida em escopo
 - [ ] Cada fase de 6 a 14 tem escopo fechado e escrito
-- [ ] Nenhuma tela do roadmap está sem wireframe
-- [ ] O modelo de domínio foi validado contra 5 cenários reais de atendimento
-- [ ] D-05, D-06, D-07 e D-08 resolvidas e registradas
+- [ ] Nenhuma tela do roadmap está sem wireframe, **incluindo o onboarding**
+- [ ] O modelo de domínio foi validado contra 5 cenários de atendimento
+- [ ] Uma profissional que não é a Rosiele consegue configurar o sistema pelo
+      catálogo semente, sem nenhum campo em branco obrigatório
 - [ ] Documentos revisados e aprovados pelo dono
 
 ---

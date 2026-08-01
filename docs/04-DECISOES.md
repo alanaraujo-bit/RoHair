@@ -276,6 +276,50 @@ segundos resolve o mesmo problema sem reintroduzir a etapa que o dono rejeitou.
 
 ---
 
+### DEC-013 · Descoberta vira configuração — o sistema se adapta, não o contrário
+
+**Data:** 2026-07-31 · **Status:** ✅ Aceita · **Origem:** definição do dono
+**Corrige o método da Fase 1**
+
+A Fase 1A produziu um roteiro de entrevista, e depois um segundo roteiro pedindo
+preço, duração, produtos, horário de trabalho e forma de pagamento.
+
+**Isso estava errado.** Todos esses dados são **campos de cadastro**, não achados de
+pesquisa. E o método não escala: se cada profissional precisar de uma entrevista
+para o sistema funcionar, o RoHair não é produto — é consultoria. A Fase 16 supõe
+que uma profissional nova se cadastra e agenda o primeiro atendimento **sozinha**.
+
+**Decisão:** parar de perguntar o que o sistema deve **perguntar na tela**.
+
+O RoHair chega **sabendo o domínio da beleza**. Traz um catálogo semente de
+serviços, produtos, unidades e categorias; a profissional **seleciona e ajusta** o
+que é dela. Nunca encara tela vazia, nunca digita do zero o que é inferível.
+
+É o princípio 2 da [visão de produto](01-VISAO-PRODUTO.md) — *"o app trabalha, a
+usuária confirma"* — aplicado ao cadastro, que era o único lugar onde ele não
+estava sendo aplicado.
+
+**Três níveis**, detalhados em [09-CONFIGURACAO.md](09-CONFIGURACAO.md):
+
+1. **Vem pronto** — conhecimento do domínio, igual para todas
+2. **Ela configura** — preço, duração, horário, políticas. Com padrão sugerido
+3. **O sistema aprende** — duração real, consumo real, intervalo de retorno real,
+   medidos pelo uso. Ela nunca precisa acertar na primeira tentativa
+
+**Consequência mais importante:** várias pendências deixam de ser decisão e viram
+**configuração** — inclusive [D-05](#d-05--poder-de-agendamento-da-cliente-no-portal),
+que vira uma chave que cada profissional liga ou desliga.
+
+**O que a descoberta ainda serve:** decidir o que é **arquitetura** e não pode ser
+configurado depois, e alimentar o catálogo semente com vocabulário real. A primeira
+rodada de respostas cumpriu isso muito bem — gerou `HairAssessment`, o estado
+`ENCERRADO_SEM_SERVICO` e o vocabulário do glossário. **Não haverá rodada 2.**
+
+**Alternativa descartada:** continuar entrevistando até fechar o escopo. Produziria
+um sistema perfeito para a Rosiele e inútil para a segunda cliente.
+
+---
+
 ## Decisões pendentes
 
 ### D-03 · Domínio próprio
@@ -289,7 +333,13 @@ Sugestões a avaliar: `rohair.app` · `rohair.com.br` · `rosielehair.com.br`
 
 ### D-05 · Poder de agendamento da cliente no portal
 
-**Status:** ⏳ Aguardando · **Bloqueia:** Fase 12
+**Status:** ✅ **Resolvida por [DEC-013](#dec-013) — virou configuração**
+**Padrão:** solicitar ligado, agendar direto desligado
+
+Deixou de ser decisão de projeto: cada profissional liga ou desliga
+([09-CONFIGURACAO.md § 3.4](09-CONFIGURACAO.md#34-políticas-do-portal)). O
+raciocínio abaixo continua valendo, mas como escolha do **padrão**, não como
+imposição a todas.
 
 A cliente pode **agendar direto** na agenda, ou apenas **solicitar um horário**
 que a Rosiele aprova?
@@ -317,8 +367,10 @@ funcionalidade com maior chance de ser usada.
 O **"tempo do retoque"** também é confirmado, e é calculável: três meses para
 progressiva, *"ou antes dependendo da curvatura"*.
 
-**Ainda em aberto:** o que ela **não** quer que a cliente veja (pergunta 29 da
-rodada 2) e o valor percebido da galeria de antes e depois (pergunta 27).
+**O que restava vira chave de configuração** ([DEC-013](#dec-013)): o que a cliente
+vê do histórico, se vê valores, e a visibilidade padrão das fotos são políticas por
+organização, com padrão conservador. Ver
+[09-CONFIGURACAO.md § 3.4](09-CONFIGURACAO.md#34-políticas-do-portal).
 
 ### D-07 · Como as duas pontas se encontram quando a ficha não tem CPF
 

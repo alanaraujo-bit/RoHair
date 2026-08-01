@@ -58,10 +58,11 @@ listava o escopo como "escova, hidratação, progressiva"; as palavras da Rosiel
 
 Ela usa **Wella**, e a frase foi *"Wella para nutrição pra escovar"* — o "pra" liga
 as duas coisas: a nutrição existe para viabilizar a escova. ⚠️ Sinaliza que
-nutrição é **etapa da escova**, não serviço vendido à parte, mas a frase é curta
-demais para decidir. Pergunta 15 e 17 da [rodada 2](descoberta/roteiro-rosiele-02.md).
+nutrição é **etapa da escova**, não serviço vendido à parte — mas isso deixou de
+ser pergunta: o catálogo suporta **serviço composto**, e ela monta do jeito dela
+([09-CONFIGURACAO.md § 3.2](09-CONFIGURACAO.md#32-serviços-compostos)).
 
-⚠️ Se ela também faz hidratação com esse nome, ainda não sabemos.
+Hidratação e reconstrução também estão na semente, desmarcadas.
 
 Nutrição faz parte de um trio que o mercado distingue com precisão, e é comum a
 profissional usar um dos nomes como guarda-chuva para os três:
@@ -72,8 +73,8 @@ profissional usar um dos nomes como guarda-chuva para os três:
 | **Nutrição** | Lipídios, óleos | Cabelo poroso, áspero |
 | **Reconstrução** | Massa, proteína, queratina | Cabelo quebradiço, elástico, danificado por química |
 
-Se ela distingue os três, são três serviços com custos diferentes. Se ela chama
-tudo de nutrição, é um serviço com variantes. Rodada 2, tabela da Parte A.
+Os três entram como serviços separados na semente. Quem distingue marca os três;
+quem chama tudo de nutrição marca um. Nenhuma das duas precisa nos avisar.
 
 ### Progressiva ✅⚠️
 
@@ -92,9 +93,9 @@ Pontos que importam para o modelo:
 - Tem **tempo de pausa** obrigatório, em que o produto age no fio
 - Existe com e sem formol; a formulação define ventilação, duração e risco ⚠️
 - ⚠️ Eu supus precificação por **comprimento e volume**. O sinal dela aponta para
-  **curvatura** como o eixo que mais importa — ela apareceu duas vezes, definindo
-  tanto a dificuldade quanto o intervalo de retorno. Hipótese corrigida; a
-  confirmação vem da pergunta 1 e 2 da rodada 2
+  **curvatura** — apareceu duas vezes, definindo tanto a dificuldade quanto o
+  intervalo de retorno. Virou o **eixo padrão** da variante de serviço, ajustável
+  por quem preferir outro
 
 ---
 
@@ -112,7 +113,7 @@ impossíveis depois — adicionar um serviço deve ser cadastro, nunca código.
 | **Descoloração** ✅ | Remoção de pigmento com pó descolorante + oxidante |
 | **Mechas / luzes** ✅ | Clareamento parcial. **Balayage** e **ombré** são técnicas de distribuição |
 | **Matização** ✅ | Neutraliza tons amarelados após clareamento. Costuma ser cobrada à parte |
-| **Corte de pontas** 🗣️ | **Confirmado e rotineiro:** *"As pontas sempre cortamos na maioria das vezes pra não ficar ressecadas."* Não é serviço à parte — parece ser etapa embutida. Entra no escopo do catálogo da Fase 7. Preço e tempo na rodada 2 |
+| **Corte de pontas** 🗣️ | **Confirmado e rotineiro:** *"As pontas sempre cortamos na maioria das vezes pra não ficar ressecadas."* Entra na semente do catálogo, marcado. Se é etapa embutida ou serviço à parte, ela decide na configuração |
 | **Cronograma capilar** ✅ | **Não é um serviço — é uma sequência.** Alternância planejada entre hidratação, nutrição e reconstrução ao longo de semanas. Se a Rosiele trabalha assim, o produto precisa entender uma **série de atendimentos com um plano**, não visitas isoladas. ⚠️ Isso teria impacto real no modelo e no portal da cliente |
 
 ---
@@ -139,8 +140,9 @@ problema real dela.
 
 ### Os produtos que ela usa 🗣️
 
-Os primeiros dados reais de catálogo. Custo, rendimento e onde compra vêm na
-rodada 2 — e são **exatamente** o que falta para calcular lucro real.
+Os primeiros dados reais de catálogo — e as duas marcas entram como sugestão na
+semente. Custo e rendimento são **campo de cadastro**, preenchidos por ela quando
+registrar o produto.
 
 | Marca citada | Para quê |
 | ------------ | -------- |
@@ -235,25 +237,35 @@ Existe atendimento sem agendamento (encaixe) e agendamento sem atendimento
 
 ## 8. Perguntas em aberto
 
-| # | Pergunta | Status | Impacto |
-| - | -------- | ------ | ------- |
-| G-01 | "Escova" é serviço próprio ou finalização de outro? | 🟡 sinal fraco de que nutrição e corte de pontas são etapas da escova · rodada 2, Parte A e B | Um ou vários serviços por atendimento |
-| G-02 | Hidratação, nutrição e reconstrução são distintas? | 🟡 **ela diz "nutrição"** — mas não sabemos se faz as outras · rodada 2, Parte A | Três serviços ou um com variantes |
-| G-03 | Ela trabalha com cronograma capilar? | ⬜ sem resposta | Existe ou não a entidade "plano de tratamento" |
-| G-04 | Como ela chama uma cliente que não apareceu? | ⬜ sem resposta | Rótulo de estado na agenda |
-| G-05 | Precisa saber a química anterior? | ✅ **Sim — é portão de segurança.** Ver anamnese | Alerta de segurança na ficha |
-| G-06 | Em que unidade ela pensa estoque? | 🟡 pensa em **frasco** · rodada 2, perguntas 6 e 7 | Modelo de `StockMovement` |
-| G-07 | Ela usa "comanda"? | ⬜ sem resposta — não apareceu espontaneamente, o que já sugere que não | Vocabulário do checkout |
-| G-08 | Ela diz "horário" ou "agendamento"? | 🟡 disse **"vaga"** e **"data e hora"**, nenhum dos dois | Rótulo mais visto do painel |
-| G-09 | Ela faz corte? | ✅ **Sim — corte de pontas, rotineiro** | Escopo do catálogo na Fase 7 |
-| G-10 | Ela classifica curvatura por número? | 🟡 usa **"cacheado"**, não notação · confirmar | Campo estruturado ou lista de nomes |
+Por [DEC-013](04-DECISOES.md#dec-013), estas perguntas **não vão ser feitas à
+Rosiele**. Quase todas eram sobre o que ela faz — e o que ela faz é escolha dela na
+tela de configuração, não descoberta nossa.
 
-**Legenda:** ✅ resolvida · 🟡 sinal parcial · ⬜ sem resposta
+| # | Pergunta | Resolução |
+| - | -------- | --------- |
+| G-01 | "Escova" é serviço próprio ou etapa de outro? | ⚙️ Serviço composto — ela monta do jeito dela |
+| G-02 | Hidratação, nutrição e reconstrução são distintas? | ⚙️ Os três estão na semente. Ela marca os que faz. 🗣️ Nutrição vem marcada |
+| G-03 | Ela trabalha com cronograma capilar? | ⚙️ Está na semente, desmarcado |
+| G-04 | Como ela chama quem não apareceu? | 🏛️ O estado existe; o rótulo padrão é **"Faltou"**. Não vale configurar texto de estado |
+| G-05 | Precisa saber a química anterior? | ✅ **Sim — portão de segurança.** Gerou a anamnese |
+| G-06 | Em que unidade pensa estoque? | ⚙️ 🗣️ **Frasco e aplicação primeiro**, conversão interna |
+| G-07 | Ela usa "comanda"? | 🏛️ Não apareceu espontaneamente — é vocabulário de salão grande. **Não entra** |
+| G-08 | Diz "horário" ou "agendamento"? | 🏛️ Ela disse 🗣️ **"vaga"**. Ver nota abaixo |
+| G-09 | Ela faz corte? | ✅ **Sim** — corte e corte de pontas estão na semente, marcados |
+| G-10 | Classifica curvatura por número? | 🏛️ 🗣️ Usa **nomes** — liso, ondulado, cacheado, crespo. Sem notação `3B` |
 
-Nota sobre G-08: ela escreveu *"verifico se tenho **vaga** naquele dia e horário"*.
-"Vaga" é um terceiro termo, e é dela. Vale considerar para a interface da agenda.
+**Legenda:** ✅ resolvida pela conversa · ⚙️ vira
+[configuração](09-CONFIGURACAO.md) · 🏛️ decidida por nós
+
+**Nota sobre G-08.** Ela escreveu *"verifico se tenho **vaga** naquele dia e
+horário"*. Nem "horário", nem "agendamento" — **"vaga"**. É a palavra de quem olha
+a agenda pelo espaço livre, não pelo compromisso marcado, e descreve melhor o que
+ela faz ao abrir a tela. Candidata forte para a interface da agenda na Fase 8.
+
+Este é o tipo de coisa que só uma conversa entrega, e é por isso que a conversa
+valeu — não pelos preços, que são campo de cadastro.
 
 ---
 
-**Próxima versão (v1):** depois da [rodada 2](descoberta/roteiro-rosiele-02.md).
-Todo ⚠️ some, virando 🗣️ confirmado ou desaparecendo do documento.
+**Próxima versão (v1):** junto com a validação do modelo contra os cinco cenários.
+Os ⚠️ que sobram são hipóteses do domínio, não perguntas para ela.

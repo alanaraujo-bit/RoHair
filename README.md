@@ -46,8 +46,9 @@ Nasce para uma profissional. É construído, desde a primeira linha, para milhar
 | [docs/05-PROTOCOLO-DE-TRABALHO.md](docs/05-PROTOCOLO-DE-TRABALHO.md) | Como dono e agente trabalham juntos                   |
 | [docs/06-GLOSSARIO.md](docs/06-GLOSSARIO.md)                         | Vocabulário do domínio da beleza e do produto         |
 | [docs/07-FLUXOS.md](docs/07-FLUXOS.md)                               | Fluxos das duas pontas e os pontos de encontro        |
-| [docs/08-MODELO-DE-DOMINIO.md](docs/08-MODELO-DE-DOMINIO.md)         | Agregados, invariantes e perguntas em aberto          |
-| [docs/descoberta/](docs/descoberta/)                                 | Roteiro e respostas da conversa com a Rosiele         |
+| [docs/08-MODELO-DE-DOMINIO.md](docs/08-MODELO-DE-DOMINIO.md)         | Agregados, invariantes e fronteiras                   |
+| [docs/09-CONFIGURACAO.md](docs/09-CONFIGURACAO.md)                   | **O que vem pronto, o que ela configura, o que o sistema aprende** |
+| [docs/descoberta/](docs/descoberta/)                                 | A conversa com a Rosiele e o que saiu dela            |
 | [docs/adr/](docs/adr/)                                               | Architecture Decision Records                         |
 
 ## Stack
