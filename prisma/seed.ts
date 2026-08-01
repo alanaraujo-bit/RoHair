@@ -85,16 +85,30 @@ async function main() {
     products.set(seed.slug, product.id);
   }
 
-  // Estoque inicial. O Let Me Be entra baixo de propósito: é o que faz o
-  // alerta "acaba em ~N dias" aparecer na tela Hoje.
+  /**
+   * Estoque inicial, convergindo para um alvo em vez de criar uma vez só.
+   *
+   * O saldo é a soma das movimentações (nunca um campo mutável), então "ajustar
+   * o estoque" é lançar a diferença — que é exatamente o que a profissional faz
+   * na vida real quando confere a prateleira.
+   *
+   * A progressiva entra baixa de propósito: rende 8 aplicações por frasco, e
+   * 0,25 frasco dá ~2 atendimentos. É o que faz o alerta de "produto acabando"
+   * aparecer na tela Hoje em vez de ficar teórico.
+   */
+  const ALVO_MILLI: Record<string, number> = { progressiva: 250 };
+
   for (const [slug, productId] of products) {
-    const already = await db.stockMovement.findFirst({ where: { productId } });
-    if (already) continue;
+    const alvo = ALVO_MILLI[slug] ?? 3000;
+    const movimentos = await db.stockMovement.findMany({ where: { productId } });
+    const saldo = movimentos.reduce((total, m) => total + m.quantityMilli, 0);
+    if (saldo === alvo) continue;
+
     await db.stockMovement.create({
       data: {
         productId,
-        quantityMilli: slug === 'progressiva' ? 1000 : 3000,
-        reason: 'PURCHASE',
+        quantityMilli: alvo - saldo,
+        reason: movimentos.length === 0 ? 'PURCHASE' : 'ADJUSTMENT',
         unitCostCents: slug === 'progressiva' ? 8900 : 4200,
       },
     });

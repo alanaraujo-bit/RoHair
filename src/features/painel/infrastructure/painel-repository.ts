@@ -39,6 +39,13 @@ function diasDesde(data: Date): number {
   return Math.floor((Date.now() - data.getTime()) / 86_400_000);
 }
 
+/** Saldo em milésimos vira número em português: `250` → `"0,25"`. */
+function formatarSaldo(milli: number): string {
+  return new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 }).format(
+    milli / 1000,
+  );
+}
+
 /**
  * O número que a tela Hoje mostra grande.
  *
@@ -127,10 +134,13 @@ export async function alertasDeHoje(organizationId: string): Promise<AlertaDoDia
         id: `estoque-${produto.id}`,
         tipo: 'estoque',
         titulo: produto.name,
+        // O alerta fala em **atendimentos**, não em quantidade: o problema dela
+        // não é o número no frasco, é ser surpreendida. Saber que dá para mais
+        // dois permite comprar planejado em vez de correndo.
         detalhe:
           aplicacoes <= 0
             ? 'acabou'
-            : `${saldoMilli / 1000} ${produto.unit.toLowerCase()} · ~${aplicacoes} atendimentos`,
+            : `${formatarSaldo(saldoMilli)} ${produto.unit.toLowerCase()} · dá para ~${aplicacoes} ${aplicacoes === 1 ? 'atendimento' : 'atendimentos'}`,
         href: '/painel/estoque',
       });
     }
