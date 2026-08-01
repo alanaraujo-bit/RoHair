@@ -16,7 +16,8 @@ Use o [TEMPLATE.md](TEMPLATE.md).
 
 ## Índice
 
-| ADR                                     | Título                            | Status | Data       |
-| --------------------------------------- | --------------------------------- | ------ | ---------- |
-| [0001](ADR-0001-fundacao-do-projeto.md) | Fundação técnica do projeto       | Aceito | 2026-07-31 |
-| [0002](ADR-0002-design-system-aurea.md) | Construção do design system Áurea | Aceito | 2026-07-31 |
+| ADR                                        | Título                                       | Status | Data       |
+| ------------------------------------------ | -------------------------------------------- | ------ | ---------- |
+| [0001](ADR-0001-fundacao-do-projeto.md)    | Fundação técnica do projeto                  | Aceito | 2026-07-31 |
+| [0002](ADR-0002-design-system-aurea.md)    | Construção do design system Áurea            | Aceito | 2026-07-31 |
+| [0003](ADR-0003-dominio-e-persistencia.md) | Shared kernel, features e garantias no banco | Aceito | 2026-07-31 |

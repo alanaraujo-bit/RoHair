@@ -67,3 +67,6 @@ desktop.ini
 .vscode/*
 !.vscode/settings.json
 !.vscode/extensions.json
+
+# Cliente Prisma gerado — reconstruído por `postinstall`
+/src/core/db/generated/

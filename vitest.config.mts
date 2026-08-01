@@ -45,6 +45,29 @@ export default defineConfig({
           include: ['src/**/*.test.tsx'],
         },
       },
+      /**
+       * Suíte `db`: o que só o banco pode garantir — constraint de exclusão,
+       * índice parcial, `uuidv7()`.
+       *
+       * Separada porque depende de rede e de um Postgres 18 de verdade. No CI
+       * roda contra um contêiner efêmero; sem `DATABASE_URL` os testes se
+       * pulam sozinhos, para não quebrar `npm test` na máquina do dono.
+       *
+       * A extensão `.db-test.ts` mantém esses arquivos fora das outras suítes
+       * sem depender de convenção de pasta.
+       */
+      {
+        extends: true,
+        test: {
+          name: 'db',
+          environment: 'node',
+          include: ['src/**/*.db-test.ts'],
+          // Sequencial: os testes compartilham uma organização e disputariam
+          // as mesmas linhas se rodassem em paralelo.
+          fileParallelism: false,
+          testTimeout: 20_000,
+        },
+      },
     ],
   },
 });

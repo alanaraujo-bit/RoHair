@@ -8,3 +8,6 @@ build
 package-lock.json
 next-env.d.ts
 public
+
+# Cliente gerado pelo Prisma
+src/core/db/generated/

@@ -127,12 +127,55 @@ Justificativas completas em [04-DECISOES.md](04-DECISOES.md) e [adr/](adr/).
 
 ## 5. Próximo passo imediato
 
-> ### 🟡 Fase 3 — Modelagem de Dados apresentada, aguardando aprovação.
+> ### 🟡 Fase 3 executada. Falta o seu aceite.
 >
-> A Fase 2 foi aprovada em 2026-07-31 e está fechada. O catálogo do Áurea está
-> em **https://rohair.vercel.app/design**.
+> Não há o que revisar na tela: esta fase não tem interface. O que existe para
+> conferir é o **CI verde**, com o job novo `Migrations e garantias do banco`.
 >
-> **Nada de schema até o "pode ir".**
+> **Com a aprovação, a Fase 4 — Identidade, Autenticação & Permissões — é
+> apresentada.**
+
+### O que a Fase 3 entregou
+
+| Entregue                      | Detalhe                                                                                                                   |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| **Shared kernel**             | `Result`, `Money`, `Cpf`, `Duration`, `TimeRange`, `Quantity`, `PhoneNumber` — o único módulo que o domínio pode importar |
+| **116 testes em 245ms**       | Domínio sem banco, sem DOM, sem framework                                                                                 |
+| **Cobertura 92,7%**           | Statements; 96,9% de linhas                                                                                               |
+| **Agregado de atendimento**   | Sete invariantes viraram código: INV-06, 07, 08, 16, 17, 18, 19                                                           |
+| **Schema Prisma**             | 22 modelos, tudo escopado por `organizationId`                                                                            |
+| **Sete blocos de SQL manual** | O que o Prisma não expressa — ver abaixo                                                                                  |
+| **Postgres 18 efêmero no CI** | Migration exercitada em banco vazio a cada commit                                                                         |
+| **Catálogo semente**          | A DEC-013 virou dado: 18 serviços, 9 produtos, retorno por curvatura                                                      |
+
+### O SQL que o Prisma não expressa
+
+Sete blocos escritos à mão no fim da migration, sob um cabeçalho que avisa que
+não são regenerados:
+
+| Protege                                | Como                                         |
+| -------------------------------------- | -------------------------------------------- |
+| INV-01 · agendamentos não se sobrepõem | `EXCLUDE USING gist` com `tstzrange [)`      |
+| INV-03 · CPF único quando existe       | Índice único **parcial**                     |
+| INV-07 · um cronômetro aberto          | Índice único parcial                         |
+| INV-19 · filho sem preço               | `CHECK`                                      |
+| Sanidade                               | `CHECK` de intervalo e de valor não negativo |
+
+O intervalo semiaberto `[)` é a mesma semântica de `overlaps()` no kernel — as
+duas precisam concordar, ou a tela diria uma coisa e o banco outra.
+
+### O que **não** foi verificado
+
+**A migration não rodou nesta máquina.** O Docker está instalado mas sem daemon,
+então não deu para levantar um Postgres 18 local. A primeira verificação real
+acontece no CI, no job `banco`. Se ele falhar, a correção vem antes de qualquer
+coisa da Fase 4.
+
+### Três dependências novas
+
+A Fase 2 fechou em zero; aqui não havia caminho honesto sem ORM: `prisma`,
+`@prisma/client` + `@prisma/adapter-pg` e `pg`. O Prisma 7 exige driver adapter,
+e o `pg` com pool é o certo para o proxy TCP do Railway.
 
 ### O que a Fase 2 entregou
 
@@ -349,6 +392,29 @@ correspondentes já estão no [roteiro](descoberta/roteiro-rosiele.md).
 ## 8. Log de sessões
 
 Ordem cronológica inversa — mais recente no topo.
+
+### 2026-07-31 (14) — Fase 3 executada · domínio de pé
+
+- **Shared kernel criado (ADR-0003).** A regra de camadas dizia `domain → nada`,
+  literalmente nada — nem `core`. Correto quanto a framework e banco, mas
+  tornava impossível ter um `Money` compartilhado, e dinheiro duplicado é
+  dinheiro que diverge. Nasce `core/kernel`, que o domínio pode importar e que
+  não importa nada.
+- **O `Cpf` ficou puro de propósito:** valida, normaliza e mascara, sem HMAC nem
+  criptografia, porque as duas precisam de chave. O que precisa de chave foi
+  para `core/crypto`, fora do kernel — senão o domínio deixaria de ser testável
+  sem ambiente.
+- **Sete features cortadas por agregado**, não por tela. O atrito previsível —
+  finalizar atendimento toca três features numa transação só — resolve com use
+  case orquestrador, não com evento: evento assíncrono não dá transação única.
+- **Sete blocos de SQL escritos à mão**, incluindo o `EXCLUDE USING gist`. Achei
+  um erro de sintaxe ao revisar: expressão em `EXCLUDE` precisa de parênteses
+  próprios, e `COALESCE(...) WITH =` teria falhado na primeira aplicação.
+- **Postgres 18 efêmero no CI**, com o job aplicando a migration duas vezes para
+  provar idempotência — um deploy que reexecuta não pode derrubar produção.
+- **116 testes em 245ms**, cobertura de 92,7%.
+- ⚠️ **A migration não foi verificada localmente**: Docker sem daemon nesta
+  máquina. A primeira verificação real é no CI.
 
 ### 2026-07-31 (13) — Fase 2 aprovada e fechada · Fase 3 apresentada
 

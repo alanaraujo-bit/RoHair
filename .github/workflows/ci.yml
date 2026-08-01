@@ -48,6 +48,65 @@ jobs:
         if: '!cancelled()'
         run: npm run test
 
+  banco:
+    name: Migrations e garantias do banco
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    # Postgres EFÊMERO, criado e destruído a cada execução.
+    #
+    # Rodar migration de CI contra o Railway seria `push --force` em produção:
+    # funciona até o dia em que não funciona. Aqui a migration é exercitada em
+    # banco vazio a cada commit, e o banco real só é tocado no deploy.
+    #
+    # A versão 18 não é detalhe: `uuidv7()` é nativo dela, e o schema depende
+    # disso. Um Postgres 16 passaria em quase tudo e quebraria na criação.
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_USER: rohair
+          POSTGRES_PASSWORD: rohair
+          POSTGRES_DB: rohair_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U rohair"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgresql://rohair:rohair@localhost:5432/rohair_test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Gerar o cliente Prisma
+        run: npx prisma generate
+
+      # `migrate deploy` aplica as migrations como em produção, sem inventar
+      # nada — é o mesmo comando que rodará no deploy real.
+      - name: Aplicar migrations em banco vazio
+        run: npx prisma migrate deploy
+
+      # Aplicar duas vezes precisa ser inofensivo. Se não for, o deploy que
+      # reexecutar por qualquer motivo derruba produção.
+      - name: Reaplicar — migration precisa ser idempotente
+        run: npx prisma migrate deploy
+
+      # Prova que o banco garante o que a aplicação promete: exclusão de
+      # sobreposição, índice parcial de CPF, um cronômetro aberto por vez.
+      - name: Garantias que só o banco pode dar
+        run: npx vitest run --project db
+
   build:
     name: Build de produção
     runs-on: ubuntu-latest

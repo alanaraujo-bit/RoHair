@@ -9,10 +9,11 @@ import boundaries from 'eslint-plugin-boundaries';
  * Documentação em docs/02-ARQUITETURA.md (DEC-004). Em resumo:
  *
  *   app            → pode tudo (é a camada de composição)
- *   presentation   → application, domain, shared, core
- *   application    → domain, core
- *   infrastructure → application, domain, core
- *   domain         → NADA (é isto que permite testar sem banco)
+ *   presentation   → application, domain, shared, core, kernel
+ *   application    → domain, core, kernel
+ *   infrastructure → application, domain, core, kernel
+ *   domain         → só o próprio domínio e o KERNEL
+ *   kernel         → NADA (é isto que permite testar sem banco)
  *   shared / core  → jamais importam features
  *
  * Uma feature não importa outra feature. Comunicação entre domínios acontece por
@@ -28,6 +29,10 @@ const layers = defineConfig({
     // regra passaria a existir sem nunca acusar nada, que é pior do que não ter.
     'boundaries/elements': [
       { type: 'app', partialMatch: false, pattern: 'src/app' },
+      // O kernel vem ANTES de `core` porque o casamento é por ordem: se `core`
+      // viesse primeiro, `src/core/kernel` cairia nele e a regra abaixo — a
+      // única que o domínio pode importar — nunca se aplicaria.
+      { type: 'kernel', partialMatch: false, pattern: 'src/core/kernel' },
       {
         type: 'domain',
         partialMatch: false,
@@ -72,6 +77,7 @@ const layers = defineConfig({
               { type: 'application' },
               { type: 'shared' },
               { type: 'core' },
+              { type: 'kernel' },
             ],
           },
           {
@@ -82,6 +88,7 @@ const layers = defineConfig({
               { type: 'domain', captured: { feature: '{{from.feature}}' } },
               { type: 'shared' },
               { type: 'core' },
+              { type: 'kernel' },
             ],
           },
           {
@@ -90,6 +97,7 @@ const layers = defineConfig({
               { type: 'application', captured: { feature: '{{from.feature}}' } },
               { type: 'domain', captured: { feature: '{{from.feature}}' } },
               { type: 'core' },
+              { type: 'kernel' },
             ],
           },
           {
@@ -99,19 +107,35 @@ const layers = defineConfig({
               { type: 'application', captured: { feature: '{{from.feature}}' } },
               { type: 'domain', captured: { feature: '{{from.feature}}' } },
               { type: 'core' },
+              { type: 'kernel' },
             ],
           },
-          // O domínio não importa nada além de si mesmo. É inegociável:
-          // é o que garante regra de negócio testável em milissegundos.
+          /**
+           * O domínio importa a si mesmo e o **shared kernel**, nada mais.
+           *
+           * O kernel (`core/kernel`) guarda os value objects que valem em todo
+           * o negócio — Money, Cpf, TimeRange. Sem ele, `Money` teria de ser
+           * duplicado em cada feature, e dinheiro duplicado é dinheiro que
+           * diverge. O kernel não importa nada, nem `core`: é ele que mantém a
+           * promessa de domínio testável sem banco e sem framework.
+           *
+           * Ver ADR-0003.
+           */
           {
             from: [{ type: 'domain' }],
-            allow: [{ type: 'domain', captured: { feature: '{{from.feature}}' } }],
+            allow: [
+              { type: 'domain', captured: { feature: '{{from.feature}}' } },
+              { type: 'kernel' },
+            ],
           },
           {
             from: [{ type: 'shared' }],
-            allow: [{ type: 'shared' }, { type: 'core' }],
+            allow: [{ type: 'shared' }, { type: 'core' }, { type: 'kernel' }],
           },
-          { from: [{ type: 'core' }], allow: [{ type: 'core' }] },
+          { from: [{ type: 'core' }], allow: [{ type: 'core' }, { type: 'kernel' }] },
+          // O kernel é folha. Se ele puder importar `core`, alguém vai colocar
+          // acesso a banco dentro de um value object dentro de um mês.
+          { from: [{ type: 'kernel' }], allow: [{ type: 'kernel' }] },
         ],
       },
     ],
@@ -168,6 +192,9 @@ export default defineConfig([
   typescript,
   globalIgnores([
     '.next/**',
+    // Cliente gerado pelo Prisma: não é código nosso e não passa nas nossas
+    // regras (usa `any` internamente). Lintá-lo seria ruído garantido.
+    'src/core/db/generated/**',
     'out/**',
     'build/**',
     'coverage/**',

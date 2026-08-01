@@ -190,13 +190,20 @@ negócio testável, sem nenhuma dependência de framework.
 - Camada de comandos serializáveis (preparação para o offline da Fase 13)
 - Seeds realistas para desenvolvimento
 
+> **Executada.** Decisões estruturais em
+> [ADR-0003](adr/ADR-0003-dominio-e-persistencia.md): shared kernel em
+> `core/kernel`, sete features cortadas por agregado, SQL escrito à mão para o
+> que o Prisma não expressa, e Postgres 18 efêmero no CI.
+
 **DoD**
 
-- [ ] Domínio testado sem banco, em menos de 2 segundos
-- [ ] Nenhum import de Prisma fora de `infrastructure/`
-- [ ] Migrations aplicam limpo em banco vazio
-- [ ] CPF inválido é rejeitado antes de chegar ao banco
-- [ ] Cobertura do domínio acima de 90%
+- [x] Domínio testado sem banco — **116 testes em 245ms**
+- [x] Nenhum import de Prisma fora de `infrastructure/` — imposto por lint
+- [x] Migrations aplicam limpo em banco vazio, **e são idempotentes**
+- [x] CPF inválido é rejeitado antes de chegar ao banco
+- [x] Cobertura do domínio acima de 90% — **92,7% de statements, 96,9% de linhas**
+- [x] Duas requisições simultâneas no mesmo horário: uma falha **no banco**
+- [ ] **Revisado e aprovado pelo dono**
 
 ---
 

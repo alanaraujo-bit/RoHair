@@ -1,0 +1,3 @@
+# Gerado pelo Prisma. Indica o provider das migrations desta pasta.
+# Não edite à mão: trocar de banco exige recriar as migrations.
+provider = "postgresql"

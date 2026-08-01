@@ -1,0 +1,553 @@
+// Schema do RoHair — Fase 3.
+//
+// Traduz o modelo v1 (docs/08-MODELO-DE-DOMINIO.md), validado contra os cinco
+// cenários de docs/10-CENARIOS.md.
+//
+// Três coisas deste modelo o Prisma NÃO expressa, e vivem em SQL escrito à mão
+// dentro da migration (ver prisma/migrations/.../migration.sql):
+//
+//   1. EXCLUDE USING gist  — impede agendamentos sobrepostos (INV-01)
+//   2. Índice único parcial — cpf_hash único só quando não é nulo (INV-03)
+//   3. uuidv7()             — default nativo do Postgres 18
+//
+// Convenções: dinheiro em centavos (Int), datas em UTC, soft delete por
+// deletedAt, tudo escopado por organizationId (INV-12).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/core/db/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// A unidade de isolamento. Hoje: a Rosiele. Amanhã: cada assinante.
+model Organization {
+  id        String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  name      String
+  /// Fuso usado para resolver a que dia pertence um atendimento (INV-18).
+  timeZone  String   @default("America/Sao_Paulo")
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  users        User[]
+  clients      Client[]
+  services     Service[]
+  products     Product[]
+  appointments Appointment[]
+  attendances  Attendance[]
+  transactions Transaction[]
+  auditLogs    AuditLog[]
+
+  @@map("organization")
+}
+
+/* ------------------------------------------------------------- Identidade */
+
+/// Equipe. Separado de ClientAccount por DEC-008 — nunca a mesma tabela com um
+/// campo `role`, que é a origem clássica de escalonamento de privilégio.
+model User {
+  id             String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  organizationId String   @db.Uuid
+  email          String
+  username       String
+  passwordHash   String
+  name           String
+  createdAt      DateTime @default(now()) @db.Timestamptz(3)
+  deletedAt      DateTime? @db.Timestamptz(3)
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  memberships  Membership[]
+  sessions     Session[]
+
+  @@unique([organizationId, email])
+  @@unique([organizationId, username])
+  @@map("user")
+}
+
+enum Role {
+  OWNER
+  PROFESSIONAL
+  ASSISTANT
+}
+
+model Membership {
+  id        String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  userId    String   @db.Uuid
+  role      Role
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, role])
+  @@map("membership")
+}
+
+model Session {
+  id        String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  userId    String?  @db.Uuid
+  accountId String?  @db.Uuid
+  tokenHash String   @unique
+  expiresAt DateTime @db.Timestamptz(3)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  user    User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  account ClientAccount? @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@index([expiresAt])
+  @@map("session")
+}
+
+enum AccountStatus {
+  ACTIVE
+  REVOKED
+  LOCKED
+}
+
+/// Credencial da cliente. 1:1 opcional com a ficha — `NONE` é o estado normal,
+/// não uma pendência: a maioria das clientes nunca vai abrir o app.
+model ClientAccount {
+  id           String        @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  clientId     String        @unique @db.Uuid
+  username     String
+  passwordHash String
+  status       AccountStatus @default(ACTIVE)
+  lastLoginAt  DateTime?     @db.Timestamptz(3)
+  createdAt    DateTime      @default(now()) @db.Timestamptz(3)
+
+  client   Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  sessions Session[]
+
+  @@map("client_account")
+}
+
+/* ----------------------------------------------------------------- Ficha */
+
+enum ClientOrigin {
+  CREATED_BY_STAFF
+  SELF_REGISTERED
+  CONFIRMED
+  MERGED
+}
+
+enum Curvature {
+  LISO
+  ONDULADO
+  CACHEADO
+  CRESPO
+}
+
+/// A ficha da cliente. Existe sem conta e sem app.
+///
+/// `cpfHash` e `birthDate` são OPCIONAIS por D-07 e D-08: a profissional não
+/// pede CPF de ninguém hoje, e exigir travaria o cadastro. O preço disso é a
+/// fusão assistida de fichas.
+model Client {
+  id             String        @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  organizationId String        @db.Uuid
+  name           String
+  /// HMAC-SHA256. É o que recebe o índice único parcial e o que busca (DEC-009).
+  cpfHash        String?
+  /// AES-256-GCM. Só para exibir; nunca para buscar.
+  cpfEncrypted   String?
+  birthDate      DateTime?     @db.Date
+  phone          String?
+  curvature      Curvature?
+  origin         ClientOrigin  @default(CREATED_BY_STAFF)
+  /// Fusão sem perda: a ficha perdedora aponta para a vencedora (GAP-03).
+  mergedIntoId   String?       @db.Uuid
+  createdAt      DateTime      @default(now()) @db.Timestamptz(3)
+  deletedAt      DateTime?     @db.Timestamptz(3)
+
+  organization Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  mergedInto   Client?       @relation("merge", fields: [mergedIntoId], references: [id])
+  mergedFrom   Client[]      @relation("merge")
+  account      ClientAccount?
+  notes        ClientNote[]
+  photos       ClientPhoto[]
+  appointments Appointment[]
+  attendances  Attendance[]
+
+  /// Busca por telefone é a segunda chave da fusão assistida (D-07).
+  @@index([organizationId, phone])
+  @@index([organizationId, name])
+  @@map("client")
+}
+
+model ClientNote {
+  id         String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  clientId   String   @db.Uuid
+  authorId   String?  @db.Uuid
+  body       String
+  /// Visibilidade no portal. Padrão privado — nunca expor por omissão.
+  clientVisible Boolean @default(false)
+  createdAt  DateTime @default(now()) @db.Timestamptz(3)
+
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId, createdAt])
+  @@map("client_note")
+}
+
+enum PhotoKind {
+  BEFORE
+  AFTER
+  /// A cliente manda foto de referência; não é antes nem depois.
+  REFERENCE
+}
+
+enum PhotoVisibility {
+  PROFESSIONAL_ONLY
+  CLIENT_VISIBLE
+}
+
+model ClientPhoto {
+  id           String          @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  clientId     String          @db.Uuid
+  attendanceId String?         @db.Uuid
+  storageKey   String
+  kind         PhotoKind
+  /// INV-11 — nasce privada, sempre.
+  visibility   PhotoVisibility @default(PROFESSIONAL_ONLY)
+  createdAt    DateTime        @default(now()) @db.Timestamptz(3)
+
+  client     Client      @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  attendance Attendance? @relation(fields: [attendanceId], references: [id])
+
+  @@index([clientId, createdAt])
+  @@map("client_photo")
+}
+
+/* --------------------------------------------------------------- Catálogo */
+
+model Service {
+  id             String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  organizationId String   @db.Uuid
+  name           String
+  /// Exige anamnese e teste de mecha antes de começar (INV-16).
+  isChemical     Boolean  @default(false)
+  priceCents     Int      @default(0)
+  durationMin    Int      @default(60)
+  /// Serviço composto: as etapas carregam consumo, o pai carrega o preço.
+  parentId       String?  @db.Uuid
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now()) @db.Timestamptz(3)
+
+  organization Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  parent       Service?            @relation("steps", fields: [parentId], references: [id])
+  steps        Service[]           @relation("steps")
+  variants     ServiceVariant[]
+  productUsage ServiceProductUse[]
+  items        AttendanceItem[]
+  appointments Appointment[]
+
+  @@index([organizationId, active])
+  @@map("service")
+}
+
+/// Variante por curvatura. Opcional e desligada por padrão — quem cobra preço
+/// único nunca vê essa complexidade.
+model ServiceVariant {
+  id          String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  serviceId   String    @db.Uuid
+  curvature   Curvature
+  priceCents  Int
+  durationMin Int
+
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@unique([serviceId, curvature])
+  @@map("service_variant")
+}
+
+/// Consumo padrão. Base do custo real e da baixa automática.
+model ServiceProductUse {
+  id            String @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  serviceId     String @db.Uuid
+  productId     String @db.Uuid
+  quantityMilli Int
+
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([serviceId, productId])
+  @@map("service_product_use")
+}
+
+/* --------------------------------------------------------------- Estoque */
+
+enum Unit {
+  FRASCO
+  APLICACAO
+  ML
+  G
+  KIT
+  AMPOLA
+}
+
+model Product {
+  id             String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  organizationId String   @db.Uuid
+  name           String
+  brand          String?
+  category       String
+  unit           Unit     @default(FRASCO)
+  unitCostCents  Int      @default(0)
+  /// Rendimento típico: quantas aplicações saem de uma unidade.
+  yieldPerUnit   Int?
+  expiresAt      DateTime? @db.Date
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now()) @db.Timestamptz(3)
+
+  organization Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  movements    StockMovement[]
+  serviceUse   ServiceProductUse[]
+  usages       ProductUsage[]
+
+  @@index([organizationId, active])
+  @@map("product")
+}
+
+enum MovementReason {
+  PURCHASE
+  USAGE
+  LOSS
+  ADJUSTMENT
+  EXPIRY
+}
+
+/// Append-only. A quantidade atual é a soma, nunca um campo mutável — é o que
+/// torna toda movimentação rastreável até a origem.
+model StockMovement {
+  id            String         @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  productId     String         @db.Uuid
+  attendanceId  String?        @db.Uuid
+  /// Positivo entra, negativo sai. Saldo negativo é permitido de propósito.
+  quantityMilli Int
+  reason        MovementReason
+  unitCostCents Int
+  createdAt     DateTime       @default(now()) @db.Timestamptz(3)
+
+  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  attendance Attendance? @relation(fields: [attendanceId], references: [id])
+
+  @@index([productId, createdAt])
+  @@map("stock_movement")
+}
+
+/* ---------------------------------------------------------------- Agenda */
+
+enum AppointmentStatus {
+  AGENDADO
+  CONFIRMADO
+  EM_ATENDIMENTO
+  CONCLUIDO
+  FALTOU
+  CANCELADO
+}
+
+/// A intenção. Distinto de Attendance, que é o fato (§4.1 do modelo).
+model Appointment {
+  id             String            @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  organizationId String            @db.Uuid
+  clientId       String            @db.Uuid
+  serviceId      String?           @db.Uuid
+  professionalId String?           @db.Uuid
+  startsAt       DateTime          @db.Timestamptz(3)
+  endsAt         DateTime          @db.Timestamptz(3)
+  status         AppointmentStatus @default(AGENDADO)
+  notes          String?
+  createdAt      DateTime          @default(now()) @db.Timestamptz(3)
+  canceledAt     DateTime?         @db.Timestamptz(3)
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  client       Client       @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  service      Service?     @relation(fields: [serviceId], references: [id])
+  attendance   Attendance?
+
+  @@index([organizationId, startsAt])
+  @@map("appointment")
+}
+
+/* ----------------------------------------------------------- Atendimento */
+
+enum AttendanceStatus {
+  ABERTO
+  AVALIACAO
+  EM_ANDAMENTO
+  /// Teste de mecha reprovou. Desfecho seguro, não falha.
+  ENCERRADO_SEM_SERVICO
+  FINALIZADO
+}
+
+model Attendance {
+  id             String           @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  organizationId String           @db.Uuid
+  clientId       String           @db.Uuid
+  appointmentId  String?          @unique @db.Uuid
+  status         AttendanceStatus @default(ABERTO)
+  courtesy       Boolean          @default(false)
+  startedAt      DateTime         @default(now()) @db.Timestamptz(3)
+  /// INV-18 — é este instante que decide o dia da receita.
+  finishedAt     DateTime?        @db.Timestamptz(3)
+
+  organization Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  client       Client           @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  appointment  Appointment?     @relation(fields: [appointmentId], references: [id])
+  assessment   HairAssessment?
+  items        AttendanceItem[]
+  usages       ProductUsage[]
+  timeEntries  TimeEntry[]
+  payments     Payment[]
+  photos       ClientPhoto[]
+  movements    StockMovement[]
+  transactions Transaction[]
+
+  @@index([organizationId, finishedAt])
+  @@map("attendance")
+}
+
+enum StrandTestResult {
+  PASSED
+  FAILED
+  NOT_APPLICABLE
+}
+
+/// A anamnese. 🗣️ As cinco perguntas que a Rosiele já faz a toda cliente.
+///
+/// Pertence ao atendimento e não à ficha: "qual a última vez que alisou" muda a
+/// cada retorno, e guardar na ficha perderia o histórico que evita sobrepor
+/// química incompatível.
+model HairAssessment {
+  id                 String           @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  attendanceId       String           @unique @db.Uuid
+  hasChemistry       Boolean
+  previousProduct    String?
+  lastStraightenedAt DateTime?        @db.Date
+  isBreaking         Boolean          @default(false)
+  isFalling          Boolean          @default(false)
+  strandTestResult   StrandTestResult @default(NOT_APPLICABLE)
+  strandTestedAt     DateTime?        @db.Timestamptz(3)
+  createdAt          DateTime         @default(now()) @db.Timestamptz(3)
+
+  attendance Attendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+
+  @@map("hair_assessment")
+}
+
+/// INV-19 — o preço vive no item pai; as folhas carregam custo e baixa.
+model AttendanceItem {
+  id             String @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  attendanceId   String @db.Uuid
+  parentId       String? @db.Uuid
+  serviceId      String @db.Uuid
+  name           String
+  /// Snapshot: reajustar o catálogo não reescreve o histórico (INV-05).
+  unitPriceCents Int
+
+  attendance Attendance       @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+  parent     AttendanceItem?  @relation("composto", fields: [parentId], references: [id])
+  children   AttendanceItem[] @relation("composto")
+  service    Service          @relation(fields: [serviceId], references: [id])
+
+  @@index([attendanceId])
+  @@map("attendance_item")
+}
+
+model ProductUsage {
+  id             String  @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  attendanceId   String  @db.Uuid
+  productId      String  @db.Uuid
+  quantityMilli  Int
+  unitCostCents  Int
+  /// INV-17 — o teste de mecha consome produto mesmo quando reprova.
+  fromStrandTest Boolean @default(false)
+
+  attendance Attendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+  product    Product    @relation(fields: [productId], references: [id])
+
+  @@index([attendanceId])
+  @@map("product_usage")
+}
+
+/// INV-06 e INV-07 — o cronômetro é lista imutável de intervalos.
+model TimeEntry {
+  id           String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  attendanceId String    @db.Uuid
+  startedAt    DateTime  @db.Timestamptz(3)
+  /// Nulo significa "correndo agora". No máximo um por atendimento.
+  endedAt      DateTime? @db.Timestamptz(3)
+
+  attendance Attendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+
+  @@index([attendanceId])
+  @@map("time_entry")
+}
+
+enum PaymentMethod {
+  PIX
+  DINHEIRO
+  DEBITO
+  CREDITO
+  /// Ficou devendo. Estado de primeira classe, ou o caixa nunca fecha.
+  FIADO
+}
+
+model Payment {
+  id           String        @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  attendanceId String        @db.Uuid
+  method       PaymentMethod
+  amountCents  Int
+  paidAt       DateTime?     @db.Timestamptz(3)
+
+  attendance Attendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+
+  @@index([attendanceId])
+  @@map("payment")
+}
+
+/* ------------------------------------------------------------ Financeiro */
+
+enum TransactionKind {
+  RECEITA
+  DESPESA
+}
+
+/// Livro-caixa append-only. Imutável mesmo com soft delete da cliente (INV-15).
+model Transaction {
+  id             String          @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  organizationId String          @db.Uuid
+  attendanceId   String?         @db.Uuid
+  kind           TransactionKind
+  category       String
+  amountCents    Int
+  /// Dia de negócio já resolvido no fuso da organização (INV-18).
+  businessDay    DateTime        @db.Date
+  description    String?
+  createdAt      DateTime        @default(now()) @db.Timestamptz(3)
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  attendance   Attendance?  @relation(fields: [attendanceId], references: [id])
+
+  @@index([organizationId, businessDay])
+  @@map("transaction")
+}
+
+/* ---------------------------------------------------------------- Apoio */
+
+model AuditLog {
+  id             String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  organizationId String   @db.Uuid
+  actorType      String
+  actorId        String?  @db.Uuid
+  action         String
+  targetType     String
+  targetId       String?  @db.Uuid
+  metadata       Json?
+  createdAt      DateTime @default(now()) @db.Timestamptz(3)
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, createdAt])
+  @@map("audit_log")
+}

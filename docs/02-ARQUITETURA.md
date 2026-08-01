@@ -48,8 +48,13 @@ src/
     hooks/  lib/  utils/  config/
 
   core/
-    result/                Result<T, E>
-    auth/  db/  storage/  events/  observability/  errors/
+    kernel/                SHARED KERNEL — Result, Money, Cpf, Duration,
+                           TimeRange, Quantity, PhoneNumber.
+                           Não importa NADA. É o único módulo que o
+                           domínio pode importar (ADR-0003).
+    crypto/                HMAC e AES-GCM do CPF (precisa de chave)
+    db/                    Cliente Prisma e schema gerado
+    auth/  storage/  events/  observability/  errors/
 ```
 
 ### Regra de dependência (imposta por `eslint-plugin-boundaries`)
@@ -57,8 +62,9 @@ src/
 ```
 presentation → application → domain
 infrastructure → application → domain
-domain → (nada)
-features → shared, core
+domain → só o próprio domínio + KERNEL
+kernel → (nada)
+features → shared, core, kernel
 shared, core → (nunca importam features)
 ```
 
