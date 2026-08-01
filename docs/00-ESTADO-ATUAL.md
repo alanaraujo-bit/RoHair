@@ -11,10 +11,10 @@
 | Campo                  | Valor                                                        |
 | ---------------------- | ------------------------------------------------------------ |
 | **Última atualização** | 2026-07-31                                                   |
-| **Fase atual**         | Fase 1 — Descoberta & Documentação de Produto                |
-| **Status da fase**     | 🟡 **Entregue por inteiro — aguardando sua revisão**         |
-| **Fases concluídas**   | Planejamento · Identidade e acesso · Fase 0                  |
-| **Bloqueios**          | **Nenhum técnico.** Falta só o aceite do dono                |
+| **Fase atual**         | Fase 2 — Design System "Áurea"                               |
+| **Status da fase**     | 🟡 Aguardando aprovação para iniciar                         |
+| **Fases concluídas**   | Planejamento · Identidade e acesso · Fase 0 · **Fase 1**     |
+| **Bloqueios**          | Nenhum                                                       |
 | **Local**              | http://localhost:3000 (`npm run dev`)                        |
 | **Produção**           | https://rohair.vercel.app                                    |
 | **CI**                 | ✅ Verde — qualidade, build e E2E                            |
@@ -120,15 +120,28 @@ Justificativas completas em [04-DECISOES.md](04-DECISOES.md) e [adr/](adr/).
 
 ## 5. Próximo passo imediato
 
-> ### ✅ Fase 1 entregue. Falta **você revisar e aprovar**.
+> ### 🟡 Fase 2 — Design System "Áurea" apresentada, aguardando aprovação.
 >
-> Todos os itens do DoD estão cumpridos menos um: *"documentos revisados e
-> aprovados pelo dono"*.
+> A Fase 1 foi aprovada pelo dono em 2026-07-31 e está fechada.
 >
-> Para revisar pelo iPhone, na ordem: [wireframes](12-WIREFRAMES.md) →
-> [cenários](10-CENARIOS.md) → [backlog](13-BACKLOG.md). Os outros são referência.
->
-> **Com o aceite, a Fase 2 — Design System "Áurea" — é apresentada.**
+> **Nada de código até o "pode ir".**
+
+### O que a Fase 0 já deixou pronto do design system
+
+Mais do que parece. A Fase 2 **não começa do zero** — ela completa:
+
+| Já existe | Onde |
+| --------- | ---- |
+| Tokens de cor em OKLCH, dois temas desenhados separadamente | `shared/ui/styles/tokens.css` |
+| **Porcelana** (branco quente, ouro rosé) e **Veludo** (base ameixa, nunca cinza) | idem |
+| Tipografia: **Fraunces** display + **Inter** UI, já carregadas por `next/font` | `app/layout.tsx` |
+| Escala de raio, três níveis de sombra por tema | tokens.css |
+| Curva de mola (`--ease-spring`) e `--ease-out-soft` | tokens.css |
+| Ponte `@theme inline` — troca de tema sem recompilar | tokens.css |
+| Alternador de tema com `useSyncExternalStore` | `shared/ui/theme/` |
+| Monograma "Ro" | `shared/ui/brand/monogram.tsx` |
+
+O que **falta** é o volume: primitivos, ícones, movimento aplicado e Storybook.
 
 ### A virada: descoberta virou configuração
 
@@ -291,6 +304,20 @@ correspondentes já estão no [roteiro](descoberta/roteiro-rosiele.md).
 ## 8. Log de sessões
 
 Ordem cronológica inversa — mais recente no topo.
+
+### 2026-07-31 (11) — Fase 1 aprovada e fechada · Fase 2 apresentada
+
+- Dono aprovou a Fase 1. **Todos os itens do DoD cumpridos**; fase fechada.
+- Fase 2 apresentada, aguardando o "pode ir".
+- Ao preparar a apresentação, revisitei o que a Fase 0 deixou: a base do design
+  system está mais adiantada do que o roadmap sugeria. Cor, tipografia, raio,
+  sombra e movimento **já existem**, com os dois temas desenhados separadamente.
+  A Fase 2 completa em vez de começar — registrado na seção 5.
+- **Proposta de mudança de escopo da Fase 2:** a lista de primitivos do roadmap era
+  genérica, escrita antes de existirem telas. Agora existem 16 wireframes, e a
+  lista deve ser **derivada deles** — o que revela primitivos que faltavam
+  (comparador de fotos, cronômetro, portão de decisão, número financeiro) e outros
+  que ninguém vai usar.
 
 ### 2026-07-31 (10) — Fase 1 entregue por inteiro
 

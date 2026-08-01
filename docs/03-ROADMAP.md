@@ -9,9 +9,8 @@
 | #   | Fase                                   | Público | Status |
 | --- | -------------------------------------- | ------- | ------ |
 | 0   | Fundação de Infraestrutura             | —       | ✅     |
-| 1   | Descoberta & Documentação de Produto   | —       | 🟡     |
-|     | _1A e 1B entregues · aguardando sua revisão_ |   |        |
-| 2   | Design System "Áurea"                  | —       | ⬜     |
+| 1   | Descoberta & Documentação de Produto   | —       | ✅     |
+| 2   | Design System "Áurea"                  | —       | 🟡     |
 | 3   | Modelagem de Dados & Camada de Domínio | —       | ⬜     |
 | 4   | Identidade, Autenticação & Permissões  | ambos   | ⬜     |
 | 5   | App Shell & PWA                        | ambos   | ⬜     |
@@ -113,7 +112,9 @@ de pesquisa — e um método que exige entrevistar cada profissional não é pro
       **5 buracos encontrados e corrigidos**
 - [x] Uma profissional que não é a Rosiele configura o sistema pelo catálogo
       semente, sem nenhum campo em branco obrigatório
-- [ ] **Documentos revisados e aprovados pelo dono** ← único item aberto
+- [x] **Documentos revisados e aprovados pelo dono** — 2026-07-31
+
+**Fase 1 concluída.**
 
 ---
 
