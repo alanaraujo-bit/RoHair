@@ -247,6 +247,35 @@ primeira pessoa da Rosiele, não institucional.
 
 ---
 
+### DEC-012 · Commit direto na `main`, sem Pull Request
+
+**Data:** 2026-07-31 · **Status:** ✅ Aceita · **Origem:** definição do dono
+
+Sem branch por fase e sem PR. O agente commita e dá push direto na `main`; o CI
+roda no push e a Vercel publica em produção.
+
+**Motivo:** o dono não revisa diff no GitHub — ele revisa o produto, pelo iPhone. O
+PR adicionava uma etapa que ninguém usava e atrasava o que ele quer ver funcionando.
+
+**O que não se perde:** o CI já dispara em `push: branches: [main]` — tipos, lint,
+testes, build e E2E continuam rodando em toda entrega. A rede de segurança é o CI,
+não o PR.
+
+**O que se perde, e é aceito:**
+
+- **Preview deployment.** Some por consequência. O item correspondente do DoD da
+  Fase 0 sai do roadmap — não é mais um requisito, é uma etapa que a decisão
+  eliminou.
+- **A `main` vira produção imediata.** Um commit ruim está no ar antes de qualquer
+  revisão humana. Hoje o risco é nulo, porque só há documentação; ele passa a ser
+  real a partir da Fase 5, quando existir aplicação de verdade.
+
+**Se o risco incomodar depois**, a saída não é voltar ao PR: é habilitar o
+_rollback_ de um clique da Vercel como procedimento padrão. Reverter em trinta
+segundos resolve o mesmo problema sem reintroduzir a etapa que o dono rejeitou.
+
+---
+
 ## Decisões pendentes
 
 ### D-03 · Domínio próprio

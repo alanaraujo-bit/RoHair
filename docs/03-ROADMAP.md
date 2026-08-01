@@ -51,13 +51,15 @@ verificado, sem que nada precise rodar na máquina do dono. Nada de UI aqui.
 
 **DoD**
 
-- [x] Um PR falha o CI se houver erro de tipo, lint ou teste
+- [x] Um commit falha o CI se houver erro de tipo, lint ou teste
 - [x] Push na `main` gera deploy automático na Vercel
-- [ ] Um PR gera preview deployment acessível pelo celular — **não exercitado**:
-      as variáveis de preview estão configuradas, mas nenhum PR foi aberto ainda.
-      Será verificado no primeiro PR real (Fase 2)
 - [x] `npm run dev` sobe na máquina do dono sem erro
 - [x] `docs/00-ESTADO-ATUAL.md` atualizado
+- ~~Um PR gera preview deployment acessível pelo celular~~ — **removido por
+  [DEC-012](04-DECISOES.md#dec-012--commit-direto-na-main-sem-pull-request)**: não
+  há mais PR, logo não há preview. A revisão passa a ser em produção
+
+**Fase 0 fechada.** Todos os itens vigentes cumpridos.
 
 ---
 

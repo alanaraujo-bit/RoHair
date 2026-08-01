@@ -229,6 +229,16 @@ correspondentes já estão no [roteiro](descoberta/roteiro-rosiele.md).
 
 Ordem cronológica inversa — mais recente no topo.
 
+### 2026-07-31 (8) — Fluxo de git simplificado
+
+- **DEC-012:** acabou o PR e a branch por fase. O agente commita direto na `main`,
+  o CI roda no push e a Vercel publica. O dono revisa o produto pelo iPhone, não o
+  diff no GitHub.
+- Nada de verificação se perde: o CI já dispara em `push: branches: [main]`.
+- O item de DoD da Fase 0 sobre preview deployment foi **removido** — sem PR não
+  há preview. Com isso a Fase 0 fecha com todos os itens vigentes cumpridos.
+- Branch `fase-01-descoberta` mesclada e apagada.
+
 ### 2026-07-31 (7) — Primeira rodada de respostas · modelo corrigido
 
 - Rodada 1 respondida **por escrito, uma linha por bloco**, respondendo aos títulos

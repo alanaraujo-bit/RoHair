@@ -26,8 +26,9 @@ aprovação da seguinte.
 sem pedir permissão a cada passo. Se encontrar algo que muda o escopo, interrompe
 e avisa.
 
-**Passo 4 — Revisar.** O dono valida contra a Definição de Pronto da fase, no
-preview deployment, pelo próprio iPhone.
+**Passo 4 — Revisar.** O dono valida contra a Definição de Pronto da fase, **em
+produção**, pelo próprio iPhone. Não há preview deployment: sem PR, o que ele vê é
+o que está no ar (DEC-012).
 
 **Passo 5 — Registrar.** [00-ESTADO-ATUAL.md](00-ESTADO-ATUAL.md) atualizado,
 decisões registradas, commit feito. Só então a próxima fase é apresentada.
@@ -71,8 +72,13 @@ sem precisar de nenhum contexto da conversa anterior.
 tempo real. Build, testes E2E, migrations e auditorias rodam em CI, Vercel ou
 Railway. Nenhuma instalação local sem justificativa e sem pedir.
 
-**Git.** Branch por fase (`fase-03-modelagem`), PR com CI verde, merge na `main`,
-deploy automático. Commits em português, no imperativo.
+**Git — commit direto na `main`.** Sem branch por fase, **sem Pull Request**
+(DEC-012). O agente commita e dá push na `main`; o CI roda no push e a Vercel
+publica em produção automaticamente. Commits em português, no imperativo.
+
+O dono não quer intermediário entre o trabalho pronto e o que ele vê. Revisar
+diff no GitHub não é o jeito dele de revisar — ele revisa no produto, pelo
+iPhone. O PR só adicionava uma etapa que ninguém usava.
 
 **Qualidade não é negociável por prazo.** Se algo não cabe no tempo, corta-se
 escopo — nunca qualidade. Não existe "depois a gente arruma".
