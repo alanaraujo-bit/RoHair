@@ -12,9 +12,9 @@
 | ---------------------- | ------------------------------------------------------------ |
 | **Última atualização** | 2026-07-31                                                   |
 | **Fase atual**         | Fase 1 — Descoberta & Documentação de Produto                |
-| **Status da fase**     | 🔵 Fase 1A concluída · **Fase 1B em andamento, desbloqueada** |
-| **Fases concluídas**   | Planejamento · Identidade e acesso · Fase 0 · **Fase 1A**    |
-| **Bloqueios**          | **Nenhum.** A descoberta virou configuração (DEC-013)        |
+| **Status da fase**     | 🟡 **Entregue por inteiro — aguardando sua revisão**         |
+| **Fases concluídas**   | Planejamento · Identidade e acesso · Fase 0                  |
+| **Bloqueios**          | **Nenhum técnico.** Falta só o aceite do dono                |
 | **Local**              | http://localhost:3000 (`npm run dev`)                        |
 | **Produção**           | https://rohair.vercel.app                                    |
 | **CI**                 | ✅ Verde — qualidade, build e E2E                            |
@@ -61,6 +61,10 @@ RoHair/
 │   ├── 07-FLUXOS.md              Fase 1A · as duas pontas
 │   ├── 08-MODELO-DE-DOMINIO.md   Fase 1A · agregados e invariantes (v0)
 │   ├── 09-CONFIGURACAO.md        Fase 1B · semente, configuração, aprendizado
+│   ├── 10-CENARIOS.md            Fase 1B · validação do modelo · 5 buracos
+│   ├── 11-PERSONAS.md            Fase 1B · personas e JTBD
+│   ├── 12-WIREFRAMES.md          Fase 1B · as 16 telas
+│   ├── 13-BACKLOG.md             Fase 1B · 42 itens priorizados
 │   ├── descoberta/               a conversa com a Rosiele e o que saiu dela
 │   └── adr/ADR-0001-fundacao-do-projeto.md
 └── src/
@@ -116,12 +120,15 @@ Justificativas completas em [04-DECISOES.md](04-DECISOES.md) e [adr/](adr/).
 
 ## 5. Próximo passo imediato
 
-> ### ▶️ Continuar a Fase 1B — nada bloqueado.
+> ### ✅ Fase 1 entregue. Falta **você revisar e aprovar**.
 >
-> Próximo item: **os cinco cenários de atendimento** que validam o modelo (1.6),
-> depois personas, wireframes e o escopo das Fases 6 a 14.
+> Todos os itens do DoD estão cumpridos menos um: *"documentos revisados e
+> aprovados pelo dono"*.
 >
-> Não há mais nada a perguntar à Rosiele.
+> Para revisar pelo iPhone, na ordem: [wireframes](12-WIREFRAMES.md) →
+> [cenários](10-CENARIOS.md) → [backlog](13-BACKLOG.md). Os outros são referência.
+>
+> **Com o aceite, a Fase 2 — Design System "Áurea" — é apresentada.**
 
 ### A virada: descoberta virou configuração
 
@@ -183,31 +190,60 @@ mostrar **o que sobrou**.
 | **Vocabulário** | Ela diz **nutrição**, não hidratação. E **"vaga"**, não horário nem agendamento |
 | **[D-06](04-DECISOES.md#d-06--escopo-do-portal-da-cliente) parcialmente resolvida** | *"Deixo as orientações dos produtos e o tempo do retoque"* — o "Meu cuidado" do portal já existe, falado |
 
-### O que falta na Fase 1B
+### O que a Fase 1 entregou
 
-| # | Item | Estado |
-| - | ---- | ------ |
-| 1.5 | [Modelo de configuração](09-CONFIGURACAO.md) | ✅ |
-| 1.6 | Cinco cenários que validam o modelo | ⬜ próximo |
-| 1.7 | Personas e Jobs to be Done | ⬜ |
-| 1.8 | Wireframes, incluindo o onboarding | ⬜ |
-| 1.9 | Escopo fechado das Fases 6 a 14 | ⬜ |
-| 1.10 | Backlog priorizado | ⬜ |
+| # | Item | Documento |
+| - | ---- | --------- |
+| 1.1 | Roteiro de conversa | [descoberta/roteiro-rosiele.md](descoberta/roteiro-rosiele.md) |
+| 1.2 | Glossário do domínio | [06-GLOSSARIO.md](06-GLOSSARIO.md) |
+| 1.3 | Fluxos das duas pontas | [07-FLUXOS.md](07-FLUXOS.md) |
+| 1.4 | Modelo de domínio **v1** | [08-MODELO-DE-DOMINIO.md](08-MODELO-DE-DOMINIO.md) |
+| 1.5 | Modelo de configuração | [09-CONFIGURACAO.md](09-CONFIGURACAO.md) |
+| 1.6 | Cinco cenários · 5 buracos achados | [10-CENARIOS.md](10-CENARIOS.md) |
+| 1.7 | Personas e JTBD | [11-PERSONAS.md](11-PERSONAS.md) |
+| 1.8 | 16 wireframes | [12-WIREFRAMES.md](12-WIREFRAMES.md) |
+| 1.9 | Escopo fechado das Fases 4 e 6 a 12 | [03-ROADMAP.md](03-ROADMAP.md) |
+| 1.10 | Backlog de 42 itens | [13-BACKLOG.md](13-BACKLOG.md) |
 
-A Fase 2 continua não começando — o design system precisa saber que telas vai
-servir, e os wireframes são o item 1.8.
+### As cinco decisões que a Fase 1 travou
+
+1. **O número grande é "sobrou", nunca "entrou".** Faturamento é a ilusão que ela
+   já tem; o app não pode ser mais uma fonte dela
+2. **O lucro aparece no checkout de cada atendimento**, não no fim do mês — o
+   antídoto direto para a frase dela
+3. **O alerta de química vem antes de tudo na ficha.** É segurança física, não
+   histórico
+4. **Reprovar no teste de mecha é sucesso**, e consome produto de verdade
+5. **A fusão de fichas é sugerida, nunca automática** — casar por telefone exporia
+   histórico de terceiros
+
+### Os cinco buracos que os cenários acharam
+
+| # | O que quebrava |
+| - | -------------- |
+| GAP-01 | O teste de mecha consome produto, e o modelo dizia que não |
+| GAP-02 | Serviço composto quebrava a baixa de estoque e a margem |
+| GAP-03 | Fundir duas fichas com conta violava a unicidade da credencial |
+| GAP-04 | Nada dizia a que dia pertence a receita que atravessa a meia-noite |
+| GAP-05 | Anamnese obrigatória contradizia a configuração que a desliga |
+
+GAP-02 e GAP-04 quebrariam DoDs de fases inteiras **em silêncio** — nenhum
+apareceria em teste unitário, porque o modelo estava internamente coerente.
 
 ### Como retomar em uma sessão nova
 
 1. Ler este arquivo, depois [04-DECISOES.md](04-DECISOES.md),
-   [09-CONFIGURACAO.md](09-CONFIGURACAO.md) e a Fase 1 em
+   [09-CONFIGURACAO.md](09-CONFIGURACAO.md) e a Fase 2 em
    [03-ROADMAP.md](03-ROADMAP.md)
-2. Continuar a Fase 1B pelo item pendente da tabela acima. **Não precisa de nova
-   aprovação** — a Fase 1 foi aprovada em 2026-07-31
-3. **Não escrever novos roteiros de pergunta.** Se aparecer uma dúvida sobre como a
+2. **Se o dono já aprovou a Fase 1** → apresentar a **Fase 2 — Design System
+   "Áurea"** e esperar aprovação. Não começar antes
+3. **Se ainda não aprovou** → não avançar. A Fase 1 tem um item de DoD aberto, e é
+   o aceite dele
+4. **Não escrever novos roteiros de pergunta.** Se aparecer uma dúvida sobre como a
    profissional trabalha, a resposta é uma das três: decidir na arquitetura, virar
-   campo de configuração, ou o sistema medir pelo uso ([DEC-013](04-DECISOES.md#dec-013))
-4. `npm run dev` se precisar de ambiente visual (o servidor não sobrevive à troca
+   campo de configuração, ou o sistema medir pelo uso
+   ([DEC-013](04-DECISOES.md#dec-013))
+5. `npm run dev` se precisar de ambiente visual (o servidor não sobrevive à troca
    de sessão)
 
 ### Manutenção agendada
@@ -255,6 +291,25 @@ correspondentes já estão no [roteiro](descoberta/roteiro-rosiele.md).
 ## 8. Log de sessões
 
 Ordem cronológica inversa — mais recente no topo.
+
+### 2026-07-31 (10) — Fase 1 entregue por inteiro
+
+- **1.6 · Cinco cenários** ([10-CENARIOS.md](10-CENARIOS.md)). Cada um escolhido
+  para **atacar** uma parte do modelo, não para confirmá-la. Acharam **cinco
+  buracos**, todos corrigidos; o modelo subiu para **v1** com as invariantes
+  INV-18, INV-19 e INV-20 novas e INV-16 e INV-17 reescritas.
+- **1.7 · Personas** ([11-PERSONAS.md](11-PERSONAS.md)) escritas do domínio. A
+  Rosiele é a primeira instância da persona, não a definição dela.
+- **1.8 · Dezesseis wireframes** ([12-WIREFRAMES.md](12-WIREFRAMES.md)) —
+  onboarding, 11 telas do painel, 4 do portal. Regra dos 3 toques verificada nas
+  seis ações do dia a dia; a única em risco era "dar baixa em produto", resolvida
+  tirando-a das mãos dela.
+- **1.9 · Escopo fechado** das Fases 4 e 6 a 12 no roadmap, cada uma com link para
+  a tela correspondente.
+- **1.10 · Backlog** ([13-BACKLOG.md](13-BACKLOG.md)) — 42 itens em P0 a P3,
+  priorizados por **distância até a dor central**, não por esforço nem por fase.
+  Quatro itens sem JTBD, de propósito: são invariantes de segurança.
+- **Falta só o aceite do dono** para fechar a fase e apresentar a Fase 2.
 
 ### 2026-07-31 (9) — Descoberta vira configuração · Fase 1B destravada
 

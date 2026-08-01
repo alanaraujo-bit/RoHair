@@ -10,6 +10,7 @@
 | --- | -------------------------------------- | ------- | ------ |
 | 0   | Fundação de Infraestrutura             | —       | ✅     |
 | 1   | Descoberta & Documentação de Produto   | —       | 🟡     |
+|     | _1A e 1B entregues · aguardando sua revisão_ |   |        |
 | 2   | Design System "Áurea"                  | —       | ⬜     |
 | 3   | Modelagem de Dados & Camada de Domínio | —       | ⬜     |
 | 4   | Identidade, Autenticação & Permissões  | ambos   | ⬜     |
@@ -82,35 +83,37 @@ informação que só a Rosiele tem.
 - **1.4** [Modelo de domínio v0](08-MODELO-DE-DOMINIO.md) — agregados, invariantes
   e as dez perguntas que o modelo faz à Rosiele
 
-#### Fase 1B — o produto se configura · 🔵 em andamento
+#### Fase 1B — o produto se configura · ✅ concluída
 
 **Reenquadrada por [DEC-013](04-DECISOES.md#dec-013).** Não haverá segunda rodada de
 perguntas. Preço, duração, produto e horário são **campo de cadastro**, não achado
 de pesquisa — e um método que exige entrevistar cada profissional não é produto.
 
-- **1.5** [Modelo de configuração](09-CONFIGURACAO.md) — ✅ catálogo semente, o que
-  ela configura, o que o sistema aprende, e o que **não** é configurável
-- **1.6** Cinco cenários de atendimento, construídos do domínio e do que ela
-  contou, usados para validar o modelo — DoD
-- **1.7** Personas e Jobs to be Done, escritos do domínio da beleza e não de uma
+- **1.5** [Modelo de configuração](09-CONFIGURACAO.md) — catálogo semente, o que ela
+  configura, o que o sistema aprende, e o que **não** é configurável
+- **1.6** [Cinco cenários](10-CENARIOS.md) — validaram o modelo e acharam **cinco
+  buracos**, todos corrigidos. O modelo subiu para **v1**
+- **1.7** [Personas e JTBD](11-PERSONAS.md) — do domínio da beleza, não de uma
   pessoa só
-- **1.8** Wireframes de baixa fidelidade em Markdown versionado (alta fidelidade é
-  Fase 2), incluindo **o onboarding** como tela de primeira classe
-- **1.9** Escopo fechado das Fases 6 a 14
-- **1.10** Backlog priorizado, rastreável até as fases
+- **1.8** [Wireframes](12-WIREFRAMES.md) — 16 telas: onboarding, 11 do painel e 4 do
+  portal
+- **1.9** Escopo das Fases 4 e 6 a 12 fechado neste roadmap, com link para a tela
+- **1.10** [Backlog](13-BACKLOG.md) — 42 itens em P0 a P3, priorizados por distância
+  até a dor central, cada um rastreável até fase, JTBD e tela
 
 **DoD**
 
-- [x] O modelo de domínio v0 declara explicitamente o que não sabe
+- [x] O modelo de domínio declara explicitamente o que não sabe
 - [x] Toda pergunta do modelo (M-01 a M-12) tem destino: arquitetura, configuração
       ou aprendizado — nenhuma depende de entrevista
 - [x] D-05 resolvida (virou configuração) · D-06 resolvida em escopo
-- [ ] Cada fase de 6 a 14 tem escopo fechado e escrito
-- [ ] Nenhuma tela do roadmap está sem wireframe, **incluindo o onboarding**
-- [ ] O modelo de domínio foi validado contra 5 cenários de atendimento
-- [ ] Uma profissional que não é a Rosiele consegue configurar o sistema pelo
-      catálogo semente, sem nenhum campo em branco obrigatório
-- [ ] Documentos revisados e aprovados pelo dono
+- [x] Cada fase de 6 a 14 tem escopo fechado e escrito
+- [x] Nenhuma tela do roadmap está sem wireframe, **incluindo o onboarding**
+- [x] O modelo de domínio foi validado contra 5 cenários de atendimento —
+      **5 buracos encontrados e corrigidos**
+- [x] Uma profissional que não é a Rosiele configura o sistema pelo catálogo
+      semente, sem nenhum campo em branco obrigatório
+- [ ] **Documentos revisados e aprovados pelo dono** ← único item aberto
 
 ---
 
@@ -185,6 +188,9 @@ negócio testável, sem nenhuma dependência de framework.
 
 **Objetivo.** Dois públicos, dois domínios de identidade, isolamento correto — o
 erro mais caro de corrigir depois. Modelo completo em **DEC-008**.
+
+> **Escopo fechado na Fase 1.** Tela [13](12-WIREFRAMES.md#13--portal--primeiro-acesso).
+> Fluxos completos em [07-FLUXOS.md](07-FLUXOS.md).
 
 **Entregáveis — equipe (`User`)**
 
@@ -268,8 +274,14 @@ de encontro entre as duas pontas do produto.
 
 **Entregáveis**
 
-- Cadastro: nome, **CPF**, **data de nascimento**, telefone, foto, preferências,
-  observações
+> **Escopo fechado na Fase 1.** Telas [5, 6 e 7](12-WIREFRAMES.md#5--clientes).
+
+- Cadastro: nome, telefone, foto, preferências, observações. **CPF e data de
+  nascimento opcionais** (D-07, D-08), pedidos com insistência mas nunca bloqueando
+- 🗣️ **Alerta de química no topo da ficha**, acima de qualquer métrica — vem da
+  `HairAssessment` mais recente e é dado de segurança, não histórico
+- Lista ordenada por **quem precisa de ação**, nunca alfabética
+- 🗣️ Curvatura como lista de nomes: liso, ondulado, cacheado, crespo
 - Busca por CPF que **encontra ficha autocadastrada** em vez de duplicar
 - **Fusão de fichas assistida** — o painel sugere candidatas por nome e telefone e
   a Rosiele funde com um toque, preservando todo o histórico das duas
@@ -300,20 +312,34 @@ de encontro entre as duas pontas do produto.
 
 **Objetivo.** Catálogo e insumos — a base para preço, duração e margem reais.
 
+> **Escopo fechado na Fase 1.** Telas [1 e 11](12-WIREFRAMES.md#1--onboarding).
+> Modelo de configuração em [09-CONFIGURACAO.md](09-CONFIGURACAO.md).
+
 **Entregáveis**
 
-- Catálogo de serviços com variantes (comprimento, espessura), preço e duração
-- Produtos: categoria, fornecedor, custo, quantidade, unidade de medida
-- Consumo padrão por serviço (base do custo real e da baixa automática)
-- Movimentações de estoque com histórico auditável
-- Alertas de estoque baixo e de validade
+- **Catálogo semente** do domínio da beleza — serviços, produtos, unidades e
+  categorias que vêm prontos, para a profissional **marcar em vez de digitar**
+- **Onboarding em cinco passos**, com os passos de preço e horário puláveis. Mora
+  aqui porque é quando o catálogo existe
+- Serviços com **variantes opcionais**, desligadas por padrão. 🗣️ Eixo padrão:
+  **curvatura**
+- **Serviços compostos** — etapas com consumo próprio. O preço vive no pai, o custo
+  e a baixa nas folhas (INV-19)
+- Produtos: categoria, fornecedor, custo, quantidade. 🗣️ Unidade em **frasco e
+  aplicação** primeiro, conversão interna
+- Movimentações de estoque append-only, com histórico auditável
+- **Alerta em dias, não em quantidade** — "acaba em ~10 dias" permite comprar
+  planejado; "estoque baixo" só avisa que já é tarde
 - Cálculo de custo por atendimento e margem por serviço
 
 **DoD**
 
-- [ ] Finalizar um atendimento dá baixa automática correta no estoque
+- [ ] Finalizar um atendimento dá baixa automática correta no estoque, **inclusive
+      em serviço composto** — a baixa é calculada sobre as folhas
 - [ ] Toda movimentação é rastreável até a origem
-- [ ] Alerta de estoque baixo dispara na regra configurada
+- [ ] Alerta dispara com antecedência em dias, calculada pelo consumo real
+- [ ] Uma profissional configura o catálogo inteiro **sem digitar nome de serviço**
+- [ ] Da conta criada ao primeiro agendamento em **menos de 3 minutos**
 
 ---
 
@@ -323,10 +349,15 @@ de encontro entre as duas pontas do produto.
 
 **Objetivo.** O centro de gravidade do painel.
 
+> **Escopo fechado na Fase 1.** Telas [3 e 4](12-WIREFRAMES.md#3--agenda).
+
 **Entregáveis**
 
 - Visões dia, semana e mês, com transição fluida entre elas
-- Criação de agendamento com duração sugerida por serviço e por cliente
+- 🗣️ **"Vaga"** como o rótulo do espaço livre — a palavra dela
+- Criação de agendamento com **duração vinda do histórico daquela cliente**, não do
+  catálogo, com a diferença explicada na tela
+- Só oferecer horários que **cabem** na duração real prevista
 - Detecção de conflito na UI + garantia no banco
 - Arrastar para reagendar, swipe para confirmar/cancelar
 - Bloqueios, intervalos, horário de funcionamento, folgas
@@ -348,22 +379,35 @@ de encontro entre as duas pontas do produto.
 
 **Objetivo.** O momento de verdade. Mãos ocupadas, cliente na cadeira.
 
+> **Escopo fechado na Fase 1.** Telas [8, 9 e 10](12-WIREFRAMES.md#8--atendimento--abertura-e-anamnese).
+> A fase mais afetada pela conversa com a Rosiele.
+
 **Entregáveis**
 
+- 🗣️ **Anamnese** abrindo o atendimento, com as cinco perguntas dela,
+  **pré-preenchidas pelo histórico** — confirmar em vez de digitar
+- 🗣️ **Teste de mecha como portão**, com o desfecho `ENCERRADO_SEM_SERVICO`
+  apresentado como trabalho bem feito, e a baixa do produto gasto no teste
 - Iniciar, pausar, retomar e finalizar, com cronômetro persistente
 - Cronômetro modelado como intervalos imutáveis — sobrevive a fechar o app
-- Registro de produtos utilizados com sugestão baseada no histórico
-- Fotos antes/depois direto da câmera
+- 🗣️ Contagem do **tempo de pausa** com hora de voltar
+- Produtos **pré-marcados pelo hábito daquela cliente**; ela desmarca o que não usou
+- Fotos antes/depois/referência direto da câmera, com visibilidade por foto
 - Observações rápidas por voz ou texto
-- Checkout: valor, desconto, forma de pagamento, gorjeta
-- Avaliação e agendamento do retorno na mesma tela
+- Checkout com **o lucro daquele atendimento na tela**, não só o valor
+- Formas de pagamento incluindo **fiado e cortesia** como estados próprios
+- 🗣️ **Retorno sugerido e cuidado em casa** no checkout — o que ela já fala na porta,
+  agora chegando no portal da cliente
 - Widget persistente de atendimento em andamento
 
 **DoD**
 
 - [ ] Fechar o app no meio do atendimento não perde um segundo do cronômetro
 - [ ] Do "iniciar" ao "finalizar" em no máximo 3 toques
-- [ ] Finalizar gera receita, baixa de estoque e histórico numa única transação
+- [ ] Finalizar gera receita, baixa e histórico numa única transação (INV-09)
+- [ ] Teste reprovado encerra sem serviço, **dá baixa do produto do teste** e não
+      gera item do serviço impedido (INV-17)
+- [ ] O lucro do atendimento aparece antes de concluir
 
 ---
 
@@ -373,12 +417,19 @@ de encontro entre as duas pontas do produto.
 
 **Objetivo.** Clareza sobre dinheiro, sem exigir conhecimento contábil.
 
+> **Escopo fechado na Fase 1.** Tela [12](12-WIREFRAMES.md#12--dinheiro).
+> Esta fase e a 7 são o par que ataca a frase do fim do mês.
+
 **Entregáveis**
 
+- **"Sobrou" como número principal, "entrou" como número pequeno.** Nunca o
+  contrário — faturamento é a ilusão que ela já tem
 - Entradas automáticas a partir dos atendimentos
-- Saídas manuais e recorrentes, com categorias
-- Fluxo de caixa por dia, semana e mês
+- Saídas manuais e recorrentes, com categorias vindas da semente
+- Fluxo de caixa por dia, semana e mês, **com o dia definido pela finalização** no
+  fuso da organização (INV-18)
 - Lucro real (receita − custo de produto − despesas)
+- Comparação com o período anterior, em uma frase
 - Metas com acompanhamento visual
 - Relatórios exportáveis (PDF/CSV)
 - Fechamento de caixa diário
@@ -388,6 +439,7 @@ de encontro entre as duas pontas do produto.
 - [ ] Todo valor exibido é rastreável até a transação de origem
 - [ ] Nenhum cálculo em ponto flutuante
 - [ ] Relatório do mês bate com a soma dos atendimentos, ao centavo
+- [ ] Atendimento que atravessa a meia-noite cai num dia só, sempre o mesmo
 
 ---
 
@@ -404,8 +456,10 @@ de encontro entre as duas pontas do produto.
 - Comparativos período a período
 - Estatísticas: cliente mais frequente, serviço mais rentável, dia mais
   produtivo, horário mais lucrativo, produtos mais e menos usados, ranking
-- **Motor de insights** com regras versionadas: cliente sumida, produto
-  acabando, cliente VIP, aniversário próximo, queda de frequência, horário ocioso
+- **Motor de insights** com regras versionadas. As duas primeiras já são
+  deriváveis e atacam a dor central: 🗣️ **retorno vencido** (serviço + curvatura) e
+  **produto acabando em N dias**. Depois: cliente sumida, VIP, aniversário, queda
+  de frequência, horário ocioso
 - Insight é acionável: todo card leva a uma ação concreta
 
 **DoD**
@@ -424,16 +478,19 @@ de encontro entre as duas pontas do produto.
 cabelo virar história — e a Rosiele ganha um canal que tira a conversa do
 WhatsApp.
 
-**Escopo proposto** _(a confirmar — D-06)_
+> **Escopo fechado na Fase 1.** Telas [13 a 16](12-WIREFRAMES.md#13--portal--primeiro-acesso).
+> D-05 e D-06 resolvidas — o que variava virou
+> [configuração](09-CONFIGURACAO.md#34-políticas-do-portal).
 
 - **Meu próximo horário**, com confirmação de presença em um toque
-- **Minhas visitas** — histórico com serviço, data, duração e valor
+- **Minhas visitas** — histórico com serviço, data e duração. **Valores desligados
+  por padrão**
 - **Meus antes e depois** — a galeria da própria evolução, com comparador de
-  arrastar. Este é o coração emocional do portal
-- **Solicitar horário** _(a confirmar — D-05)_: pedido que a Rosiele aprova, em
-  vez de agendamento direto na agenda
+  arrastar. Só as fotos liberadas; a cliente não sabe que existem outras
+- **Solicitar horário** — padrão ligado; agendar direto é chave desligada (D-05)
+- 🗣️ **Meu cuidado** — as orientações de produto e o tempo do retoque que a
+  profissional já dá falando na porta. **Comportamento existente, não inventado**
 - **Minha ficha** — preferências e observações que ela escolhe compartilhar
-- **Meu cuidado** — recomendações da Rosiele e lembrete do retorno ideal
 - Aniversário e reconhecimento de fidelidade
 - Central de privacidade: consentimento de foto, exportar e excluir dados (LGPD)
 

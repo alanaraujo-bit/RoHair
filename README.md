@@ -25,7 +25,8 @@ Nasce para uma profissional. É construído, desde a primeira linha, para milhar
 
 ## Estado atual
 
-> 📍 **Fase 1 — Descoberta & Documentação de Produto** · em andamento
+> 📍 **Fase 1 — Descoberta & Documentação de Produto** · entregue, aguardando
+> revisão do dono
 >
 > Fase 0 concluída: aplicação no ar em https://rohair.vercel.app, CI verde,
 > PostgreSQL, Redis e R2 provisionados.
@@ -48,6 +49,10 @@ Nasce para uma profissional. É construído, desde a primeira linha, para milhar
 | [docs/07-FLUXOS.md](docs/07-FLUXOS.md)                               | Fluxos das duas pontas e os pontos de encontro        |
 | [docs/08-MODELO-DE-DOMINIO.md](docs/08-MODELO-DE-DOMINIO.md)         | Agregados, invariantes e fronteiras                   |
 | [docs/09-CONFIGURACAO.md](docs/09-CONFIGURACAO.md)                   | **O que vem pronto, o que ela configura, o que o sistema aprende** |
+| [docs/10-CENARIOS.md](docs/10-CENARIOS.md)                           | Cinco cenários que validaram o modelo — e os 5 buracos que acharam |
+| [docs/11-PERSONAS.md](docs/11-PERSONAS.md)                           | Personas e Jobs to be Done                            |
+| [docs/12-WIREFRAMES.md](docs/12-WIREFRAMES.md)                       | **As 16 telas, em baixa fidelidade**                  |
+| [docs/13-BACKLOG.md](docs/13-BACKLOG.md)                             | 42 itens priorizados pela distância até a dor central |
 | [docs/descoberta/](docs/descoberta/)                                 | A conversa com a Rosiele e o que saiu dela            |
 | [docs/adr/](docs/adr/)                                               | Architecture Decision Records                         |
 
