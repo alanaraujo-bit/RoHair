@@ -1,6 +1,7 @@
 # Glossário do domínio
 
-> **Entregável 1.2 da Fase 1 — versão rascunho.**
+> **Entregável 1.2 da Fase 1 — v0.5**, atualizado com a primeira rodada de
+> respostas da Rosiele ([leitura-01.md](descoberta/leitura-01.md)).
 >
 > Este documento existe por um motivo específico: **vocabulário errado vira
 > software errado.** Se eu chamar de "serviço" o que ela chama de "procedimento",
@@ -16,6 +17,7 @@
 
 | Marca | Significa |
 | ----- | --------- |
+| 🗣️ | **Palavra da Rosiele.** Confirmada na primeira rodada. Estas vencem qualquer preferência minha |
 | ✅ | Termo do domínio da beleza com significado estável no mercado brasileiro |
 | ⚠️ | **A confirmar com a Rosiele** — ou eu não sei se ela usa, ou o termo tem mais de um significado em uso |
 | 🔷 | Termo do **produto RoHair**, definido por nós. Precisa ser aprovado como o nome que aparece na interface |
@@ -48,13 +50,21 @@ Isso muda se `Attendance` tem um serviço ou vários. Perguntas 21, 23 do roteir
 Variações usuais: **escova lisa** (fio reto), **escova modelada** (com movimento
 nas pontas), **escova com babyliss** (cachos ou ondas ao final).
 
-### Hidratação ✅
+### Nutrição 🗣️
 
-Tratamento que repõe **água** no fio. Costuma envolver máscara, tempo de pausa e
-enxágue.
+**A palavra dela é "nutrição", não "hidratação".** Toda a documentação anterior
+listava o escopo como "escova, hidratação, progressiva"; as palavras da Rosiele são
+**progressiva, nutrição, escova**. A interface usa o termo dela.
 
-⚠️ Faz parte de um trio que o mercado distingue com precisão, e é comum a
-profissional usar "hidratação" como guarda-chuva para os três:
+Ela usa **Wella**, e a frase foi *"Wella para nutrição pra escovar"* — o "pra" liga
+as duas coisas: a nutrição existe para viabilizar a escova. ⚠️ Sinaliza que
+nutrição é **etapa da escova**, não serviço vendido à parte, mas a frase é curta
+demais para decidir. Pergunta 15 e 17 da [rodada 2](descoberta/roteiro-rosiele-02.md).
+
+⚠️ Se ela também faz hidratação com esse nome, ainda não sabemos.
+
+Nutrição faz parte de um trio que o mercado distingue com precisão, e é comum a
+profissional usar um dos nomes como guarda-chuva para os três:
 
 | Termo | Repõe | Quando se usa |
 | ----- | ----- | ------------- |
@@ -63,7 +73,7 @@ profissional usar "hidratação" como guarda-chuva para os três:
 | **Reconstrução** | Massa, proteína, queratina | Cabelo quebradiço, elástico, danificado por química |
 
 Se ela distingue os três, são três serviços com custos diferentes. Se ela chama
-tudo de hidratação, é um serviço com variantes. Pergunta 21.
+tudo de nutrição, é um serviço com variantes. Rodada 2, tabela da Parte A.
 
 ### Progressiva ✅⚠️
 
@@ -72,12 +82,19 @@ progressiva** — daí a ambiguidade acima.
 
 Pontos que importam para o modelo:
 
+- 🗣️ Produto que ela usa: **Let Me Be**
+- 🗣️ **O retorno é de três meses**, *"ou antes dependendo da curvatura"*. E ela
+  reconhece o ciclo como estrutural: *"sempre fica nesse loop pois cabelo alisado é
+  assim mesmo"*. Isso torna o retorno **calculável** — serviço + curvatura — em vez
+  de estimado por histórico
+- 🗣️ O caso mais difícil que ela citou foi **progressiva em cabelo cacheado**
 - É a mais longa e a mais cara dos três — provável caso extremo de duração
 - Tem **tempo de pausa** obrigatório, em que o produto age no fio
 - Existe com e sem formol; a formulação define ventilação, duração e risco ⚠️
-- Precisa de **manutenção** periódica, o que faz o **retorno** ser previsível ⚠️
-- Costuma ser precificada por comprimento e volume do cabelo — a justificativa
-  mais provável para `ServiceVariant` existir. Pergunta 42
+- ⚠️ Eu supus precificação por **comprimento e volume**. O sinal dela aponta para
+  **curvatura** como o eixo que mais importa — ela apareceu duas vezes, definindo
+  tanto a dificuldade quanto o intervalo de retorno. Hipótese corrigida; a
+  confirmação vem da pergunta 1 e 2 da rodada 2
 
 ---
 
@@ -95,7 +112,7 @@ impossíveis depois — adicionar um serviço deve ser cadastro, nunca código.
 | **Descoloração** ✅ | Remoção de pigmento com pó descolorante + oxidante |
 | **Mechas / luzes** ✅ | Clareamento parcial. **Balayage** e **ombré** são técnicas de distribuição |
 | **Matização** ✅ | Neutraliza tons amarelados após clareamento. Costuma ser cobrada à parte |
-| **Corte** ✅ | Fora do escopo declarado, mas provável que ela faça ⚠️ pergunta 3 |
+| **Corte de pontas** 🗣️ | **Confirmado e rotineiro:** *"As pontas sempre cortamos na maioria das vezes pra não ficar ressecadas."* Não é serviço à parte — parece ser etapa embutida. Entra no escopo do catálogo da Fase 7. Preço e tempo na rodada 2 |
 | **Cronograma capilar** ✅ | **Não é um serviço — é uma sequência.** Alternância planejada entre hidratação, nutrição e reconstrução ao longo de semanas. Se a Rosiele trabalha assim, o produto precisa entender uma **série de atendimentos com um plano**, não visitas isoladas. ⚠️ Isso teria impacto real no modelo e no portal da cliente |
 
 ---
@@ -110,7 +127,7 @@ problema real dela.
 | **Raiz** ✅ | Trecho do fio próximo ao couro cabeludo | Define "retoque de raiz" como serviço menor e mais barato |
 | **Comprimento** ✅ | O corpo do fio | Base de preço e de consumo de produto |
 | **Pontas** ✅ | Extremidade, a parte mais velha e danificada | "Pontas duplas" é queixa comum |
-| **Curvatura** ✅ | Liso, ondulado, cacheado, crespo — classificados de 1 a 4 com subníveis (2A, 3B…) | ⚠️ Só entra se ela usar essa classificação. Se ela diz "cabelo cacheado" e pronto, o campo é texto livre |
+| **Curvatura** 🗣️ | Liso, ondulado, cacheado, crespo — o mercado classifica de 1 a 4 com subníveis (2A, 3B…) | **A variável mais importante que ela citou.** Aparece duas vezes: define o intervalo de retorno da progressiva e define o caso mais difícil. ⚠️ Ela disse "cacheado", não "3B" — provavelmente usa os nomes, não a notação |
 | **Porosidade** ✅ | Capacidade do fio de absorver e reter água. Alta porosidade absorve rápido e perde rápido | Define produto e tempo de pausa |
 | **Espessura do fio** ✅ | Fino, médio, grosso | Junto com comprimento, é a variável de preço mais provável |
 | **Volume / densidade** ✅ | Quantidade de fios | Afeta duração e consumo |
@@ -119,6 +136,21 @@ problema real dela.
 ---
 
 ## 4. Produtos e insumos
+
+### Os produtos que ela usa 🗣️
+
+Os primeiros dados reais de catálogo. Custo, rendimento e onde compra vêm na
+rodada 2 — e são **exatamente** o que falta para calcular lucro real.
+
+| Marca citada | Para quê |
+| ------------ | -------- |
+| **Let Me Be** | Progressiva |
+| **Wella** | Nutrição, antes da escova |
+
+⚠️ Ela citou marca, não linha nem tamanho de frasco. Um "Let Me Be" pode ser vários
+produtos diferentes; o cadastro precisa do item exato.
+
+### Vocabulário geral
 
 | Termo | O que é |
 | ----- | ------- |
@@ -144,8 +176,9 @@ cálculo interno use outra. Perguntas 36 e 37.
 | Termo | O que é | Consequência para o produto |
 | ----- | ------- | --------------------------- |
 | **Tempo de pausa** (ou tempo de ação) ✅ | Quanto tempo o produto fica agindo antes do enxágue | É tempo em que **as mãos dela estão livres**. Provavelmente a única janela real para usar o celular durante o atendimento — pergunta 28. Pode ser a janela em que o app inteiro é usado |
-| **Teste de mecha** ✅ | Teste em uma mecha isolada antes de aplicar química no cabelo todo | Etapa de segurança. Pode precisar de registro na ficha |
-| **Incompatibilidade química** ✅ | Certas químicas **não podem** ser sobrepostas. Guanidina sobre amônia, por exemplo, pode literalmente partir o fio | ⚠️ **Potencialmente o dado mais crítico da ficha inteira.** Se a Rosiele precisa saber que química a cliente já fez antes de aplicar outra, isso não é histórico — é **alerta de segurança**, e tem que aparecer antes de iniciar o atendimento, não enterrado no histórico. Pergunta 51 |
+| **Teste de mecha** 🗣️ | Teste em uma mecha isolada antes de aplicar química no cabelo todo | **Muito mais importante do que eu supunha.** Ela abre o atendimento com ele: *"Inicio fazendo teste de mecha pra ver se o cabelo suporta o produto."* Não é etapa opcional — é **portão**, e um portão que pode reprovar. Ver [modelo de domínio](08-MODELO-DE-DOMINIO.md) |
+| **Anamnese capilar** 🗣️🔷 | O conjunto de perguntas que ela faz **a toda cliente** antes de começar: já fez alisamento, qual produto usou, quanto tempo faz, se está quebrando, se está caindo | **Achado principal da primeira rodada.** Ela descreveu a mesma sequência duas vezes, sem ser perguntada. Não é anotação — é formulário estruturado que decide se o serviço pode acontecer. Virou entidade própria no [modelo de domínio](08-MODELO-DE-DOMINIO.md). ⚠️ "Anamnese" é o termo do mercado; **ela não usou essa palavra** — o nome na interface ainda não está decidido |
+| **Incompatibilidade química** ✅🗣️ | Certas químicas **não podem** ser sobrepostas. Guanidina sobre amônia, por exemplo, pode literalmente partir o fio | **Confirmado como o dado mais crítico da ficha.** É a razão de existir da anamnese: ela pergunta qual produto a cliente usou antes justamente para não sobrepor química incompatível. Não é histórico — é **alerta de segurança** que aparece antes de iniciar |
 | **Emborrachamento** ✅ | Fio elástico e gosmento, por excesso de hidratação ou dano | Sintoma que ela reconhece; pode virar observação padrão |
 | **Lavatório** ✅ | A pia de lavar cabelo, e por extensão a etapa | ⚠️ Pode ser um "posto de trabalho" — relevante só se ela atender duas clientes ao mesmo tempo. Pergunta 25 |
 | **Finalização** ✅ | Última etapa: secar, modelar, finalizar | Pode ser o gatilho natural da foto "depois" |
@@ -202,20 +235,25 @@ Existe atendimento sem agendamento (encaixe) e agendamento sem atendimento
 
 ## 8. Perguntas em aberto
 
-| # | Pergunta | Resolve | Impacto |
-| - | -------- | ------- | ------- |
-| G-01 | "Escova" é serviço próprio ou finalização de outro? | 21, 23 | Um ou vários serviços por atendimento |
-| G-02 | Hidratação, nutrição e reconstrução são distintas para ela? | 21 | Três serviços ou um com variantes |
-| G-03 | Ela trabalha com cronograma capilar? | 51, 53 | Existe ou não a entidade "plano de tratamento" |
-| G-04 | Como ela chama uma cliente que não apareceu? | 13 | Rótulo de estado na agenda |
-| G-05 | Ela precisa saber a química anterior antes de aplicar outra? | 51 | Define se a ficha tem alerta de segurança |
-| G-06 | Em que unidade ela pensa estoque? | 36, 37 | Modelo de `StockMovement` |
-| G-07 | Ela usa "comanda"? | 20 | Vocabulário da tela de checkout |
-| G-08 | Ela diz "horário" ou "agendamento"? | 6, 7 | Rótulo mais visto do painel inteiro |
-| G-09 | Ela faz corte? | 3, 20 | Escopo do catálogo na Fase 7 |
-| G-10 | Ela classifica curvatura por número (2A, 3B)? | 51 | Campo estruturado ou texto livre |
+| # | Pergunta | Status | Impacto |
+| - | -------- | ------ | ------- |
+| G-01 | "Escova" é serviço próprio ou finalização de outro? | 🟡 sinal fraco de que nutrição e corte de pontas são etapas da escova · rodada 2, Parte A e B | Um ou vários serviços por atendimento |
+| G-02 | Hidratação, nutrição e reconstrução são distintas? | 🟡 **ela diz "nutrição"** — mas não sabemos se faz as outras · rodada 2, Parte A | Três serviços ou um com variantes |
+| G-03 | Ela trabalha com cronograma capilar? | ⬜ sem resposta | Existe ou não a entidade "plano de tratamento" |
+| G-04 | Como ela chama uma cliente que não apareceu? | ⬜ sem resposta | Rótulo de estado na agenda |
+| G-05 | Precisa saber a química anterior? | ✅ **Sim — é portão de segurança.** Ver anamnese | Alerta de segurança na ficha |
+| G-06 | Em que unidade ela pensa estoque? | 🟡 pensa em **frasco** · rodada 2, perguntas 6 e 7 | Modelo de `StockMovement` |
+| G-07 | Ela usa "comanda"? | ⬜ sem resposta — não apareceu espontaneamente, o que já sugere que não | Vocabulário do checkout |
+| G-08 | Ela diz "horário" ou "agendamento"? | 🟡 disse **"vaga"** e **"data e hora"**, nenhum dos dois | Rótulo mais visto do painel |
+| G-09 | Ela faz corte? | ✅ **Sim — corte de pontas, rotineiro** | Escopo do catálogo na Fase 7 |
+| G-10 | Ela classifica curvatura por número? | 🟡 usa **"cacheado"**, não notação · confirmar | Campo estruturado ou lista de nomes |
+
+**Legenda:** ✅ resolvida · 🟡 sinal parcial · ⬜ sem resposta
+
+Nota sobre G-08: ela escreveu *"verifico se tenho **vaga** naquele dia e horário"*.
+"Vaga" é um terceiro termo, e é dela. Vale considerar para a interface da agenda.
 
 ---
 
-**Próxima versão:** Fase 1B, reescrito com o vocabulário real da Rosiele. Todo ⚠️
-some, virando ✅ confirmado ou desaparecendo do documento.
+**Próxima versão (v1):** depois da [rodada 2](descoberta/roteiro-rosiele-02.md).
+Todo ⚠️ some, virando 🗣️ confirmado ou desaparecendo do documento.

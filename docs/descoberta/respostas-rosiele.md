@@ -1,81 +1,105 @@
 # Respostas da Rosiele
 
-> **Status:** ⬜ aguardando a conversa
+> **Status:** 🟡 primeira rodada recebida — parcial
 >
-> Matéria-prima da Fase 1B. Cole aqui as respostas **do jeito que saírem** — sem
-> organizar, sem resumir, sem corrigir o português. O vocabulário dela vira nome de
-> tela, de botão e de entidade.
+> Matéria-prima da Fase 1B. Transcrição **verbatim**, sem edição, sem correção de
+> português. O vocabulário dela vira nome de tela, de botão e de entidade.
 >
-> Roteiro e instruções em [roteiro-rosiele.md](roteiro-rosiele.md).
+> Leitura e consequências em [leitura-01.md](leitura-01.md).
+> Segunda rodada em [roteiro-rosiele-02.md](roteiro-rosiele-02.md).
 
-**Data da conversa:** —
-**Duração:** —
-**Gravada:** —
+**Data:** 2026-07-31
+**Formato:** respondido por escrito, por blocos ⚠️ não foi conversa conduzida
+**Cobertura:** parcial — ver [leitura-01.md](leitura-01.md)
 
 ---
 
-## Bloco 0 · Aquecimento
+## Rodada 1 — 2026-07-31
 
-_(perguntas 1 a 5)_
+### Bloco 0 · Aquecimento
 
-## Bloco 1 · Como o horário é marcado
+_(sem resposta)_
 
-_(6 a 14)_
+### Bloco 1 · Como o horário é marcado
 
-## Bloco 2 · O começo do dia
+> É data e hora e verifico se tenho vaga naquele dia e horário.
 
-_(15 a 19)_
+### Bloco 2 · O começo do dia
 
-## Bloco 3 · O atendimento
+> Inicio fazendo teste de mecha pra ver se o cabelo suporta o produto.
 
-_(20 a 31)_
+### Bloco 3 · O atendimento
 
-## Bloco 4 · Produtos
+> Converso sobre se a cliente já fez algum alisamento, qual produto utilizou e
+> qual a última vez que alisou (caso já tenha química no cabelo)
 
-_(32 a 39)_
+### Bloco 4 · Produtos
 
-## Bloco 5 · Dinheiro
+> Let me be progressiva
+> Wella para nutrição pra escovar
 
-_(40 a 50)_
+### Bloco 5 · Dinheiro
 
-## Bloco 6 · A cliente ao longo do tempo
+> Inicialmente estou investindo em mais produtos.
 
-_(51 a 58)_
+### Bloco 6 · A cliente ao longo do tempo
 
-## Bloco 7 · Fim do dia e fim do mês
+> Progressiva damos uma passa de três meses ou antes dependendo da curvatura pra
+> fazer de novo, e sempre fica nesse loop pois cabelo alisado é assim mesmo.
 
-_(59 a 62)_
+### Bloco 7 · Fim do dia e fim do mês
 
-## Bloco 8 · Irritação e orgulho
+> Fim do dia estou com dinheiro mas fim do mês não tenho mais devido comprar algo
+> que está faltando, como disse estou procurando investir.
 
-_(63 a 68)_
+### Bloco 8 · Irritação e orgulho
 
-## Bloco 9 · A outra ponta
+> Não me irrito, amo trabalhar com cabelo, tenho orgulho.
 
-_(69 a 76)_
+### Bloco 9 · A outra ponta
 
-## Bloco 10 · Os cinco atendimentos reais
+> As pontas sempre cortamos na maioria das vezes pra não ficar ressecadas.
 
-### Caso 1 — um atendimento comum
+⚠️ Ela entendeu "ponta" como ponta do cabelo, não como as duas pontas do produto.
+Falha do instrumento, não dela — ver [leitura-01.md](leitura-01.md).
 
-### Caso 2 — um que deu errado
+### Bloco 10 · Os cinco atendimentos reais
 
-### Caso 3 — cliente nova
+> Conversamos sobre o cabelo
+> Quanto tempo aliso (se tiver química)
+> Qual a última vez que alisou
+> qual produto usou
+> se está quebrando
+> se está caindo
 
-### Caso 4 — mudou no meio
+**Caso 1 — um atendimento comum**
 
-### Caso 5 — o mais complicado ou o mais caro
+> Na verdade tento ao máximo deixar um ambiente leve então falamos de tudo sobre
+> a vida.
 
-## Bloco 11 · Fechamento
+**Caso 2 — um que deu errado**
 
-_(77 e 78)_
+> kkkkkkkkk nunca deu
+
+**Caso 3 — cliente nova**
+
+> Bastante clientes novas.
+
+**Caso 4 — mudou no meio**
+
+> Mudou para melhor, adquirindo bastante clientes.
+
+**Caso 5 — o mais complicado ou o mais caro**
+
+> Progressiva em cabelo cacheado.
+
+### Bloco 11 · Fechamento
+
+> Finalizo, deixo as orientações dos produtos que deve utilizar e o tempo do
+> retoque e vou pra minha residência.
 
 ---
 
-## Extras
+## Rodada 2 — a realizar
 
-_O que apareceu fora das perguntas._
-
-## Observações do Alan
-
-_Onde ela hesitou, o que a incomodou responder, o que ela repetiu mais de uma vez._
+_Ver [roteiro-rosiele-02.md](roteiro-rosiele-02.md)._

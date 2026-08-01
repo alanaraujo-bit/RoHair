@@ -1,7 +1,8 @@
-# Modelo de domínio — v0
+# Modelo de domínio — v0.5
 
 > **Entregável 1.4 da Fase 1.** 🚧 **Este documento é um rascunho feito para ser
-> destruído.**
+> destruído.** Atualizado com a primeira rodada de respostas da Rosiele — ver
+> [leitura-01.md](descoberta/leitura-01.md).
 >
 > Ele deriva apenas do que já está decidido — não da realidade da Rosiele, que
 > ainda não foi ouvida. Sua função não é estar certo: é **ser específico o
@@ -43,6 +44,7 @@ erDiagram
     Service ||--o{ ServiceVariant : "por comprimento"
     Service ||--o{ ServiceProductUsage : "consumo padrão"
 
+    Attendance ||--|| HairAssessment : "anamnese — abre a visita"
     Attendance ||--o{ AttendanceItem : "serviços feitos"
     Attendance ||--o{ ProductUsage : "produtos gastos"
     Attendance ||--o{ TimeEntry : "cronômetro"
@@ -70,7 +72,7 @@ trava concorrência, pequeno demais espalha regra de negócio pelo código.
 | **Catálogo** | `Service` | `ServiceVariant`, `ServiceProductUsage` | Preço, duração e consumo padrão mudam juntos |
 | **Produto** | `Product` | — | `StockMovement` fica **fora**: é um registro imutável append-only, e prendê-lo ao produto criaria contenção de escrita |
 | **Agendamento** | `Appointment` | — | Curto, muito reescrito, alta concorrência |
-| **Atendimento** | `Attendance` | `AttendanceItem`, `ProductUsage`, `TimeEntry`, `Payment` | ⚠️ A fronteira mais delicada. Ver seção 4 |
+| **Atendimento** | `Attendance` | `HairAssessment`, `AttendanceItem`, `ProductUsage`, `TimeEntry`, `Payment` | ⚠️ A fronteira mais delicada. Ver seção 4 |
 | **Financeiro** | `Transaction` | — | Livro-caixa append-only |
 
 ---
@@ -109,7 +111,78 @@ Em resumo: `Appointment` é a intenção, `Attendance` é o fato. A relação é
 Nenhuma dessas quatro é exceção — as quatro acontecem toda semana. Um modelo que
 trate encaixe ou falta como caso especial já nasce errado.
 
-### 4.2 O cronômetro é uma lista imutável de intervalos 🔒
+### 4.2 A anamnese abre o atendimento, e pode impedi-lo 🗣️
+
+**Entidade que não existia na v0.** Veio da primeira rodada, e é a mudança mais
+importante desta versão.
+
+A Rosiele descreveu a mesma sequência de perguntas duas vezes, em blocos
+diferentes, sem que nada pedisse isso:
+
+```
+HairAssessment
+  attendanceId
+  hasChemistry        já fez algum alisamento?
+  previousProduct     qual produto utilizou?
+  lastStraightenedAt  qual a última vez que alisou
+  isBreaking          está quebrando?
+  isFalling           está caindo?
+  strandTestResult    PASSED | FAILED | NOT_APPLICABLE
+  strandTestedAt
+```
+
+**Por que não é uma `ClientNote`.** Eu tinha modelado isso como texto livre com um
+tipo `SAFETY` hipotético. Texto livre não dispara alerta, não se compara entre
+visitas e não responde "quantas clientes chegaram com o cabelo caindo". Isto é um
+formulário fixo, repetido, idêntico a cada visita — e **decide se o serviço pode
+acontecer**. Merece estrutura.
+
+**Por que pertence ao atendimento e não à ficha.** "Qual a última vez que alisou"
+muda a cada retorno. Se morasse na `Client`, seria um campo mutável sobrescrito a
+cada visita, e o histórico se perderia — justamente o histórico que evita
+sobrepor química incompatível. A ficha **exibe a anamnese mais recente**; nunca
+guarda uma cópia própria.
+
+> **INV-16** — todo `Attendance` tem exatamente uma `HairAssessment`, criada na
+> abertura. Não existe atendimento sem anamnese.
+
+### 4.3 O teste de mecha é um portão que pode reprovar 🗣️
+
+> *"Inicio fazendo teste de mecha pra ver se o cabelo suporta o produto."*
+
+Um teste que existe para verificar é um teste que pode falhar. Quando falha, a
+progressiva **não acontece** — mas a cliente veio, o horário foi ocupado e trabalho
+foi feito.
+
+A v0 ia de iniciado a finalizado, supondo que o serviço planejado é o executado.
+Faltava isto:
+
+```mermaid
+stateDiagram-v2
+    [*] --> ABERTO: cliente chegou
+    ABERTO --> AVALIACAO: anamnese + teste de mecha
+    AVALIACAO --> EM_ANDAMENTO: teste passou
+    AVALIACAO --> ENCERRADO_SEM_SERVICO: teste reprovou
+    EM_ANDAMENTO --> EM_ANDAMENTO: pausa e retomada
+    EM_ANDAMENTO --> FINALIZADO: checkout
+    ENCERRADO_SEM_SERVICO --> [*]
+    FINALIZADO --> [*]
+```
+
+`ENCERRADO_SEM_SERVICO` não é erro nem cancelamento: é **desfecho legítimo e
+seguro**, e provavelmente o momento em que ela mais protege a cliente. O painel
+deve tratá-lo como trabalho bem feito, nunca como falha.
+
+Esta é a resposta ao caso 2 do roteiro — "um atendimento que deu errado" — que ela
+respondeu com *"kkkkkkkkk nunca deu"*. Ela está certa: para ela isso é
+procedimento normal. É o modelo que precisava enxergar.
+
+⚠️ **Duas perguntas abertas:** com que frequência reprova, e se ela cobra alguma
+coisa quando reprova. Perguntas 21 a 23 da
+[rodada 2](descoberta/roteiro-rosiele-02.md). A segunda decide se
+`ENCERRADO_SEM_SERVICO` gera receita.
+
+### 4.4 O cronômetro é uma lista imutável de intervalos 🔒
 
 ```
 TimeEntry: attendanceId · startedAt · endedAt (nulo enquanto corre) · reason
@@ -126,7 +199,7 @@ pausa do almoço?".
 > **INV-06** — dois `TimeEntry` do mesmo atendimento nunca se sobrepõem.
 > **INV-07** — no máximo um `TimeEntry` com `endedAt` nulo por atendimento.
 
-### 4.3 Preço é congelado no atendimento 🔒
+### 4.5 Preço é congelado no atendimento 🔒
 
 `AttendanceItem` guarda `unitPriceCents` copiado do serviço no momento do
 lançamento — nunca uma referência viva ao preço atual.
@@ -138,7 +211,7 @@ centavo; sem snapshot, ele muda toda vez que ela mexe no catálogo.
 O mesmo vale para o custo do produto em `ProductUsage`: `unitCostCents` é copiado,
 senão a margem histórica dança quando o fornecedor aumenta o preço.
 
-### 4.4 Estoque negativo é permitido, e é intencional ⚠️
+### 4.6 Estoque negativo é permitido, e é intencional ⚠️
 
 Se o registro diz 2 frascos e ela usou 3, a verdade é 3. O sistema **não** pode
 recusar a baixa nem travar a finalização do atendimento.
@@ -149,7 +222,7 @@ obrigaria a Rosiele a mentir para o app com a cliente na cadeira, e no minuto em
 que ela mente uma vez o estoque inteiro deixa de valer. Melhor aceitar o negativo e
 sinalizar: "o registro está atrás da realidade, quer acertar?".
 
-### 4.5 O que existe sem organização: nada 🔒
+### 4.7 O que existe sem organização: nada 🔒
 
 > **INV-12** — toda entidade tem `organizationId`, injetado por Prisma Client
 > Extension e protegido por RLS. Não há exceção, nem em tabela de apoio.
@@ -178,6 +251,8 @@ o contrato entre a Fase 1 e a Fase 3.
 | INV-13 | Toda data é UTC no banco; fuso vive na organização | 🔒 Arquitetura |
 | INV-14 | Revogar conta nunca altera a ficha | Fronteira de agregados |
 | INV-15 | Soft delete de cliente preserva o histórico financeiro, que é imutável | Agregado `Transaction` |
+| INV-16 | Todo `Attendance` tem exatamente uma `HairAssessment` | 🗣️ Agregado `Attendance` |
+| INV-17 | Atendimento com teste de mecha reprovado nunca gera `ProductUsage` do produto reprovado nem `AttendanceItem` do serviço impedido | 🗣️ Agregado `Attendance` |
 
 ### Três cenários adversariais que a v1 precisa passar
 
@@ -239,25 +314,31 @@ dependem inteiramente do bloco 6 do roteiro; inventá-las agora seria adivinhaç
 
 Cada uma muda o modelo de forma visível. Esta tabela é o motivo de o v0 existir.
 
-| # | Pergunta | Roteiro | Se a resposta for A | Se for B |
-| - | -------- | ------- | ------------------- | -------- |
-| M-01 | Um serviço por visita ou vários? | 21, 23 | `Attendance` tem um serviço direto — modelo simples | `AttendanceItem` em lista — como está |
-| M-02 | Atende duas clientes ao mesmo tempo? | 24, 25 | Um atendimento ativo por vez | Cronômetros concorrentes, e o painel muda de forma |
-| M-03 | Trabalha com cronograma capilar? | 51, 53 | Visitas independentes | Nova entidade `TreatmentPlan`, e o portal ganha "meu plano" |
-| M-04 | Tem cliente fixa quinzenal? | 12 | Agendamento avulso | `Appointment` precisa de recorrência já na Fase 8 |
-| M-05 | Pensa estoque em quê? | 36, 37 | Frasco ou aplicação | Mililitro ou grama — e a UI tem que converter |
-| M-06 | Cliente já ficou devendo? | 46 | Pagamento sempre integral | Pagamento parcial e saldo devedor entram na Fase 10 |
-| M-07 | Atende de graça alguém? | 44 | — | `Attendance` precisa do estado cortesia, distinto de "não pago" |
-| M-08 | Precisa saber a química anterior? | 51 | Histórico basta | Alerta de segurança na ficha, com destaque próprio |
-| M-09 | Preço varia por cabelo? | 42 | `ServiceVariant` some | `ServiceVariant` fica |
-| M-10 | Quando as mãos ficam livres? | 27, 28 | Define a janela real de uso do app | — |
+| # | Pergunta | Status depois da rodada 1 |
+| - | -------- | ------------------------- |
+| M-01 | Um serviço por visita ou vários? | 🟡 Nutrição e corte de pontas parecem **etapas da escova**, não itens vendidos. Se confirmar, `AttendanceItem` continua em lista mas o catálogo ganha serviços compostos · rodada 2, Partes A e B |
+| M-02 | Atende duas clientes ao mesmo tempo? | ⬜ Sem resposta. Continua sendo a pergunta que mais muda o painel |
+| M-03 | Trabalha com cronograma capilar? | ⬜ Sem resposta |
+| M-04 | Tem cliente fixa quinzenal? | 🟡 Indireto: a progressiva tem **loop de 3 meses**. Não é recorrência de agenda, mas é recorrência de negócio — o retorno é previsível |
+| M-05 | Pensa estoque em quê? | 🟡 **Frasco.** *"Um frasco dá para quantas progressivas"* é a pergunta 6 da rodada 2 |
+| M-06 | Cliente já ficou devendo? | ⬜ Sem resposta · rodada 2, pergunta 11 |
+| M-07 | Atende de graça alguém? | ⬜ Sem resposta |
+| M-08 | Precisa saber a química anterior? | ✅ **Sim, e é portão de segurança.** Gerou `HairAssessment` e o estado `ENCERRADO_SEM_SERVICO`. Resolvida |
+| M-09 | Preço varia por cabelo? | 🟡 **Varia, mas por curvatura, não por comprimento** — minha hipótese estava no eixo errado. `ServiceVariant` fica, com o eixo corrigido · rodada 2, perguntas 1 e 2 |
+| M-10 | Quando as mãos ficam livres? | ⬜ Sem resposta. Continua sendo o critério de aceite da regra dos 3 toques |
+| **M-11** | O teste de mecha reprovado gera cobrança? | 🆕 Nasceu da rodada 1 · rodada 2, pergunta 23 |
+| **M-12** | Ela trabalha sozinha? Ela escreveu "damos", "cortamos" | 🆕 Decide se `Membership` vira tela agora ou na Fase 16 · rodada 2, pergunta 31 |
+
+**Legenda:** ✅ resolvida · 🟡 sinal parcial · ⬜ sem resposta · 🆕 nova
 
 ---
 
 ## 8. O que acontece agora
 
-1. Alan conversa com a Rosiele usando o [roteiro](descoberta/roteiro-rosiele.md)
-2. As respostas entram em [respostas-rosiele.md](descoberta/respostas-rosiele.md)
-3. Este documento é reescrito como **v1**, com M-01 a M-10 resolvidas
-4. A v1 é confrontada com os cinco atendimentos reais — DoD da Fase 1
-5. Só então vira schema Prisma, na Fase 3
+1. ✅ Rodada 1 respondida — [leitura](descoberta/leitura-01.md). Resolveu M-08,
+   corrigiu M-09 e criou `HairAssessment`
+2. ⬜ [Rodada 2](descoberta/roteiro-rosiele-02.md) — números, uma cliente
+   específica, o teste de mecha e os dados que ela tem das clientes
+3. ⬜ Reescrita como **v1**, com M-01 a M-12 resolvidas
+4. ⬜ Confronto com os cinco atendimentos reais — DoD da Fase 1
+5. ⬜ Só então vira schema Prisma, na Fase 3

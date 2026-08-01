@@ -273,9 +273,23 @@ configuração, quando houver horários realmente livres e bem definidos.
 
 ### D-06 · Escopo do Portal da Cliente
 
-**Status:** ⏳ Aguardando · **Bloqueia:** Fase 12
+**Status:** 🟡 Parcialmente resolvida pela primeira rodada · **Bloqueia:** Fase 12
 
-Proposta de escopo em [03-ROADMAP.md](03-ROADMAP.md#fase-12) — a confirmar.
+Proposta completa em [03-ROADMAP.md](03-ROADMAP.md#fase-12).
+
+**Confirmado pela Rosiele** — *"Finalizo, deixo as orientações dos produtos que
+deve utilizar e o tempo do retoque e vou pra minha residência."*
+
+O item **"Meu cuidado"** deixa de ser hipótese: ela **já faz isso hoje**, falado, na
+porta, no fim do atendimento. Falado, some antes de a cliente chegar em casa. O
+portal não inventa comportamento — digitaliza um que existe, que é a categoria de
+funcionalidade com maior chance de ser usada.
+
+O **"tempo do retoque"** também é confirmado, e é calculável: três meses para
+progressiva, *"ou antes dependendo da curvatura"*.
+
+**Ainda em aberto:** o que ela **não** quer que a cliente veja (pergunta 29 da
+rodada 2) e o valor percebido da galeria de antes e depois (pergunta 27).
 
 ### D-07 · Como as duas pontas se encontram quando a ficha não tem CPF
 

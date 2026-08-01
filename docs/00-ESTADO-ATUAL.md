@@ -12,9 +12,9 @@
 | ---------------------- | ------------------------------------------------------------ |
 | **Última atualização** | 2026-07-31                                                   |
 | **Fase atual**         | Fase 1 — Descoberta & Documentação de Produto                |
-| **Status da fase**     | 🔵 **Fase 1A concluída** · Fase 1B bloqueada                 |
+| **Status da fase**     | 🔵 Fase 1A concluída · **rodada 1 lida** · Fase 1B bloqueada |
 | **Fases concluídas**   | Planejamento · Identidade e acesso · Fase 0 · **Fase 1A**    |
-| **Bloqueio ativo**     | 🔴 **A conversa com a Rosiele.** Nada avança sem as respostas |
+| **Bloqueio ativo**     | 🔴 **Rodada 2 com a Rosiele.** Faltam todos os números       |
 | **Local**              | http://localhost:3000 (`npm run dev`)                        |
 | **Produção**           | https://rohair.vercel.app                                    |
 | **CI**                 | ✅ Verde — qualidade, build e E2E                            |
@@ -60,7 +60,7 @@ RoHair/
 │   ├── 06-GLOSSARIO.md           Fase 1A · vocabulário do domínio
 │   ├── 07-FLUXOS.md              Fase 1A · as duas pontas
 │   ├── 08-MODELO-DE-DOMINIO.md   Fase 1A · agregados e invariantes (v0)
-│   ├── descoberta/               roteiro e respostas da Rosiele
+│   ├── descoberta/               roteiros, respostas e leitura das rodadas
 │   └── adr/ADR-0001-fundacao-do-projeto.md
 └── src/
     ├── app/                      layout · page (painel da Fase 0) · globals.css
@@ -115,58 +115,71 @@ Justificativas completas em [04-DECISOES.md](04-DECISOES.md) e [adr/](adr/).
 
 ## 5. Próximo passo imediato
 
-> ### 🔴 O projeto está parado esperando **uma conversa de 45 minutos**.
+> ### 🔴 Mandar a [rodada 2](descoberta/roteiro-rosiele-02.md) para a Rosiele.
 >
-> **Alan precisa conversar com a Rosiele** usando o
-> [roteiro pronto](descoberta/roteiro-rosiele.md), e colar as respostas em
-> [respostas-rosiele.md](descoberta/respostas-rosiele.md).
+> 24 perguntas curtas, quase todas numéricas. Pode ir por mensagem, direto — foi
+> desenhada para ser respondida por escrito, que é como ela respondeu a primeira.
 >
-> Nada mais avança até isso acontecer — e isso é de propósito. Ver abaixo.
+> As respostas entram em
+> [respostas-rosiele.md](descoberta/respostas-rosiele.md), seção "Rodada 2".
 
-### Por que nada avança sem essa conversa
+### Por que houve uma segunda rodada
 
-A Fase 1B (personas, mapa do dia, wireframes, modelo v1, escopo das Fases 6 a 14)
-depende inteiramente do dia real de trabalho dela. A Fase 2 também não pode
-começar: o design system precisa saber que telas vai servir.
+A rodada 1 veio **por escrito, uma linha por bloco**, respondendo aos títulos e não
+às perguntas — ela viu os cabeçalhos, que o roteiro pedia que ela não visse. Parte
+da culpa é do instrumento: o bloco "A outra ponta" queria dizer a outra ponta do
+produto, e "ponta" é palavra de cabelo. Ela respondeu sobre pontas ressecadas, com
+toda a razão.
 
-O que **pode** ser adiantado sem ela, se a conversa demorar: a identidade da marca,
-que já está decidida na [DEC-011](04-DECISOES.md#dec-011) e não depende de
-descoberta. É a única saída lateral disponível.
+**Mesmo assim a rodada valeu muito** — ver
+[leitura-01.md](descoberta/leitura-01.md). O que ela **não** deu foi um único
+número: nenhum preço, nenhuma duração, nenhum volume de clientes, nenhum horário
+de trabalho, e nenhum dos cinco atendimentos reais que o DoD exige.
 
-### O que a Fase 1A produziu
+### A frase que vale a fase inteira
 
-| Documento | O que é |
-| --------- | ------- |
-| [descoberta/roteiro-rosiele.md](descoberta/roteiro-rosiele.md) | 78 perguntas em 11 blocos + 5 atendimentos reais. Escrito para o Alan conduzir sozinho |
-| [descoberta/respostas-rosiele.md](descoberta/respostas-rosiele.md) | Template vazio, aguardando |
-| [06-GLOSSARIO.md](06-GLOSSARIO.md) | Vocabulário da beleza e do produto, com 10 termos marcados a confirmar |
-| [07-FLUXOS.md](07-FLUXOS.md) | Identidade das duas pontas e pontos de encontro. **Expôs três buracos** |
-| [08-MODELO-DE-DOMINIO.md](08-MODELO-DE-DOMINIO.md) | Agregados, 15 invariantes e 10 perguntas que o modelo faz a ela |
+> **"Fim do dia estou com dinheiro mas fim do mês não tenho mais devido comprar
+> algo que está faltando."**
 
-### O achado mais importante da Fase 1A
+Ela disse isso sozinha, sem ser perguntada sobre lucro. É a tese do produto na voz
+da usuária: ela enxerga **caixa**, não lucro; e a compra de produto é **reativa**,
+sempre depois da falta. Os dois problemas são o mesmo — o custo do produto não está
+ligado ao atendimento que o consumiu.
 
-Percorrer os fluxos com rigor mostrou que **o ponto de encontro entre as duas
-pontas do produto não funciona como estava desenhado.** A DEC-008 supõe que a ficha
-da cliente tem CPF; a Rosiele não pede CPF de ninguém hoje. Sem isso, a cliente que
-se autocadastra vira ficha duplicada, e o momento mais valioso do produto — dois
-anos de histórico aparecendo de uma vez — nunca acontece.
+**Consequência de prioridade:** o número de destaque do painel **não pode ser
+faturamento**. Faturamento é exatamente a ilusão que ela já tem. O RoHair tem que
+mostrar **o que sobrou**.
 
-Virou [D-07](04-DECISOES.md#d-07--como-as-duas-pontas-se-encontram-quando-a-ficha-não-tem-cpf),
-com recomendação de fusão assistida. Dois achados menores viraram
-[D-08](04-DECISOES.md#d-08--rota-de-escape-quando-a-ativação-da-cliente-falha).
+### O que a rodada 1 mudou no modelo
 
-Encontrar isso agora custou algumas horas de documento. Encontrar na Fase 4 teria
-custado a reescrita do modelo de identidade.
+| Mudança | Origem |
+| ------- | ------ |
+| **`HairAssessment` — entidade nova** | Ela descreveu a mesma anamnese duas vezes, sem ser perguntada: já fez alisamento, qual produto, quando, se está quebrando, se está caindo |
+| **`ENCERRADO_SEM_SERVICO` — estado novo** | *"Teste de mecha pra ver se o cabelo suporta o produto"* — um teste que pode reprovar, e o modelo não previa reprovação |
+| **M-08 resolvida** | Química anterior é **portão de segurança**, não histórico |
+| **M-09 corrigida** | Preço varia por **curvatura**, não por comprimento. Minha hipótese estava no eixo errado |
+| **Vocabulário** | Ela diz **nutrição**, não hidratação. E **"vaga"**, não horário nem agendamento |
+| **[D-06](04-DECISOES.md#d-06--escopo-do-portal-da-cliente) parcialmente resolvida** | *"Deixo as orientações dos produtos e o tempo do retoque"* — o "Meu cuidado" do portal já existe, falado |
+
+### O que continua bloqueado, e não vou inventar
+
+Personas, mapa do dia, wireframes, escopo das Fases 6 a 14 e backlog. Todos
+dependem de números que ainda não temos. Escrevê-los agora seria adivinhação — que
+é exatamente o que esta fase existe para impedir.
+
+A Fase 2 também não começa: o design system precisa saber que telas vai servir. A
+única saída lateral continua sendo a identidade da marca
+([DEC-011](04-DECISOES.md#dec-011)), que não depende de descoberta.
 
 ### Como retomar em uma sessão nova
 
 1. Ler este arquivo, depois [04-DECISOES.md](04-DECISOES.md) e a Fase 1 em
    [03-ROADMAP.md](03-ROADMAP.md)
-2. Verificar se [respostas-rosiele.md](descoberta/respostas-rosiele.md) foi
-   preenchido
-   - **Se sim** → executar a Fase 1B (não precisa de nova aprovação; a Fase 1
-     inteira já foi aprovada em 2026-07-31)
-   - **Se não** → o bloqueio continua. Não começar a Fase 2
+2. Verificar a seção "Rodada 2" em
+   [respostas-rosiele.md](descoberta/respostas-rosiele.md)
+   - **Preenchida** → executar a Fase 1B (não precisa de nova aprovação; a Fase 1
+     inteira foi aprovada em 2026-07-31)
+   - **Vazia** → o bloqueio continua. Não começar a Fase 2
 3. `npm run dev` se precisar de ambiente visual (o servidor não sobrevive à troca
    de sessão)
 
@@ -215,6 +228,33 @@ correspondentes já estão no [roteiro](descoberta/roteiro-rosiele.md).
 ## 8. Log de sessões
 
 Ordem cronológica inversa — mais recente no topo.
+
+### 2026-07-31 (7) — Primeira rodada de respostas · modelo corrigido
+
+- Rodada 1 respondida **por escrito, uma linha por bloco**, respondendo aos títulos
+  em vez das perguntas. Diagnóstico completo em
+  [leitura-01.md](descoberta/leitura-01.md).
+- **Bug no meu instrumento:** o bloco "A outra ponta" colidiu com "ponta" do
+  domínio do cabelo. Escrevi um glossário sobre colisão de vocabulário e caí nela
+  no título de um bloco.
+- **Ela entregou a tese do produto de graça:** *"Fim do dia estou com dinheiro mas
+  fim do mês não tenho mais devido comprar algo que está faltando."* Caixa em vez
+  de lucro, e compra reativa de produto. Consequência: o número de destaque do
+  painel não pode ser faturamento.
+- **Achado principal — `HairAssessment`.** Ela descreveu a mesma anamnese duas
+  vezes, espontaneamente. Eu tinha modelado como texto livre; é formulário
+  estruturado que decide se o serviço pode acontecer. Virou entidade.
+- **Estado novo — `ENCERRADO_SEM_SERVICO`.** O teste de mecha pode reprovar, e o
+  modelo não previa isso. É a resposta real ao "atendimento que deu errado" que ela
+  respondeu com "nunca deu" — para ela é procedimento normal de segurança.
+- M-08 resolvida; M-09 estava no eixo errado (curvatura, não comprimento); M-11 e
+  M-12 nasceram. Glossário corrigido: **nutrição**, não hidratação; **"vaga"**, não
+  horário; corte de pontas é rotina.
+- [D-06](04-DECISOES.md#d-06--escopo-do-portal-da-cliente) parcialmente resolvida:
+  o "Meu cuidado" do portal já existe hoje, falado na porta.
+- **Rodada 2 escrita** — 24 perguntas curtas e numéricas, desenhada para o formato
+  que ela de fato usa. Fase 1B continua bloqueada: nenhum número, nenhum dos cinco
+  atendimentos reais.
 
 ### 2026-07-31 (6) — Fase 1 aprovada · Fase 1A executada
 
