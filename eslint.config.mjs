@@ -8,7 +8,7 @@ import boundaries from 'eslint-plugin-boundaries';
  *
  * Documentação em docs/02-ARQUITETURA.md (DEC-004). Em resumo:
  *
- *   app            → pode tudo (é a camada de composição)
+ *   app            → pode tudo, INCLUSIVE infrastructure (raiz de composição)
  *   presentation   → application, domain, shared, core, kernel
  *   application    → domain, core, kernel
  *   infrastructure → application, domain, core, kernel
@@ -69,12 +69,23 @@ const layers = defineConfig({
       {
         default: 'disallow',
         policies: [
+          /**
+           * `app` é a RAIZ DE COMPOSIÇÃO, e por isso é a única camada que
+           * enxerga `infrastructure`.
+           *
+           * Alguém precisa escolher qual adapter concreto entra no lugar de
+           * cada porta, e esse alguém é sempre a borda: é o padrão de
+           * composition root. Se `application` pudesse fazer isso, a inversão
+           * de dependência não existiria de fato — o caso de uso passaria a
+           * conhecer Prisma por tabela interposta.
+           */
           {
             from: [{ type: 'app' }],
             allow: [
               { type: 'app' },
               { type: 'presentation' },
               { type: 'application' },
+              { type: 'infrastructure' },
               { type: 'shared' },
               { type: 'core' },
               { type: 'kernel' },
