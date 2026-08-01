@@ -1,7 +1,7 @@
 # Cinco cenários — a validação do modelo
 
-> **Entregável 1.6 da Fase 1.** DoD: *"o modelo de domínio foi validado contra 5
-> cenários de atendimento"*.
+> **Entregável 1.6 da Fase 1.** DoD: _"o modelo de domínio foi validado contra 5
+> cenários de atendimento"_.
 >
 > Cada cenário foi escolhido para **atacar** uma parte diferente do modelo, não para
 > confirmá-lo. Cenário que passa liso não valida nada.
@@ -22,13 +22,13 @@
 > pontas. Duas horas e quarenta. Paga R$ 220 no Pix. Foto do antes e do depois,
 > as duas liberadas para ela ver. Próximo retorno em três meses.
 
-| Verificação | Resultado |
-| ----------- | --------- |
-| Retorno calculado por serviço + curvatura | ✅ Regra do domínio, sem depender de histórico |
-| Anamnese pré-preenchida pelo histórico | ✅ E a resposta gravada é a **confirmada por ela**, não a derivada — se Carla tiver alisado em outro lugar, a anamnese sabe e o histórico não |
-| Preço congelado no item | ✅ INV-05 |
-| Duas fotos com visibilidade explícita | ✅ INV-11 |
-| Duração real alimenta a estimativa | ✅ Nível 3 da configuração |
+| Verificação                               | Resultado                                                                                                                                     |
+| ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Retorno calculado por serviço + curvatura | ✅ Regra do domínio, sem depender de histórico                                                                                                |
+| Anamnese pré-preenchida pelo histórico    | ✅ E a resposta gravada é a **confirmada por ela**, não a derivada — se Carla tiver alisado em outro lugar, a anamnese sabe e o histórico não |
+| Preço congelado no item                   | ✅ INV-05                                                                                                                                     |
+| Duas fotos com visibilidade explícita     | ✅ INV-11                                                                                                                                     |
+| Duração real alimenta a estimativa        | ✅ Nível 3 da configuração                                                                                                                    |
 
 **Passou inteiro.** Era esperado — é o caminho feliz, e serve de linha de base.
 
@@ -44,19 +44,19 @@
 > semanas e marca um retorno para reavaliar. Denise vai embora sem progressiva. A
 > Rosiele não cobra nada.
 
-| Verificação | Resultado |
-| ----------- | --------- |
-| Estado terminal sem serviço executado | ✅ `ENCERRADO_SEM_SERVICO` |
-| Cobrança nesse caso | ✅ Configurável (M-11), padrão não cobrar |
+| Verificação                              | Resultado                                 |
+| ---------------------------------------- | ----------------------------------------- |
+| Estado terminal sem serviço executado    | ✅ `ENCERRADO_SEM_SERVICO`                |
+| Cobrança nesse caso                      | ✅ Configurável (M-11), padrão não cobrar |
 | Química incompatível registrada na ficha | ✅ `HairAssessment` com `previousProduct` |
-| **Baixa do produto gasto no teste** | 🔴 **GAP-01** |
+| **Baixa do produto gasto no teste**      | 🔴 **GAP-01**                             |
 
 > ### 🔴 GAP-01 · O teste consome produto, e o modelo dizia que não
 >
-> A INV-17 dizia: *"atendimento com teste reprovado nunca gera `ProductUsage` do
-> produto reprovado"*. **Está errada.** O teste de mecha **usa** o produto — pouco,
+> A INV-17 dizia: _"atendimento com teste reprovado nunca gera `ProductUsage` do
+> produto reprovado"_. **Está errada.** O teste de mecha **usa** o produto — pouco,
 > mas usa. Se não houver baixa, o estoque mente, e mentir sobre estoque é
-> exatamente a dor da Rosiele: *"comprar algo que está faltando"*.
+> exatamente a dor da Rosiele: _"comprar algo que está faltando"_.
 >
 > **Correção:** `ENCERRADO_SEM_SERVICO` **tem** `ProductUsage` — o consumido no
 > teste. O que não pode existir é o `AttendanceItem` do serviço impedido.
@@ -74,12 +74,12 @@
 > escova com nutrição, que ela cadastrou como serviço composto, mais nada pelo
 > corte de pontas, que ela nunca cobra à parte.
 
-| Verificação | Resultado |
-| ----------- | --------- |
-| `Attendance` sem `Appointment` | ✅ Encaixe não é exceção (§ 4.1) |
-| Serviço composto configurável | ✅ § 3.2 da configuração |
-| Serviço acrescentado no meio | ✅ `AttendanceItem` em lista |
-| **Margem por serviço e baixa de estoque** | 🔴 **GAP-02** |
+| Verificação                               | Resultado                        |
+| ----------------------------------------- | -------------------------------- |
+| `Attendance` sem `Appointment`            | ✅ Encaixe não é exceção (§ 4.1) |
+| Serviço composto configurável             | ✅ § 3.2 da configuração         |
+| Serviço acrescentado no meio              | ✅ `AttendanceItem` em lista     |
+| **Margem por serviço e baixa de estoque** | 🔴 **GAP-02**                    |
 
 > ### 🔴 GAP-02 · Serviço composto quebra o custo e a baixa
 >
@@ -95,8 +95,8 @@
 > margem do composto é preço do pai menos a soma do custo das folhas.
 >
 > Consequência direta: **a baixa de estoque é calculada sobre as folhas**, nunca
-> sobre o item de topo. Sem isso, o DoD da Fase 7 — *"finalizar dá baixa automática
-> correta"* — falha em silêncio no caso mais comum dela.
+> sobre o item de topo. Sem isso, o DoD da Fase 7 — _"finalizar dá baixa automática
+> correta"_ — falha em silêncio no caso mais comum dela.
 
 ---
 
@@ -114,13 +114,13 @@
 > funde as duas. **E a ficha antiga também tinha uma conta**, criada num teste
 > antigo que ninguém lembra.
 
-| Verificação | Resultado |
-| ----------- | --------- |
-| Autocadastro não casa por telefone sozinho | ✅ D-07 — nada vaza sem decisão humana |
-| Fusão sugerida por nome e telefone | ✅ D-07 |
-| Histórico das duas preservado | ✅ `mergedIntoId` |
-| **Duas contas na mesma ficha depois da fusão** | 🔴 **GAP-03** |
-| **Receita contada duas vezes** | ✅ Não acontece — `Transaction` referencia o atendimento, não a ficha |
+| Verificação                                    | Resultado                                                             |
+| ---------------------------------------------- | --------------------------------------------------------------------- |
+| Autocadastro não casa por telefone sozinho     | ✅ D-07 — nada vaza sem decisão humana                                |
+| Fusão sugerida por nome e telefone             | ✅ D-07                                                               |
+| Histórico das duas preservado                  | ✅ `mergedIntoId`                                                     |
+| **Duas contas na mesma ficha depois da fusão** | 🔴 **GAP-03**                                                         |
+| **Receita contada duas vezes**                 | ✅ Não acontece — `Transaction` referencia o atendimento, não a ficha |
 
 > ### 🔴 GAP-03 · Fusão pode criar duas credenciais para uma ficha
 >
@@ -146,14 +146,14 @@
 > pagamento: é cortesia. A foto do depois fica marcada como **só a profissional**,
 > porque a prima não gosta de aparecer.
 
-| Verificação | Resultado |
-| ----------- | --------- |
-| App fecha no meio, cronômetro sobrevive | ✅ `TimeEntry` em intervalos (INV-06, INV-07) |
-| Cortesia sem virar dívida | ✅ Estado próprio (M-07) |
+| Verificação                                   | Resultado                                                 |
+| --------------------------------------------- | --------------------------------------------------------- |
+| App fecha no meio, cronômetro sobrevive       | ✅ `TimeEntry` em intervalos (INV-06, INV-07)             |
+| Cortesia sem virar dívida                     | ✅ Estado próprio (M-07)                                  |
 | Cortesia consome produto e dá prejuízo no dia | ✅ **Correto e desejado** — custo sem receita é a verdade |
-| Foto privada | ✅ Padrão já é `PROFESSIONAL_ONLY` |
-| **A que dia pertence este atendimento** | 🔴 **GAP-04** |
-| **Escova não precisa de anamnese química** | 🔴 **GAP-05** |
+| Foto privada                                  | ✅ Padrão já é `PROFESSIONAL_ONLY`                        |
+| **A que dia pertence este atendimento**       | 🔴 **GAP-04**                                             |
+| **Escova não precisa de anamnese química**    | 🔴 **GAP-05**                                             |
 
 > ### 🔴 GAP-04 · Nenhuma regra dizia a que dia a receita pertence
 >
@@ -166,8 +166,8 @@
 > gera receita, baixa e histórico na transação única da INV-09.
 >
 > Vale para o fechamento de caixa da Fase 10 e para o "quanto entrou hoje" do
-> painel. É exatamente a classe de bug que a arquitetura queria matar — *"o
-> faturamento do dia mudou depois da meia-noite"* — e ela tinha voltado pela porta
+> painel. É exatamente a classe de bug que a arquitetura queria matar — _"o
+> faturamento do dia mudou depois da meia-noite"_ — e ela tinha voltado pela porta
 > dos fundos.
 
 > ### 🔴 GAP-05 · A anamnese obrigatória contradizia a configuração
@@ -185,13 +185,13 @@
 
 ## Resumo
 
-| Cenário | O que atacou | Buracos |
-| ------- | ------------ | ------- |
-| 1 · Retorno de progressiva | Histórico, preço, retorno | — |
-| 2 · Teste reprova | Portão de segurança, estoque | GAP-01 |
-| 3 · Encaixe composto | Serviço composto, margem, baixa | GAP-02 |
-| 4 · Ficha duplicada | Encontro das pontas, fusão | GAP-03 |
-| 5 · Atravessa a meia-noite | Cronômetro, cortesia, fuso | GAP-04, GAP-05 |
+| Cenário                    | O que atacou                    | Buracos        |
+| -------------------------- | ------------------------------- | -------------- |
+| 1 · Retorno de progressiva | Histórico, preço, retorno       | —              |
+| 2 · Teste reprova          | Portão de segurança, estoque    | GAP-01         |
+| 3 · Encaixe composto       | Serviço composto, margem, baixa | GAP-02         |
+| 4 · Ficha duplicada        | Encontro das pontas, fusão      | GAP-03         |
+| 5 · Atravessa a meia-noite | Cronômetro, cortesia, fuso      | GAP-04, GAP-05 |
 
 **Cinco buracos em cinco cenários.** Dois deles — GAP-02 e GAP-04 — quebrariam DoDs
 de fases inteiras em silêncio: baixa de estoque errada na Fase 7 e faturamento que

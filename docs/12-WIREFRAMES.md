@@ -75,7 +75,7 @@ consumo.
 
 ## 2 · Hoje
 
-A tela inicial. Responde *"o que eu tenho hoje?"* sem rolar.
+A tela inicial. Responde _"o que eu tenho hoje?"_ sem rolar.
 
 ```
 ┌──────────────────────────────┐
@@ -155,8 +155,8 @@ DIA                             SEMANA
 └──────────────────────────────┘└──────────────────────────────┘
 ```
 
-🗣️ **"Vaga", não "livre" nem "disponível".** Ela escreveu *"verifico se tenho vaga
-naquele dia e horário"* — é a palavra de quem olha a agenda pelo espaço vazio, não
+🗣️ **"Vaga", não "livre" nem "disponível".** Ela escreveu _"verifico se tenho vaga
+naquele dia e horário"_ — é a palavra de quem olha a agenda pelo espaço vazio, não
 pelo compromisso marcado.
 
 Arrastar o bloco reagenda. Swipe confirma ou cancela.
@@ -690,7 +690,7 @@ O card do fim é o que faz ela não trocar de profissional.
 └──────────────────────────────┘
 ```
 
-🗣️ *"Deixo as orientações dos produtos que deve utilizar e o tempo do retoque."*
+🗣️ _"Deixo as orientações dos produtos que deve utilizar e o tempo do retoque."_
 Falado, isso se perde antes de a cliente chegar em casa. Escrito, vira o motivo de
 ela abrir o app de novo.
 
@@ -700,29 +700,29 @@ ela abrir o app de novo.
 
 ## O que estes wireframes decidiram
 
-| Decisão | Onde |
-| ------- | ---- |
-| **O número grande é "sobrou", nunca "entrou"** | Telas 2 e 12 |
-| **O alerta de química vem antes de tudo na ficha** | Tela 6 |
-| **A anamnese vem pré-preenchida pelo histórico** | Tela 8 |
-| **Reprovar no teste é sucesso, não erro** | Tela 8 |
-| **Produtos pré-marcados pelo hábito daquela cliente** | Tela 9 |
-| **O lucro aparece no checkout, não no fim do mês** | Tela 10 |
-| **Alerta de estoque em dias, não em quantidade** | Tela 11 |
-| **A fusão de fichas é sugerida, nunca automática** | Tela 7 |
-| 🗣️ **"Vaga" em vez de "livre"** | Tela 3 |
-| **Estoque fora do onboarding** | Tela 1 |
+| Decisão                                               | Onde         |
+| ----------------------------------------------------- | ------------ |
+| **O número grande é "sobrou", nunca "entrou"**        | Telas 2 e 12 |
+| **O alerta de química vem antes de tudo na ficha**    | Tela 6       |
+| **A anamnese vem pré-preenchida pelo histórico**      | Tela 8       |
+| **Reprovar no teste é sucesso, não erro**             | Tela 8       |
+| **Produtos pré-marcados pelo hábito daquela cliente** | Tela 9       |
+| **O lucro aparece no checkout, não no fim do mês**    | Tela 10      |
+| **Alerta de estoque em dias, não em quantidade**      | Tela 11      |
+| **A fusão de fichas é sugerida, nunca automática**    | Tela 7       |
+| 🗣️ **"Vaga" em vez de "livre"**                       | Tela 3       |
+| **Estoque fora do onboarding**                        | Tela 1       |
 
 ### Regra dos 3 toques — verificação
 
-| Ação | Caminho | Toques |
-| ---- | ------- | ------ |
-| Agendar | Hoje → `+` → cliente → horário | 3 |
-| Iniciar atendimento | Hoje → card → Iniciar | 3 |
-| Voltar ao atendimento aberto | Hoje → Abrir | 2 |
-| Dar baixa em produto | automática no Finalizar | 0 |
-| Receber pagamento | Finalizar → forma → Concluir | 3 |
-| Marcar retorno | dentro do checkout | 1 |
+| Ação                         | Caminho                        | Toques |
+| ---------------------------- | ------------------------------ | ------ |
+| Agendar                      | Hoje → `+` → cliente → horário | 3      |
+| Iniciar atendimento          | Hoje → card → Iniciar          | 3      |
+| Voltar ao atendimento aberto | Hoje → Abrir                   | 2      |
+| Dar baixa em produto         | automática no Finalizar        | 0      |
+| Receber pagamento            | Finalizar → forma → Concluir   | 3      |
+| Marcar retorno               | dentro do checkout             | 1      |
 
 Todas dentro do limite. A que estava em risco era "dar baixa em produto" — resolvida
 tirando-a das mãos dela: baixa automática pelo consumo pré-marcado.

@@ -8,16 +8,17 @@
 
 ## Snapshot
 
-| Campo                  | Valor                                                        |
-| ---------------------- | ------------------------------------------------------------ |
-| **Última atualização** | 2026-07-31                                                   |
-| **Fase atual**         | Fase 2 — Design System "Áurea"                               |
-| **Status da fase**     | 🟡 Aguardando aprovação para iniciar                         |
-| **Fases concluídas**   | Planejamento · Identidade e acesso · Fase 0 · **Fase 1**     |
-| **Bloqueios**          | Nenhum                                                       |
-| **Local**              | http://localhost:3000 (`npm run dev`)                        |
-| **Produção**           | https://rohair.vercel.app                                    |
-| **CI**                 | ✅ Verde — qualidade, build e E2E                            |
+| Campo                  | Valor                                                    |
+| ---------------------- | -------------------------------------------------------- |
+| **Última atualização** | 2026-07-31                                               |
+| **Fase atual**         | Fase 2 — Design System "Áurea"                           |
+| **Status da fase**     | 🟡 **Executada — aguardando sua revisão**                |
+| **Fases concluídas**   | Planejamento · Identidade e acesso · Fase 0 · **Fase 1** |
+| **Bloqueios**          | Nenhum                                                   |
+| **Local**              | http://localhost:3000 (`npm run dev`)                    |
+| **Produção**           | https://rohair.vercel.app                                |
+| **Catálogo Áurea**     | https://rohair.vercel.app/design ← **revisar aqui**      |
+| **CI**                 | ✅ Verde — qualidade, build e E2E                        |
 
 **Legenda de status:** ⬜ não iniciada · 🟡 aguardando aprovação · 🔵 em andamento · ✅ concluída · 🔴 bloqueada
 
@@ -53,7 +54,7 @@ RoHair/
 ├── vitest.config.mts             Duas suítes: domain (node) e ui (jsdom)
 ├── playwright.config.ts          iPhone (WebKit) primeiro, Android, desktop
 ├── .github/workflows/ci.yml      Qualidade · build · E2E
-├── e2e/fundacao.spec.ts          3 testes de fumaça
+├── e2e/                          fundacao.spec.ts · aurea.spec.ts (9 testes)
 ├── docs/                         (índice no README)
 │   ├── 00 a 05                   estado · visão · arquitetura · roadmap ·
 │   │                             decisões · protocolo
@@ -66,18 +67,24 @@ RoHair/
 │   ├── 12-WIREFRAMES.md          Fase 1B · as 16 telas
 │   ├── 13-BACKLOG.md             Fase 1B · 42 itens priorizados
 │   ├── descoberta/               a conversa com a Rosiele e o que saiu dela
-│   └── adr/ADR-0001-fundacao-do-projeto.md
+│   └── adr/                      ADR-0001 fundação · ADR-0002 Áurea
 └── src/
-    ├── app/                      layout · page (painel da Fase 0) · globals.css
+    ├── app/
+    │   ├── layout · page · globals.css
+    │   └── design/               catálogo vivo do Áurea
     ├── core/env/env.ts           Validação de ambiente com Zod (+ testes)
     └── shared/
         ├── ui/brand/monogram.tsx
-        ├── ui/styles/            tokens.css (Áurea) · base.css (anti-navegador)
+        ├── ui/icons/             14 ícones autorais do domínio
+        ├── ui/primitives/        19 primitivos (Fase 2)
+        ├── ui/styles/            tokens · base · color.ts (+ teste de contraste)
         ├── ui/theme/             store externa · hook · alternador
-        └── utils/cn.ts           (+ testes)
+        └── utils/                cn · format-money (+ testes)
 ```
 
 `src/features/` ainda não existe — nasce na Fase 3, com a primeira feature real.
+
+**Catálogo do design system:** https://rohair.vercel.app/design
 
 ## 3. O produto em uma frase
 
@@ -120,28 +127,68 @@ Justificativas completas em [04-DECISOES.md](04-DECISOES.md) e [adr/](adr/).
 
 ## 5. Próximo passo imediato
 
-> ### 🟡 Fase 2 — Design System "Áurea" apresentada, aguardando aprovação.
+> ### 🟡 Fase 2 executada. Revisar o catálogo pelo iPhone.
 >
-> A Fase 1 foi aprovada pelo dono em 2026-07-31 e está fechada.
+> **https://rohair.vercel.app/design**
 >
-> **Nada de código até o "pode ir".**
+> Troque o tema no canto superior direito e mexa nos primitivos — o catálogo é
+> interativo. Todos os itens do DoD estão cumpridos; falta o seu aceite.
+>
+> **Com a aprovação, a Fase 3 — Modelagem de Dados — é apresentada.**
 
-### O que a Fase 0 já deixou pronto do design system
+### O que a Fase 2 entregou
 
-Mais do que parece. A Fase 2 **não começa do zero** — ela completa:
+| Entregue                     | Detalhe                                               |
+| ---------------------------- | ----------------------------------------------------- |
+| **19 primitivos**            | Derivados dos 16 wireframes, não de lista genérica    |
+| **14 ícones autorais**       | Grade de 24, traço 1.5, só contorno, `currentColor`   |
+| **Par `action`/`on-action`** | Garante AA de texto sobre a marca nos dois temas      |
+| **Teste de contraste**       | Lê o `tokens.css` real e recalcula · 37 testes verdes |
+| **Catálogo `/design`**       | No pipeline de produção, não em Storybook             |
+| **6 testes E2E**             | Modalidade nativa, teclado, alvo de toque             |
+| **Zero dependências novas**  | Nenhum pacote adicionado na fase inteira              |
 
-| Já existe | Onde |
-| --------- | ---- |
-| Tokens de cor em OKLCH, dois temas desenhados separadamente | `shared/ui/styles/tokens.css` |
-| **Porcelana** (branco quente, ouro rosé) e **Veludo** (base ameixa, nunca cinza) | idem |
-| Tipografia: **Fraunces** display + **Inter** UI, já carregadas por `next/font` | `app/layout.tsx` |
-| Escala de raio, três níveis de sombra por tema | tokens.css |
-| Curva de mola (`--ease-spring`) e `--ease-out-soft` | tokens.css |
-| Ponte `@theme inline` — troca de tema sem recompilar | tokens.css |
-| Alternador de tema com `useSyncExternalStore` | `shared/ui/theme/` |
-| Monograma "Ro" | `shared/ui/brand/monogram.tsx` |
+### As quatro reprovações de contraste que o teste achou
 
-O que **falta** é o volume: primitivos, ícones, movimento aplicado e Storybook.
+A paleta da Fase 0 **não passava em AA**, e ninguém tinha percebido porque
+contraste conferido a olho sempre parece bom:
+
+| Par                              | Era    | Precisa | Correção                         |
+| -------------------------------- | ------ | ------- | -------------------------------- |
+| branco sobre rosa (Veludo)       | 2.17:1 | 4.5:1   | Nasce o par `action`/`on-action` |
+| `border-strong` sobre superfície | 1.54:1 | 3:1     | Borda interativa escurecida      |
+| `border-strong` (Veludo)         | 1.77:1 | 3:1     | Clareada para 53%                |
+| `ink-subtle` sobre fundo         | 3.39:1 | 4.5:1   | Escurecido para 55%              |
+
+O mais grave era o primeiro: **todo botão primário do tema escuro** teria texto
+ilegível. É o tipo de erro que só aparece com o produto pronto na mão da usuária.
+
+### Duas trocas de escopo durante a execução
+
+Registradas em [ADR-0002](adr/ADR-0002-design-system-aurea.md):
+
+1. **Catálogo em rota do app, não Storybook.** O Storybook mantém build, CSS e
+   fontes próprios — com Tailwind v4 e `next/font` ele poderia passar enquanto o
+   aplicativo quebra. **Isto contraria o que foi aprovado**; reversível a
+   qualquer momento, sem desfazer nada.
+2. **`<dialog>` nativo, não Radix.** A plataforma já dá foco preso, `Esc`, inerte
+   e camada superior desde o Safari 15.4. Provado por E2E com `:modal`.
+
+### O que a Fase 0 já tinha deixado pronto
+
+| Já existe                                                                        | Onde                           |
+| -------------------------------------------------------------------------------- | ------------------------------ |
+| Tokens de cor em OKLCH, dois temas desenhados separadamente                      | `shared/ui/styles/tokens.css`  |
+| **Porcelana** (branco quente, ouro rosé) e **Veludo** (base ameixa, nunca cinza) | idem                           |
+| Tipografia: **Fraunces** display + **Inter** UI, já carregadas por `next/font`   | `app/layout.tsx`               |
+| Escala de raio, três níveis de sombra por tema                                   | tokens.css                     |
+| Curva de mola (`--ease-spring`) e `--ease-out-soft`                              | tokens.css                     |
+| Ponte `@theme inline` — troca de tema sem recompilar                             | tokens.css                     |
+| Alternador de tema com `useSyncExternalStore`                                    | `shared/ui/theme/`             |
+| Monograma "Ro"                                                                   | `shared/ui/brand/monogram.tsx` |
+
+A Fase 2 completou em cima disso em vez de recomeçar — e foi ao medir esta base
+que as quatro reprovações de contraste apareceram.
 
 ### A virada: descoberta virou configuração
 
@@ -155,7 +202,7 @@ agenda sozinha.
 
 O produto passa a **chegar sabendo o domínio da beleza**: catálogo semente de
 serviços, produtos e unidades, que ela seleciona e ajusta. É o princípio 2 da visão
-— *"o app trabalha, a usuária confirma"* — aplicado ao cadastro, que era o único
+— _"o app trabalha, a usuária confirma"_ — aplicado ao cadastro, que era o único
 lugar onde não estava sendo aplicado.
 
 Registrado em [DEC-013](04-DECISOES.md#dec-013) e detalhado em
@@ -194,29 +241,29 @@ mostrar **o que sobrou**.
 
 ### O que a rodada 1 mudou no modelo
 
-| Mudança | Origem |
-| ------- | ------ |
-| **`HairAssessment` — entidade nova** | Ela descreveu a mesma anamnese duas vezes, sem ser perguntada: já fez alisamento, qual produto, quando, se está quebrando, se está caindo |
-| **`ENCERRADO_SEM_SERVICO` — estado novo** | *"Teste de mecha pra ver se o cabelo suporta o produto"* — um teste que pode reprovar, e o modelo não previa reprovação |
-| **M-08 resolvida** | Química anterior é **portão de segurança**, não histórico |
-| **M-09 corrigida** | Preço varia por **curvatura**, não por comprimento. Minha hipótese estava no eixo errado |
-| **Vocabulário** | Ela diz **nutrição**, não hidratação. E **"vaga"**, não horário nem agendamento |
-| **[D-06](04-DECISOES.md#d-06--escopo-do-portal-da-cliente) parcialmente resolvida** | *"Deixo as orientações dos produtos e o tempo do retoque"* — o "Meu cuidado" do portal já existe, falado |
+| Mudança                                                                             | Origem                                                                                                                                    |
+| ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| **`HairAssessment` — entidade nova**                                                | Ela descreveu a mesma anamnese duas vezes, sem ser perguntada: já fez alisamento, qual produto, quando, se está quebrando, se está caindo |
+| **`ENCERRADO_SEM_SERVICO` — estado novo**                                           | _"Teste de mecha pra ver se o cabelo suporta o produto"_ — um teste que pode reprovar, e o modelo não previa reprovação                   |
+| **M-08 resolvida**                                                                  | Química anterior é **portão de segurança**, não histórico                                                                                 |
+| **M-09 corrigida**                                                                  | Preço varia por **curvatura**, não por comprimento. Minha hipótese estava no eixo errado                                                  |
+| **Vocabulário**                                                                     | Ela diz **nutrição**, não hidratação. E **"vaga"**, não horário nem agendamento                                                           |
+| **[D-06](04-DECISOES.md#d-06--escopo-do-portal-da-cliente) parcialmente resolvida** | _"Deixo as orientações dos produtos e o tempo do retoque"_ — o "Meu cuidado" do portal já existe, falado                                  |
 
 ### O que a Fase 1 entregou
 
-| # | Item | Documento |
-| - | ---- | --------- |
-| 1.1 | Roteiro de conversa | [descoberta/roteiro-rosiele.md](descoberta/roteiro-rosiele.md) |
-| 1.2 | Glossário do domínio | [06-GLOSSARIO.md](06-GLOSSARIO.md) |
-| 1.3 | Fluxos das duas pontas | [07-FLUXOS.md](07-FLUXOS.md) |
-| 1.4 | Modelo de domínio **v1** | [08-MODELO-DE-DOMINIO.md](08-MODELO-DE-DOMINIO.md) |
-| 1.5 | Modelo de configuração | [09-CONFIGURACAO.md](09-CONFIGURACAO.md) |
-| 1.6 | Cinco cenários · 5 buracos achados | [10-CENARIOS.md](10-CENARIOS.md) |
-| 1.7 | Personas e JTBD | [11-PERSONAS.md](11-PERSONAS.md) |
-| 1.8 | 16 wireframes | [12-WIREFRAMES.md](12-WIREFRAMES.md) |
-| 1.9 | Escopo fechado das Fases 4 e 6 a 12 | [03-ROADMAP.md](03-ROADMAP.md) |
-| 1.10 | Backlog de 42 itens | [13-BACKLOG.md](13-BACKLOG.md) |
+| #    | Item                                | Documento                                                      |
+| ---- | ----------------------------------- | -------------------------------------------------------------- |
+| 1.1  | Roteiro de conversa                 | [descoberta/roteiro-rosiele.md](descoberta/roteiro-rosiele.md) |
+| 1.2  | Glossário do domínio                | [06-GLOSSARIO.md](06-GLOSSARIO.md)                             |
+| 1.3  | Fluxos das duas pontas              | [07-FLUXOS.md](07-FLUXOS.md)                                   |
+| 1.4  | Modelo de domínio **v1**            | [08-MODELO-DE-DOMINIO.md](08-MODELO-DE-DOMINIO.md)             |
+| 1.5  | Modelo de configuração              | [09-CONFIGURACAO.md](09-CONFIGURACAO.md)                       |
+| 1.6  | Cinco cenários · 5 buracos achados  | [10-CENARIOS.md](10-CENARIOS.md)                               |
+| 1.7  | Personas e JTBD                     | [11-PERSONAS.md](11-PERSONAS.md)                               |
+| 1.8  | 16 wireframes                       | [12-WIREFRAMES.md](12-WIREFRAMES.md)                           |
+| 1.9  | Escopo fechado das Fases 4 e 6 a 12 | [03-ROADMAP.md](03-ROADMAP.md)                                 |
+| 1.10 | Backlog de 42 itens                 | [13-BACKLOG.md](13-BACKLOG.md)                                 |
 
 ### As cinco decisões que a Fase 1 travou
 
@@ -232,13 +279,13 @@ mostrar **o que sobrou**.
 
 ### Os cinco buracos que os cenários acharam
 
-| # | O que quebrava |
-| - | -------------- |
-| GAP-01 | O teste de mecha consome produto, e o modelo dizia que não |
-| GAP-02 | Serviço composto quebrava a baixa de estoque e a margem |
-| GAP-03 | Fundir duas fichas com conta violava a unicidade da credencial |
+| #      | O que quebrava                                                     |
+| ------ | ------------------------------------------------------------------ |
+| GAP-01 | O teste de mecha consome produto, e o modelo dizia que não         |
+| GAP-02 | Serviço composto quebrava a baixa de estoque e a margem            |
+| GAP-03 | Fundir duas fichas com conta violava a unicidade da credencial     |
 | GAP-04 | Nada dizia a que dia pertence a receita que atravessa a meia-noite |
-| GAP-05 | Anamnese obrigatória contradizia a configuração que a desliga |
+| GAP-05 | Anamnese obrigatória contradizia a configuração que a desliga      |
 
 GAP-02 e GAP-04 quebrariam DoDs de fases inteiras **em silêncio** — nenhum
 apareceria em teste unitário, porque o modelo estava internamente coerente.
@@ -279,13 +326,13 @@ Alterar em _Settings → General → Danger Zone_.
 
 ## 6. Decisões pendentes
 
-| #    | Decisão                            | Recomendação                                            | Bloqueia                  |
-| ---- | ---------------------------------- | ------------------------------------------------------- | ------------------------- |
-| D-03 | Domínio próprio                    | Sem domínio hoje; seguir em `rohair.vercel.app`         | Fase 5 (parcial), Fase 14 |
-| D-05 | Cliente agenda direto ou solicita? | **Solicita** — preserva o controle da agenda da Rosiele | Fase 12                   |
-| D-06 | Escopo do Portal da Cliente        | Proposta na Fase 12 do roadmap                          | Fase 12                   |
-| D-07 | Encontro das pontas sem CPF na ficha | **Fusão assistida** pela Rosiele, CPF opcional        | Fases 3, 4 e 6            |
-| D-08 | Escape quando a ativação falha     | **Aprovação manual** em vez de negar                    | Fase 4                    |
+| #    | Decisão                              | Recomendação                                            | Bloqueia                  |
+| ---- | ------------------------------------ | ------------------------------------------------------- | ------------------------- |
+| D-03 | Domínio próprio                      | Sem domínio hoje; seguir em `rohair.vercel.app`         | Fase 5 (parcial), Fase 14 |
+| D-05 | Cliente agenda direto ou solicita?   | **Solicita** — preserva o controle da agenda da Rosiele | Fase 12                   |
+| D-06 | Escopo do Portal da Cliente          | Proposta na Fase 12 do roadmap                          | Fase 12                   |
+| D-07 | Encontro das pontas sem CPF na ficha | **Fusão assistida** pela Rosiele, CPF opcional          | Fases 3, 4 e 6            |
+| D-08 | Escape quando a ativação falha       | **Aprovação manual** em vez de negar                    | Fase 4                    |
 
 D-05 a D-08 são resolvidas pela conversa com a Rosiele — as perguntas
 correspondentes já estão no [roteiro](descoberta/roteiro-rosiele.md).
@@ -304,6 +351,28 @@ correspondentes já estão no [roteiro](descoberta/roteiro-rosiele.md).
 ## 8. Log de sessões
 
 Ordem cronológica inversa — mais recente no topo.
+
+### 2026-07-31 (12) — Fase 2 executada · Áurea de pé
+
+- **19 primitivos, 14 ícones autorais, zero dependências novas.** A lista saiu
+  dos wireframes: entraram sete que ninguém tinha previsto (MoneyFigure, Timer,
+  SafetyAlert, DecisionGate, PhotoCompare, SeedPicker) e saíram três que nenhuma
+  tela usa (Tabs, ContextMenu, Avatar isolado).
+- **O teste de contraste reprovou a paleta da Fase 0 em quatro pares.** O pior:
+  branco sobre o rosa do Veludo dava **2.17:1** — todo botão primário do tema
+  escuro teria texto ilegível. Nasceu o par `action`/`on-action`.
+- **Duas trocas de escopo, registradas em ADR-0002:** catálogo em rota do app no
+  lugar do Storybook (que mantém build e CSS próprios e poderia passar enquanto o
+  app quebra), e `<dialog>` nativo no lugar de Radix. A primeira **contraria o
+  que foi aprovado** e está comunicada.
+- **O lint pegou dois erros reais meus** no catálogo: `Date.now()` em render
+  (impuro e quebraria hidratação) e `setState` dentro de efeito. Resolvido com
+  `useSyncExternalStore`, a mesma ferramenta que a store de tema já usava.
+- **O E2E pegou três**: eu tinha afirmado que o fundo do modal ficaria invisível
+  (ele fica visível, só inerte), o clique no `input` de uma chave `sr-only` não
+  funciona (o alvo real é o rótulo), e o botão de ferramentas do Next entrava na
+  varredura de alvo de toque.
+- `npm run verify` verde: typecheck, lint, 37 testes. Build gera `/design`.
 
 ### 2026-07-31 (11) — Fase 1 aprovada e fechada · Fase 2 apresentada
 
@@ -341,11 +410,11 @@ Ordem cronológica inversa — mais recente no topo.
 ### 2026-07-31 (9) — Descoberta vira configuração · Fase 1B destravada
 
 - **DEC-013, por correção do dono.** Eu tinha escrito uma segunda rodada de
-  perguntas pedindo preço, duração, custo e horário. Ele cortou: *"é um sistema,
-  ela vai se adaptando… na hora de cadastrar ela vai selecionando o que precisa"*.
+  perguntas pedindo preço, duração, custo e horário. Ele cortou: _"é um sistema,
+  ela vai se adaptando… na hora de cadastrar ela vai selecionando o que precisa"_.
 - Estava certo. Aquilo não era descoberta, era **campo de cadastro** — e um método
   que exige entrevistar cada profissional não escala para a Fase 16.
-- Curioso: eu estava aplicando o princípio *"o app trabalha, a usuária confirma"*
+- Curioso: eu estava aplicando o princípio _"o app trabalha, a usuária confirma"_
   em toda tela **menos** na primeira.
 - **[09-CONFIGURACAO.md](09-CONFIGURACAO.md) escrito** — três níveis: o que vem
   pronto (catálogo semente do domínio da beleza), o que ela configura (com padrão
@@ -377,8 +446,8 @@ Ordem cronológica inversa — mais recente no topo.
 - **Bug no meu instrumento:** o bloco "A outra ponta" colidiu com "ponta" do
   domínio do cabelo. Escrevi um glossário sobre colisão de vocabulário e caí nela
   no título de um bloco.
-- **Ela entregou a tese do produto de graça:** *"Fim do dia estou com dinheiro mas
-  fim do mês não tenho mais devido comprar algo que está faltando."* Caixa em vez
+- **Ela entregou a tese do produto de graça:** _"Fim do dia estou com dinheiro mas
+  fim do mês não tenho mais devido comprar algo que está faltando."_ Caixa em vez
   de lucro, e compra reativa de produto. Consequência: o número de destaque do
   painel não pode ser faturamento.
 - **Achado principal — `HairAssessment`.** Ela descreveu a mesma anamnese duas

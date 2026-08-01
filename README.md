@@ -36,25 +36,25 @@ Nasce para uma profissional. É construído, desde a primeira linha, para milhar
 
 ## Documentação
 
-| Documento                                                            | Para quê                                              |
-| -------------------------------------------------------------------- | ----------------------------------------------------- |
-| [CLAUDE.md](CLAUDE.md)                                               | Instruções permanentes do agente. Lido em toda sessão |
-| [docs/00-ESTADO-ATUAL.md](docs/00-ESTADO-ATUAL.md)                   | **Onde o projeto está agora.** Comece por aqui        |
-| [docs/01-VISAO-PRODUTO.md](docs/01-VISAO-PRODUTO.md)                 | Posicionamento, princípios, personas, anti-objetivos  |
-| [docs/02-ARQUITETURA.md](docs/02-ARQUITETURA.md)                     | Stack, camadas, tenancy, decisões de banco, PWA       |
-| [docs/03-ROADMAP.md](docs/03-ROADMAP.md)                             | As 17 fases, com entregáveis e definição de pronto    |
-| [docs/04-DECISOES.md](docs/04-DECISOES.md)                           | Decisões tomadas e pendentes                          |
-| [docs/05-PROTOCOLO-DE-TRABALHO.md](docs/05-PROTOCOLO-DE-TRABALHO.md) | Como dono e agente trabalham juntos                   |
-| [docs/06-GLOSSARIO.md](docs/06-GLOSSARIO.md)                         | Vocabulário do domínio da beleza e do produto         |
-| [docs/07-FLUXOS.md](docs/07-FLUXOS.md)                               | Fluxos das duas pontas e os pontos de encontro        |
-| [docs/08-MODELO-DE-DOMINIO.md](docs/08-MODELO-DE-DOMINIO.md)         | Agregados, invariantes e fronteiras                   |
+| Documento                                                            | Para quê                                                           |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| [CLAUDE.md](CLAUDE.md)                                               | Instruções permanentes do agente. Lido em toda sessão              |
+| [docs/00-ESTADO-ATUAL.md](docs/00-ESTADO-ATUAL.md)                   | **Onde o projeto está agora.** Comece por aqui                     |
+| [docs/01-VISAO-PRODUTO.md](docs/01-VISAO-PRODUTO.md)                 | Posicionamento, princípios, personas, anti-objetivos               |
+| [docs/02-ARQUITETURA.md](docs/02-ARQUITETURA.md)                     | Stack, camadas, tenancy, decisões de banco, PWA                    |
+| [docs/03-ROADMAP.md](docs/03-ROADMAP.md)                             | As 17 fases, com entregáveis e definição de pronto                 |
+| [docs/04-DECISOES.md](docs/04-DECISOES.md)                           | Decisões tomadas e pendentes                                       |
+| [docs/05-PROTOCOLO-DE-TRABALHO.md](docs/05-PROTOCOLO-DE-TRABALHO.md) | Como dono e agente trabalham juntos                                |
+| [docs/06-GLOSSARIO.md](docs/06-GLOSSARIO.md)                         | Vocabulário do domínio da beleza e do produto                      |
+| [docs/07-FLUXOS.md](docs/07-FLUXOS.md)                               | Fluxos das duas pontas e os pontos de encontro                     |
+| [docs/08-MODELO-DE-DOMINIO.md](docs/08-MODELO-DE-DOMINIO.md)         | Agregados, invariantes e fronteiras                                |
 | [docs/09-CONFIGURACAO.md](docs/09-CONFIGURACAO.md)                   | **O que vem pronto, o que ela configura, o que o sistema aprende** |
 | [docs/10-CENARIOS.md](docs/10-CENARIOS.md)                           | Cinco cenários que validaram o modelo — e os 5 buracos que acharam |
-| [docs/11-PERSONAS.md](docs/11-PERSONAS.md)                           | Personas e Jobs to be Done                            |
-| [docs/12-WIREFRAMES.md](docs/12-WIREFRAMES.md)                       | **As 16 telas, em baixa fidelidade**                  |
-| [docs/13-BACKLOG.md](docs/13-BACKLOG.md)                             | 42 itens priorizados pela distância até a dor central |
-| [docs/descoberta/](docs/descoberta/)                                 | A conversa com a Rosiele e o que saiu dela            |
-| [docs/adr/](docs/adr/)                                               | Architecture Decision Records                         |
+| [docs/11-PERSONAS.md](docs/11-PERSONAS.md)                           | Personas e Jobs to be Done                                         |
+| [docs/12-WIREFRAMES.md](docs/12-WIREFRAMES.md)                       | **As 16 telas, em baixa fidelidade**                               |
+| [docs/13-BACKLOG.md](docs/13-BACKLOG.md)                             | 42 itens priorizados pela distância até a dor central              |
+| [docs/descoberta/](docs/descoberta/)                                 | A conversa com a Rosiele e o que saiu dela                         |
+| [docs/adr/](docs/adr/)                                               | Architecture Decision Records                                      |
 
 ## Stack
 

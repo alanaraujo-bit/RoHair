@@ -57,8 +57,8 @@ ser mais uma fonte dela. O RoHair não tem que informar o que ela ganhou; tem qu
 informar **o que sobrou**.
 
 Isso reforça as Fases 7 e 10 como o par que sustenta o produto, e dá o critério de
-sucesso mais concreto que temos até agora: *no fim do mês, ela não é mais
-surpreendida.*
+sucesso mais concreto que temos até agora: _no fim do mês, ela não é mais
+surpreendida._
 
 ---
 
@@ -70,16 +70,16 @@ Ela descreveu **a mesma sequência duas vezes**, em blocos diferentes, sem que
 nenhuma pergunta pedisse isso. Repetição espontânea é o sinal mais forte que uma
 entrevista produz.
 
-| O que ela pergunta a toda cliente |
-| --------------------------------- |
-| Já fez algum alisamento? |
-| Qual produto utilizou? |
+| O que ela pergunta a toda cliente               |
+| ----------------------------------------------- |
+| Já fez algum alisamento?                        |
+| Qual produto utilizou?                          |
 | Qual a última vez que alisou / quanto tempo faz |
-| Está quebrando? |
-| Está caindo? |
+| Está quebrando?                                 |
+| Está caindo?                                    |
 
-Mais o **teste de mecha**, que ela cita como a primeira coisa que faz: *"pra ver se
-o cabelo suporta o produto"*.
+Mais o **teste de mecha**, que ela cita como a primeira coisa que faz: _"pra ver se
+o cabelo suporta o produto"_.
 
 Eu tinha modelado isso como `ClientNote` — texto livre, com um tipo `SAFETY`
 hipotético. **Está errado.** Isso não é anotação: é um **formulário estruturado,
@@ -96,7 +96,7 @@ mais recente — nunca uma cópia mutável, que dessincroniza.
 
 ### 3.2 O atendimento tem um portão que pode reprovar ⚠️
 
-*"Teste de mecha pra ver se o cabelo suporta o produto."*
+_"Teste de mecha pra ver se o cabelo suporta o produto."_
 
 Um teste que existe para verificar é um teste que **pode falhar**. Quando falha, a
 progressiva não acontece — mas a cliente veio, o horário foi ocupado e algum
@@ -118,7 +118,7 @@ cobra alguma coisa quando reprova.
 
 ### 3.3 O portal já existe, na voz dela
 
-*"Deixo as orientações dos produtos que deve utilizar e o tempo do retoque."*
+_"Deixo as orientações dos produtos que deve utilizar e o tempo do retoque."_
 
 O item **"Meu cuidado"** do Portal da Cliente estava marcado como escopo proposto, a
 confirmar. Não é proposta: **ela já faz isso hoje**, falado, na porta, no fim do
@@ -130,12 +130,12 @@ Isso deixa de ser hipótese e vira digitalização de um comportamento existente
 
 ### 3.4 O retorno é calculável, não adivinhado
 
-*"Progressiva damos uma pausa de três meses ou antes dependendo da curvatura pra
-fazer de novo, e sempre fica nesse loop pois cabelo alisado é assim mesmo."*
+_"Progressiva damos uma pausa de três meses ou antes dependendo da curvatura pra
+fazer de novo, e sempre fica nesse loop pois cabelo alisado é assim mesmo."_
 
 - Intervalo base: **3 meses**
 - Modulado pela **curvatura** — quanto mais cacheado, mais cedo
-- E ela reconhece o ciclo como estrutural: *"sempre fica nesse loop"*
+- E ela reconhece o ciclo como estrutural: _"sempre fica nesse loop"_
 
 O insight "hora de voltar" e o "tempo do retoque" do portal deixam de ser
 estimativa estatística e viram **regra de negócio explícita**, derivada de serviço +
@@ -146,13 +146,13 @@ acumulado.
 
 ## 4. O que foi confirmado
 
-| Hipótese | Veredito |
-| -------- | -------- |
-| **M-08** · precisa saber a química anterior? | ✅ **Sim, e é portão de segurança.** A resposta mais forte da rodada |
-| **G-05** · incompatibilidade química importa? | ✅ Confirmado — é a razão de existir da anamnese |
-| **G-09** · ela faz corte? | ✅ Sim. *"As pontas sempre cortamos na maioria das vezes"* — corte de pontas é rotina, não serviço à parte |
-| **M-09 / G-10** · preço e dificuldade variam por cabelo? | ✅ Varia, mas ⚠️ **por curvatura, não por comprimento.** Minha hipótese estava no eixo errado: o caso mais difícil que ela citou foi *"progressiva em cabelo cacheado"*, e a curvatura também define o retorno |
-| Tempo de pausa é a janela de mãos livres | ⚠️ Plausível, não confirmado — ela não respondeu o bloco 3 |
+| Hipótese                                                 | Veredito                                                                                                                                                                                                       |
+| -------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **M-08** · precisa saber a química anterior?             | ✅ **Sim, e é portão de segurança.** A resposta mais forte da rodada                                                                                                                                           |
+| **G-05** · incompatibilidade química importa?            | ✅ Confirmado — é a razão de existir da anamnese                                                                                                                                                               |
+| **G-09** · ela faz corte?                                | ✅ Sim. _"As pontas sempre cortamos na maioria das vezes"_ — corte de pontas é rotina, não serviço à parte                                                                                                     |
+| **M-09 / G-10** · preço e dificuldade variam por cabelo? | ✅ Varia, mas ⚠️ **por curvatura, não por comprimento.** Minha hipótese estava no eixo errado: o caso mais difícil que ela citou foi _"progressiva em cabelo cacheado"_, e a curvatura também define o retorno |
+| Tempo de pausa é a janela de mãos livres                 | ⚠️ Plausível, não confirmado — ela não respondeu o bloco 3                                                                                                                                                     |
 
 ---
 
@@ -163,15 +163,15 @@ escopo como "escova, hidratação, progressiva". As palavras dela são **progres
 nutrição, escova**. Corrigido no glossário. Se ela faz hidratação com esse nome,
 não muda nada: os três estão na semente do catálogo, e ela marca o que faz.
 
-**Produtos nomeados:** *Let Me Be* para progressiva, *Wella* para nutrição. Primeiros
+**Produtos nomeados:** _Let Me Be_ para progressiva, _Wella_ para nutrição. Primeiros
 dados reais de catálogo.
 
-**Nutrição parece ser etapa da escova, não serviço isolado.** *"Wella para nutrição
-pra escovar"* — o "pra" liga as duas: a nutrição existe para viabilizar a escova.
+**Nutrição parece ser etapa da escova, não serviço isolado.** _"Wella para nutrição
+pra escovar"_ — o "pra" liga as duas: a nutrição existe para viabilizar a escova.
 Sinaliza que **M-01 tende a "vários itens por atendimento"**, mas a frase é curta
 demais para decidir — e não precisa ser decidida: serviço composto suporta as duas montagens.
 
-**Ela provavelmente não atende em casa.** *"Vou pra minha residência"* no fim do
+**Ela provavelmente não atende em casa.** _"Vou pra minha residência"_ no fim do
 dia. A persona na visão de produto diz "atende em casa ou em espaço alugado" —
 o "vou pra" sugere que o trabalho é em outro lugar. ⚠️ Não vou reescrever a persona
 com base em uma preposição. Fica como observação, não como pendência.
@@ -187,18 +187,18 @@ agora ou só na Fase 16.
 
 Esta é a parte que trava a fase. **Não veio um único número.**
 
-| Faltando | Bloqueia |
-| -------- | -------- |
-| Preço de qualquer serviço | Fases 7 e 10; toda a modelagem de `Money` na prática |
-| Duração real de qualquer serviço | Fase 8 — a agenda não tem como sugerir duração |
-| Quantas clientes por semana | Se a agenda é lista ou calendário; se a lista precisa virtualizar |
-| Dias e horários de trabalho | Fase 8 — horário de funcionamento, bloqueios, folgas |
-| Como recebe (Pix, dinheiro, cartão) | Fase 10 — checkout |
-| Custo dos produtos e quanto rende cada frasco | Fase 7 — **é o que fecha a frase da seção 2** |
-| Onde a agenda vive hoje | Fase 8 e migração inicial de dados |
-| Se tem CPF e nascimento das clientes | [D-07](../04-DECISOES.md#d-07--como-as-duas-pontas-se-encontram-quando-a-ficha-não-tem-cpf) e [D-08](../04-DECISOES.md#d-08--rota-de-escape-quando-a-ativação-da-cliente-falha) — os dois achados da Fase 1A |
-| Se a cliente pode agendar sozinha | [D-05](../04-DECISOES.md#d-05--poder-de-agendamento-da-cliente-no-portal) |
-| **Cinco atendimentos reais** | **DoD da Fase 1** — nenhum dos cinco veio utilizável |
+| Faltando                                      | Bloqueia                                                                                                                                                                                                     |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Preço de qualquer serviço                     | Fases 7 e 10; toda a modelagem de `Money` na prática                                                                                                                                                         |
+| Duração real de qualquer serviço              | Fase 8 — a agenda não tem como sugerir duração                                                                                                                                                               |
+| Quantas clientes por semana                   | Se a agenda é lista ou calendário; se a lista precisa virtualizar                                                                                                                                            |
+| Dias e horários de trabalho                   | Fase 8 — horário de funcionamento, bloqueios, folgas                                                                                                                                                         |
+| Como recebe (Pix, dinheiro, cartão)           | Fase 10 — checkout                                                                                                                                                                                           |
+| Custo dos produtos e quanto rende cada frasco | Fase 7 — **é o que fecha a frase da seção 2**                                                                                                                                                                |
+| Onde a agenda vive hoje                       | Fase 8 e migração inicial de dados                                                                                                                                                                           |
+| Se tem CPF e nascimento das clientes          | [D-07](../04-DECISOES.md#d-07--como-as-duas-pontas-se-encontram-quando-a-ficha-não-tem-cpf) e [D-08](../04-DECISOES.md#d-08--rota-de-escape-quando-a-ativação-da-cliente-falha) — os dois achados da Fase 1A |
+| Se a cliente pode agendar sozinha             | [D-05](../04-DECISOES.md#d-05--poder-de-agendamento-da-cliente-no-portal)                                                                                                                                    |
+| **Cinco atendimentos reais**                  | **DoD da Fase 1** — nenhum dos cinco veio utilizável                                                                                                                                                         |
 
 Sobre o último: o caso 2 virou "nunca deu errado", o caso 3 virou "bastante
 clientes novas" e o caso 4 foi respondido sobre o crescimento do negócio, não sobre

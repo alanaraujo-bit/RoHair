@@ -319,11 +319,11 @@ encontram.
 
 Três caminhos, nenhum indolor:
 
-| Caminho | Custo | Risco |
-| ------- | ----- | ----- |
-| **CPF obrigatório na ficha** | Fricção no cadastro; ela vai ter que pedir CPF a cada cliente | Ela simplesmente não pede, e o campo fica vazio na marra |
-| **Casar por telefone como segunda chave** | Índice e fluxo de fusão adicionais | Telefone muda e é reutilizado; casamento errado expõe histórico de outra pessoa — **inaceitável sem confirmação humana** |
-| **Fusão assistida** — autocadastro sempre cria ficha nova, e o painel sugere candidatas por nome e telefone para a Rosiele fundir | Tela de fusão na Fase 6 | Depende de ela fazer a fusão, mas **nenhum dado vaza sem decisão humana** |
+| Caminho                                                                                                                           | Custo                                                         | Risco                                                                                                                    |
+| --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| **CPF obrigatório na ficha**                                                                                                      | Fricção no cadastro; ela vai ter que pedir CPF a cada cliente | Ela simplesmente não pede, e o campo fica vazio na marra                                                                 |
+| **Casar por telefone como segunda chave**                                                                                         | Índice e fluxo de fusão adicionais                            | Telefone muda e é reutilizado; casamento errado expõe histórico de outra pessoa — **inaceitável sem confirmação humana** |
+| **Fusão assistida** — autocadastro sempre cria ficha nova, e o painel sugere candidatas por nome e telefone para a Rosiele fundir | Tela de fusão na Fase 6                                       | Depende de ela fazer a fusão, mas **nenhum dado vaza sem decisão humana**                                                |
 
 **Minha recomendação: o terceiro, combinado com CPF opcional mas pedido com
 insistência no cadastro.** É o único em que um erro de casamento não expõe o
@@ -375,10 +375,10 @@ vira um oráculo para descobrir dado de terceiros.
 
 ## 7. O que ainda depende da Rosiele
 
-| # | Pergunta | Resolve |
-| - | -------- | ------- |
-| F-a | Ela agenda direto ou aprova solicitação? | [D-05](04-DECISOES.md#d-05--poder-de-agendamento-da-cliente-no-portal) · roteiro 73, 74 |
-| F-b | O que a cliente **não** pode ver? | [D-06](04-DECISOES.md#d-06--escopo-do-portal-da-cliente) · roteiro 75 |
-| F-c | Ela tem CPF das clientes hoje? | D-07 · roteiro 20, 51 |
-| F-d | Ela sabe a data de nascimento das clientes? | D-08 · roteiro 57 |
-| F-e | Alguém mais mexe no sistema? | F-03 · roteiro 4 |
+| #   | Pergunta                                    | Resolve                                                                                 |
+| --- | ------------------------------------------- | --------------------------------------------------------------------------------------- |
+| F-a | Ela agenda direto ou aprova solicitação?    | [D-05](04-DECISOES.md#d-05--poder-de-agendamento-da-cliente-no-portal) · roteiro 73, 74 |
+| F-b | O que a cliente **não** pode ver?           | [D-06](04-DECISOES.md#d-06--escopo-do-portal-da-cliente) · roteiro 75                   |
+| F-c | Ela tem CPF das clientes hoje?              | D-07 · roteiro 20, 51                                                                   |
+| F-d | Ela sabe a data de nascimento das clientes? | D-08 · roteiro 57                                                                       |
+| F-e | Alguém mais mexe no sistema?                | F-03 · roteiro 4                                                                        |

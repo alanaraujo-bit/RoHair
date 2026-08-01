@@ -12,7 +12,7 @@
 | UI                 | **React 19**                                         | Actions, `useOptimistic` e `useFormStatus` são a base do feedback instantâneo                                                                                                  |
 | Estilo             | **Tailwind v4** com `@theme`                         | Tokens nativos em CSS; sem runtime de CSS-in-JS                                                                                                                                |
 | Cor                | **OKLCH**                                            | Uniformidade perceptual permite gerar escalas e **garantir contraste por cálculo**, não por tentativa                                                                          |
-| Componentes        | **shadcn/ui como base copiada**                      | Acessibilidade do Radix sem virar dependência de aparência. O código é nosso                                                                                                   |
+| Componentes        | **Primitivos próprios, zero dependência**            | Áurea é autoral (ADR-0002). Sobreposição usa o `<dialog>` nativo, que já dá foco preso, `Esc` e inerte; Radix só entra onde a plataforma não resolver                          |
 | Movimento          | **Motion (Framer Motion)**                           | Springs de verdade; a sensação nativa vem da física, não de `ease-in-out`                                                                                                      |
 | Formulários        | **React Hook Form + Zod**                            | Um único schema Zod valida cliente, Server Action e tipo TypeScript                                                                                                            |
 | ORM                | **Prisma**                                           | Migrations versionadas, tipos gerados, Client Extensions viabilizam o multi-tenancy automático                                                                                 |
@@ -127,15 +127,15 @@ milhares de organizações.
 
 ## 5. Decisões de banco que evitam bugs caros
 
-| Decisão                                    | Justificativa                                                                                                                         |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Decisão                                    | Justificativa                                                                                                                                                                              |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **UUIDv7** gerado pelo Postgres 18         | `uuidv7()` é nativo na versão provisionada no Railway — não é preciso gerar na aplicação. Ordenável por tempo → localidade de índice de um inteiro sequencial, sem expor volume de negócio |
-| **Dinheiro em centavos (`Int`)**           | Ponto flutuante em dinheiro é bug garantido. Formatação só através do value object `Money`                                            |
-| **Datas em UTC**, timezone na organização  | Mata a classe de bugs "o faturamento do dia mudou depois da meia-noite"                                                               |
-| **`EXCLUDE USING gist` sobre `tstzrange`** | Duas requisições simultâneas não conseguem, fisicamente, criar horários sobrepostos. Validação na aplicação é UX; garantia é do banco |
-| **Snapshot de preço no atendimento**       | Reajustar o preço de um serviço não pode reescrever o histórico financeiro                                                            |
-| **Soft delete + audit log**                | Cliente apagada por engano é recuperável; histórico financeiro é imutável                                                             |
-| **Cronômetro como intervalos**             | Pausar/retomar vira lista imutável de `start`/`end`. Fechar o app no meio não perde nada, e o tempo é auditável                       |
+| **Dinheiro em centavos (`Int`)**           | Ponto flutuante em dinheiro é bug garantido. Formatação só através do value object `Money`                                                                                                 |
+| **Datas em UTC**, timezone na organização  | Mata a classe de bugs "o faturamento do dia mudou depois da meia-noite"                                                                                                                    |
+| **`EXCLUDE USING gist` sobre `tstzrange`** | Duas requisições simultâneas não conseguem, fisicamente, criar horários sobrepostos. Validação na aplicação é UX; garantia é do banco                                                      |
+| **Snapshot de preço no atendimento**       | Reajustar o preço de um serviço não pode reescrever o histórico financeiro                                                                                                                 |
+| **Soft delete + audit log**                | Cliente apagada por engano é recuperável; histórico financeiro é imutável                                                                                                                  |
+| **Cronômetro como intervalos**             | Pausar/retomar vira lista imutável de `start`/`end`. Fechar o app no meio não perde nada, e o tempo é auditável                                                                            |
 
 ## 6. Entidades principais
 

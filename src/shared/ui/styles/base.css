@@ -110,4 +110,25 @@
   .animate-breathe {
     animation: aurea-breathe 6s ease-in-out infinite;
   }
+
+  @keyframes aurea-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Entrada do bottom sheet: sobe com mola, como painel nativo do iOS */
+  @keyframes aurea-sheet-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }

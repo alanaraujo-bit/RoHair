@@ -122,31 +122,45 @@ de pesquisa — e um método que exige entrevistar cada profissional não é pro
 
 ### Design System "Áurea"
 
-**Objetivo.** Construir a linguagem visual autoral do RoHair. Não é tema sobre
-shadcn — é sistema próprio, com shadcn servindo apenas de base acessível para
-alguns primitivos.
+**Objetivo.** Construir a linguagem visual autoral do RoHair. Sistema próprio,
+com a plataforma servindo de base acessível onde ela já resolve melhor.
+
+> **Escopo revisado durante a execução** — ver
+> [ADR-0002](adr/ADR-0002-design-system-aurea.md). A lista de primitivos passou a
+> ser **derivada dos 16 wireframes** em vez de genérica, e o catálogo virou rota
+> do aplicativo em vez de Storybook.
 
 **Entregáveis**
 
-- Identidade da marca: **"Ro" de Rosiele** (ver DEC-011) — monograma, ícone do
-  app, splash, tom de voz na primeira pessoa
-- Design tokens em OKLCH: cor, tipografia, espaçamento, raio, sombra, movimento
-- **Tema Light "Porcelana"** e **Tema Dark "Veludo"**, cada um desenhado do zero
-- Escala tipográfica fluida; display serifada para números, sans para UI
-- Primitivos: Button, Input, Select, Sheet, Dialog, Drawer, Toast, Card, Badge,
-  Avatar, Skeleton, EmptyState, Tabs, SegmentedControl, Switch, DatePicker,
-  TimePicker, Money, Chip, ContextMenu, SwipeAction, FAB, CpfInput, PasswordField
-- Biblioteca de ícones autorais do domínio da beleza
-- Sistema de movimento: springs padronizados, `prefers-reduced-motion`
-- Storybook com todos os estados de cada primitivo
-- Teste automatizado de contraste nos dois temas
+- Identidade da marca: **"Ro" de Rosiele** (DEC-011) — monograma e tom de voz
+- Design tokens em OKLCH: cor, tipografia fluida, raio, sombra, movimento
+- **Porcelana** e **Veludo**, cada um desenhado do zero
+- Par `action` / `on-action`, garantindo AA de texto sobre a cor de marca nos
+  dois temas — descoberto pelo teste, não pelo olho
+- **Primitivos derivados dos wireframes:**
+  - Base — Button, Field, Input, Textarea, Card, Badge, Chip, Skeleton,
+    EmptyState
+  - Domínio — MoneyFigure, MoneyText, Timer, SafetyAlert, DecisionGate,
+    PhotoCompare, SeedPicker
+  - Controle e sobreposição — SegmentedControl, Switch, Sheet
+- Biblioteca de **ícones autorais** do domínio da beleza
+- Sistema de movimento: molas padronizadas, `prefers-reduced-motion`
+- **Catálogo vivo em `/design`**, no pipeline de produção
+- **Teste de contraste** que lê o `tokens.css` real e recalcula
+- E2E provando modalidade nativa, teclado e alvo de toque
+
+**Fica para quando a tela pedir:** Toast, DatePicker, TimePicker, SwipeAction,
+FAB, CpfInput, PasswordField, MergeCompare. Primitivo entra quando uma fase
+precisa dele — componente "para o caso de precisar" é dívida visual.
 
 **DoD**
 
-- [ ] Nenhum componente usa cor hard-coded — só tokens
-- [ ] Todo primitivo passa em contraste AA nos dois temas
-- [ ] Todo primitivo é navegável e operável por teclado
-- [ ] Storybook publicado e acessível pelo celular do dono
+- [x] Nenhum componente usa cor hard-coded — só tokens
+- [x] Todo primitivo passa em contraste AA nos dois temas, **verificado no CI**
+- [x] Todo primitivo é navegável e operável por teclado
+- [x] Catálogo publicado e acessível pelo celular do dono, em `/design`
+- [x] `prefers-reduced-motion` respeitado em 100% das animações
+- [x] Zero dependências novas
 
 ---
 

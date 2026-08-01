@@ -277,13 +277,13 @@ verdade — não um exemplo típico construído na hora.
 Peça cinco histórias completas, do agendamento até o pagamento. **Não peça cinco
 atendimentos normais** — peça estes cinco, nesta ordem:
 
-| # | Peça assim |
-| - | ---------- |
-| 1 | "Me conta um atendimento comum, do começo ao fim. O último que você fez." |
-| 2 | "Agora um que deu errado. Qualquer tipo de errado." |
-| 3 | "Um de cliente que nunca tinha vindo antes." |
-| 4 | "Um que mudou no meio — ela chegou querendo uma coisa e saiu com outra." |
-| 5 | "O mais complicado que você já fez. Ou o mais caro." |
+| #   | Peça assim                                                                |
+| --- | ------------------------------------------------------------------------- |
+| 1   | "Me conta um atendimento comum, do começo ao fim. O último que você fez." |
+| 2   | "Agora um que deu errado. Qualquer tipo de errado."                       |
+| 3   | "Um de cliente que nunca tinha vindo antes."                              |
+| 4   | "Um que mudou no meio — ela chegou querendo uma coisa e saiu com outra."  |
+| 5   | "O mais complicado que você já fez. Ou o mais caro."                      |
 
 Para cada um, se ela não contar espontaneamente, puxe:
 

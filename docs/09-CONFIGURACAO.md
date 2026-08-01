@@ -13,11 +13,11 @@
 
 A pergunta que decide tudo: **quem sabe a resposta?**
 
-| Quem sabe | Onde vive |
-| --------- | --------- |
-| O domínio da beleza — vale para qualquer profissional | **Vem pronto.** Nível 1 |
-| Só ela — preço, horário, jeito de trabalhar | **Ela configura.** Nível 2 |
-| Ninguém ainda — só o uso revela | **O sistema aprende.** Nível 3 |
+| Quem sabe                                             | Onde vive                      |
+| ----------------------------------------------------- | ------------------------------ |
+| O domínio da beleza — vale para qualquer profissional | **Vem pronto.** Nível 1        |
+| Só ela — preço, horário, jeito de trabalhar           | **Ela configura.** Nível 2     |
+| Ninguém ainda — só o uso revela                       | **O sistema aprende.** Nível 3 |
 
 O erro que essa tabela evita: pedir no cadastro o que só o uso responde. Perguntar
 "quanto tempo leva uma progressiva?" numa tela de cadastro é exigir precisão de
@@ -38,13 +38,13 @@ ignora o resto. É o que transforma o cadastro de digitação em seleção.
 Cada um chega com duração e faixa de preço sugeridas, e com o consumo típico já
 ligado à categoria de produto certa.
 
-| Grupo | Serviços na semente |
-| ----- | ------------------- |
-| **Alisamento** | Progressiva · Retoque de raiz · Selagem · Botox capilar · Relaxamento |
-| **Tratamento** | Nutrição · Hidratação · Reconstrução · Cronograma capilar |
-| **Modelagem** | Escova · Escova modelada · Escova com babyliss · Penteado |
-| **Corte** | Corte · Corte de pontas |
-| **Cor** | Coloração · Retoque de cor · Mechas · Luzes · Matização · Descoloração |
+| Grupo          | Serviços na semente                                                    |
+| -------------- | ---------------------------------------------------------------------- |
+| **Alisamento** | Progressiva · Retoque de raiz · Selagem · Botox capilar · Relaxamento  |
+| **Tratamento** | Nutrição · Hidratação · Reconstrução · Cronograma capilar              |
+| **Modelagem**  | Escova · Escova modelada · Escova com babyliss · Penteado              |
+| **Corte**      | Corte · Corte de pontas                                                |
+| **Cor**        | Coloração · Retoque de cor · Mechas · Luzes · Matização · Descoloração |
 
 🗣️ A ordem não é alfabética de propósito: **progressiva, nutrição, escova e corte
 de pontas aparecem primeiro**, porque é o que a Rosiele faz — e é uma aposta
@@ -55,13 +55,13 @@ está pronto.
 
 Por categoria, com unidade e rendimento típico pré-preenchidos.
 
-| Categoria | Exemplos na semente |
-| --------- | ------------------- |
-| Alisamento | Progressiva · Ativo de alisamento · Neutralizante |
-| Tratamento | Máscara · Ampola · Óleo · Leave-in |
-| Lavagem | Shampoo · Shampoo antirresíduo · Condicionador |
-| Cor | Coloração · Oxidante · Pó descolorante · Matizador |
-| Finalização | Protetor térmico · Finalizador · Sérum |
+| Categoria   | Exemplos na semente                                |
+| ----------- | -------------------------------------------------- |
+| Alisamento  | Progressiva · Ativo de alisamento · Neutralizante  |
+| Tratamento  | Máscara · Ampola · Óleo · Leave-in                 |
+| Lavagem     | Shampoo · Shampoo antirresíduo · Condicionador     |
+| Cor         | Coloração · Oxidante · Pó descolorante · Matizador |
+| Finalização | Protetor térmico · Finalizador · Sérum             |
 
 Marcas conhecidas entram como sugestão de digitação, não como lista fechada —
 🗣️ **Let Me Be** e **Wella** já estão lá porque vieram dela.
@@ -96,12 +96,12 @@ cabelo. A variante é opcional e nasce desligada — quem cobra preço único nu
 essa complexidade.
 
 🗣️ Quando ligada, o eixo padrão é **curvatura** (liso → crespo), não comprimento.
-Foi o que apareceu na conversa: o caso difícil dela foi *"progressiva em cabelo
-cacheado"*, e a curvatura também define quando a cliente volta.
+Foi o que apareceu na conversa: o caso difícil dela foi _"progressiva em cabelo
+cacheado"_, e a curvatura também define quando a cliente volta.
 
 ### 3.2 Serviços compostos
 
-Um serviço pode conter etapas. 🗣️ *"Wella para nutrição pra escovar"* — a nutrição
+Um serviço pode conter etapas. 🗣️ _"Wella para nutrição pra escovar"_ — a nutrição
 existe para viabilizar a escova.
 
 Isso resolve, por configuração, a pergunta que eu ia fazer por mensagem: se para
@@ -119,13 +119,13 @@ padrão sugerido é segunda a sábado, 9h às 18h — ajustável em uma tela.
 Aqui é onde a decisão vira chave. **[D-05](04-DECISOES.md#d-05--poder-de-agendamento-da-cliente-no-portal)
 deixa de ser decisão de projeto.**
 
-| Chave | Padrão | Por que esse padrão |
-| ----- | ------ | ------------------- |
-| Cliente pode **solicitar** horário | ✅ ligado | Tira a conversa do WhatsApp sem entregar a agenda |
-| Cliente pode **agendar direto** | ⬜ desligado | Preserva o controle. Quem quiser, liga |
-| Cliente vê antes e depois | ✅ ligado | É o coração emocional do portal |
-| Visibilidade padrão da foto | **Só a profissional** | Nunca expor por omissão |
-| Cliente vê valores do histórico | ⬜ desligado | Pode ser constrangedor dos dois lados |
+| Chave                              | Padrão                | Por que esse padrão                               |
+| ---------------------------------- | --------------------- | ------------------------------------------------- |
+| Cliente pode **solicitar** horário | ✅ ligado             | Tira a conversa do WhatsApp sem entregar a agenda |
+| Cliente pode **agendar direto**    | ⬜ desligado          | Preserva o controle. Quem quiser, liga            |
+| Cliente vê antes e depois          | ✅ ligado             | É o coração emocional do portal                   |
+| Visibilidade padrão da foto        | **Só a profissional** | Nunca expor por omissão                           |
+| Cliente vê valores do histórico    | ⬜ desligado          | Pode ser constrangedor dos dois lados             |
 
 Cada profissional decide o produto que quer ter. Nós entregamos o padrão bom.
 
@@ -148,12 +148,12 @@ montado.
 O nível que torna o cadastro barato: ela pode **errar tudo no começo** sem
 consequência.
 
-| O que ela chuta | O que o sistema mede | Como corrige |
-| --------------- | -------------------- | ------------ |
-| Duração do serviço | Cronômetro real de cada atendimento | Depois de algumas visitas: *"suas progressivas levam 3h20, não 2h30. Atualizar?"* |
-| Consumo de produto | Baixa registrada por atendimento | Corrige o custo real e o rendimento do frasco |
-| Intervalo de retorno | Quando a cliente de fato volta | Ajusta o lembrete por serviço **e por cliente** |
-| Duração por cliente | Histórico daquela pessoa | Sugere o horário certo na hora de agendar |
+| O que ela chuta      | O que o sistema mede                | Como corrige                                                                      |
+| -------------------- | ----------------------------------- | --------------------------------------------------------------------------------- |
+| Duração do serviço   | Cronômetro real de cada atendimento | Depois de algumas visitas: _"suas progressivas levam 3h20, não 2h30. Atualizar?"_ |
+| Consumo de produto   | Baixa registrada por atendimento    | Corrige o custo real e o rendimento do frasco                                     |
+| Intervalo de retorno | Quando a cliente de fato volta      | Ajusta o lembrete por serviço **e por cliente**                                   |
+| Duração por cliente  | Histórico daquela pessoa            | Sugere o horário certo na hora de agendar                                         |
 
 🗣️ O retorno começa em **3 meses para progressiva, mais cedo conforme a curvatura**
 — regra que veio dela e serve de padrão para todas. Depois, o uso ajusta.
@@ -168,15 +168,15 @@ sem autorização quebra a confiança, que é o único ativo que não se recuper
 Nem tudo cabe numa chave. Estas são decisões de arquitetura, e eu as tomo agora em
 vez de perguntar — retrofitar qualquer uma delas custa uma reescrita.
 
-| # | Questão | Decisão | Por quê |
-| - | ------- | ------- | ------- |
-| M-02 | Atender duas clientes ao mesmo tempo | **O modelo permite. A interface começa com uma.** Sem invariante de atendimento único | Duas cadeiras é comum na área, e concorrência não se acrescenta depois sem refazer o cronômetro e o painel. Permitir custa quase nada agora |
-| M-01 | Um serviço por visita ou vários | **Sempre lista.** `AttendanceItem` em coleção | Custa uma tabela. Fundir depois custa migrar todo o histórico financeiro |
-| M-06 | Pagamento parcial e fiado | **Existe sempre**, escondido quando não usado | Um `Payment` em lista suporta os dois. Supor pagamento integral e descobrir o fiado na Fase 10 quebra o fechamento de caixa |
-| M-07 | Cortesia | **Estado próprio**, distinto de "não pago" | Sem isso, atendimento de graça vira dívida eterna no relatório |
-| M-11 | Teste reprovado gera cobrança | **Configurável** — mas o estado `ENCERRADO_SEM_SERVICO` existe sempre | O desfecho é arquitetura; cobrar ou não é política dela |
-| M-12 | Trabalhar sozinha ou com equipe | **`Membership` existe desde a Fase 3.** A interface só aparece quando há mais de uma pessoa | Multi-usuário retrofitado é migração de identidade — o erro mais caro do catálogo |
-| D-07 | Encontro das pontas sem CPF | **Fusão assistida**, CPF opcional | Já registrado. Casar por telefone automaticamente expõe histórico de terceiros |
+| #    | Questão                              | Decisão                                                                                     | Por quê                                                                                                                                     |
+| ---- | ------------------------------------ | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| M-02 | Atender duas clientes ao mesmo tempo | **O modelo permite. A interface começa com uma.** Sem invariante de atendimento único       | Duas cadeiras é comum na área, e concorrência não se acrescenta depois sem refazer o cronômetro e o painel. Permitir custa quase nada agora |
+| M-01 | Um serviço por visita ou vários      | **Sempre lista.** `AttendanceItem` em coleção                                               | Custa uma tabela. Fundir depois custa migrar todo o histórico financeiro                                                                    |
+| M-06 | Pagamento parcial e fiado            | **Existe sempre**, escondido quando não usado                                               | Um `Payment` em lista suporta os dois. Supor pagamento integral e descobrir o fiado na Fase 10 quebra o fechamento de caixa                 |
+| M-07 | Cortesia                             | **Estado próprio**, distinto de "não pago"                                                  | Sem isso, atendimento de graça vira dívida eterna no relatório                                                                              |
+| M-11 | Teste reprovado gera cobrança        | **Configurável** — mas o estado `ENCERRADO_SEM_SERVICO` existe sempre                       | O desfecho é arquitetura; cobrar ou não é política dela                                                                                     |
+| M-12 | Trabalhar sozinha ou com equipe      | **`Membership` existe desde a Fase 3.** A interface só aparece quando há mais de uma pessoa | Multi-usuário retrofitado é migração de identidade — o erro mais caro do catálogo                                                           |
+| D-07 | Encontro das pontas sem CPF          | **Fusão assistida**, CPF opcional                                                           | Já registrado. Casar por telefone automaticamente expõe histórico de terceiros                                                              |
 
 Padrão das sete: **o modelo é permissivo, a interface é simples.** O que é barato
 agora e caro depois entra desde já, escondido até fazer falta.

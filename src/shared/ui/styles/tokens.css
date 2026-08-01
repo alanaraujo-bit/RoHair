@@ -22,17 +22,29 @@
     --aurea-surface: oklch(100% 0 0);
     --aurea-surface-raised: oklch(100% 0 0);
 
+    /* Traço decorativo: separador de lista, aresta de cartão. Não identifica
+       controle, então não precisa dos 3:1 da WCAG 1.4.11. */
     --aurea-border: oklch(92% 0.008 25);
-    --aurea-border-strong: oklch(86% 0.013 25);
+    /* Limite de componente INTERATIVO: campo, botão secundário, chave.
+       Este precisa de 3:1 contra a superfície — é o que diz onde tocar. */
+    --aurea-border-strong: oklch(65% 0.013 20);
 
     --aurea-ink: oklch(26% 0.02 20);
     --aurea-ink-muted: oklch(48% 0.015 20);
-    --aurea-ink-subtle: oklch(63% 0.012 20);
+    --aurea-ink-subtle: oklch(55% 0.012 20);
 
     --aurea-rose: oklch(66% 0.13 12);
     --aurea-rose-strong: oklch(56% 0.15 12);
     --aurea-rose-soft: oklch(96.5% 0.018 15);
     --aurea-gold: oklch(76% 0.08 55);
+
+    /* Par de ação. `action` é o fundo do botão primário; `on-action` é o que
+       vai escrito em cima dele. Existem como par porque o contraste precisa ser
+       garantido nos DOIS temas — e no Veludo o rosa fica claro demais para
+       receber texto branco, então lá o `on-action` inverte para tinta escura.
+       Ver contrast.test.ts. */
+    --aurea-action: oklch(56% 0.15 12);
+    --aurea-on-action: oklch(100% 0 0);
 
     --aurea-success: oklch(58% 0.13 155);
     --aurea-warning: oklch(70% 0.13 75);
@@ -96,7 +108,7 @@
     --aurea-surface-raised: oklch(26% 0.026 340);
 
     --aurea-border: oklch(30% 0.025 340);
-    --aurea-border-strong: oklch(39% 0.03 340);
+    --aurea-border-strong: oklch(53% 0.025 340);
 
     --aurea-ink: oklch(96% 0.008 340);
     --aurea-ink-muted: oklch(75% 0.016 340);
@@ -106,6 +118,11 @@
     --aurea-rose-strong: oklch(85% 0.1 18);
     --aurea-rose-soft: oklch(28% 0.042 350);
     --aurea-gold: oklch(83% 0.07 60);
+
+    /* No Veludo o rosa é claro, então quem inverte é o texto: tinta escura
+       sobre a ação. Branco sobre este rosa daria 2.17:1 e reprovaria. */
+    --aurea-action: oklch(77% 0.11 15);
+    --aurea-on-action: oklch(17% 0.02 340);
 
     --aurea-success: oklch(74% 0.14 155);
     --aurea-warning: oklch(82% 0.13 78);
@@ -144,6 +161,8 @@
   --color-rose-strong: var(--aurea-rose-strong);
   --color-rose-soft: var(--aurea-rose-soft);
   --color-gold: var(--aurea-gold);
+  --color-action: var(--aurea-action);
+  --color-on-action: var(--aurea-on-action);
 
   --color-success: var(--aurea-success);
   --color-warning: var(--aurea-warning);
@@ -151,6 +170,44 @@
 
   --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /**
+   * Escala tipográfica fluida.
+   *
+   * `clamp` em vez de breakpoints: o tamanho acompanha a largura de forma
+   * contínua, então não existe o degrau feio no iPad em retrato nem texto
+   * apertado no iPhone SE. O mínimo de cada passo é o que precisa ser legível
+   * na menor tela que suportamos.
+   *
+   * O corpo NÃO é fluido de propósito — texto lido muda de tamanho mal.
+   */
+  --text-2xs: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-md: 1rem;
+  --text-lg: clamp(1.0625rem, 0.99rem + 0.36vw, 1.25rem);
+  --text-xl: clamp(1.25rem, 1.13rem + 0.6vw, 1.625rem);
+  --text-2xl: clamp(1.5rem, 1.28rem + 1.1vw, 2.25rem);
+  --text-3xl: clamp(2rem, 1.55rem + 2.2vw, 3.25rem);
+  /* Reservado ao número que responde "quanto sobrou" — o maior do produto */
+  --text-figure: clamp(2.5rem, 1.8rem + 3.4vw, 4rem);
+
+  /**
+   * Duração do movimento.
+   *
+   * Três degraus, não sete. Mais que isso vira escolha arbitrária na hora de
+   * usar, e a inconsistência aparece mais que a precisão.
+   */
+  --duration-fast: 140ms;
+  --duration-base: 240ms;
+  --duration-slow: 420ms;
+
+  /**
+   * Alvo mínimo de toque. WCAG 2.2 AA pede 24px; a Apple recomenda 44px.
+   * Seguimos os 44 — o produto é usado com uma mão e o dedo molhado.
+   */
+  --size-touch: 2.75rem;
 
   --radius-xs: 0.375rem;
   --radius-sm: 0.625rem;

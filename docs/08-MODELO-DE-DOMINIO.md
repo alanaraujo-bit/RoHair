@@ -10,11 +10,11 @@
 > trabalha — o que varia por profissional é
 > [configuração](09-CONFIGURACAO.md), não modelo.
 
-| Marca | Significa |
-| ----- | --------- |
-| 🔒 | **Travado** por decisão registrada. Não se rediscute sem revogar a decisão |
-| 🗣️ | Veio da conversa com a Rosiele |
-| ⚠️ | Hipótese do domínio, não confirmada por uso real |
+| Marca | Significa                                                                  |
+| ----- | -------------------------------------------------------------------------- |
+| 🔒    | **Travado** por decisão registrada. Não se rediscute sem revogar a decisão |
+| 🗣️    | Veio da conversa com a Rosiele                                             |
+| ⚠️    | Hipótese do domínio, não confirmada por uso real                           |
 
 ---
 
@@ -61,16 +61,16 @@ Um agregado é a unidade que se salva junta e cujas invariantes valem juntas.
 Escolher errado as fronteiras é o erro mais caro do modelo: agregado grande demais
 trava concorrência, pequeno demais espalha regra de negócio pelo código.
 
-| Agregado | Raiz | Contém | Por que esta fronteira |
-| -------- | ---- | ------ | ---------------------- |
-| **Ficha** | `Client` | `ClientNote`, `ClientPhoto`, `Consent` | Foto e nota não fazem sentido fora da cliente, e nunca são consultadas isoladas |
-| **Conta** | `ClientAccount` | — | 🔒 Separado da ficha por DEC-008. Fundir traria a credencial para dentro do registro de negócio, que é exatamente o que a decisão evita |
-| **Equipe** | `User` | `Membership` | — |
-| **Catálogo** | `Service` | `ServiceVariant`, `ServiceProductUsage` | Preço, duração e consumo padrão mudam juntos |
-| **Produto** | `Product` | — | `StockMovement` fica **fora**: é um registro imutável append-only, e prendê-lo ao produto criaria contenção de escrita |
-| **Agendamento** | `Appointment` | — | Curto, muito reescrito, alta concorrência |
-| **Atendimento** | `Attendance` | `HairAssessment`, `AttendanceItem`, `ProductUsage`, `TimeEntry`, `Payment` | ⚠️ A fronteira mais delicada. Ver seção 4 |
-| **Financeiro** | `Transaction` | — | Livro-caixa append-only |
+| Agregado        | Raiz            | Contém                                                                     | Por que esta fronteira                                                                                                                  |
+| --------------- | --------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **Ficha**       | `Client`        | `ClientNote`, `ClientPhoto`, `Consent`                                     | Foto e nota não fazem sentido fora da cliente, e nunca são consultadas isoladas                                                         |
+| **Conta**       | `ClientAccount` | —                                                                          | 🔒 Separado da ficha por DEC-008. Fundir traria a credencial para dentro do registro de negócio, que é exatamente o que a decisão evita |
+| **Equipe**      | `User`          | `Membership`                                                               | —                                                                                                                                       |
+| **Catálogo**    | `Service`       | `ServiceVariant`, `ServiceProductUsage`                                    | Preço, duração e consumo padrão mudam juntos                                                                                            |
+| **Produto**     | `Product`       | —                                                                          | `StockMovement` fica **fora**: é um registro imutável append-only, e prendê-lo ao produto criaria contenção de escrita                  |
+| **Agendamento** | `Appointment`   | —                                                                          | Curto, muito reescrito, alta concorrência                                                                                               |
+| **Atendimento** | `Attendance`    | `HairAssessment`, `AttendanceItem`, `ProductUsage`, `TimeEntry`, `Payment` | ⚠️ A fronteira mais delicada. Ver seção 4                                                                                               |
+| **Financeiro**  | `Transaction`   | —                                                                          | Livro-caixa append-only                                                                                                                 |
 
 ---
 
@@ -79,14 +79,14 @@ trava concorrência, pequeno demais espalha regra de negócio pelo código.
 Regras que valem em qualquer lugar do sistema, encapsuladas em tipos que tornam o
 estado inválido irrepresentável.
 
-| VO | Regra |
-| -- | ----- |
-| `Money` 🔒 | Centavos em `Int`. Nunca ponto flutuante. Só formata na borda |
-| `Cpf` 🔒 | 11 dígitos, validado pelos dígitos verificadores, normalizado. Expõe `hash()` e `encrypted()`, **nunca** o valor cru em log ou erro |
-| `TimeRange` | Início e fim em UTC. `end > start` sempre. Sabe dizer se intersecta outro |
-| `Duration` | Minutos, positivo |
-| `PhoneNumber` | E.164 normalizado, com formatação brasileira na exibição |
-| `Quantity` | Quantidade + unidade. 🗣️ Frasco e aplicação primeiro; conversão interna |
+| VO            | Regra                                                                                                                               |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `Money` 🔒    | Centavos em `Int`. Nunca ponto flutuante. Só formata na borda                                                                       |
+| `Cpf` 🔒      | 11 dígitos, validado pelos dígitos verificadores, normalizado. Expõe `hash()` e `encrypted()`, **nunca** o valor cru em log ou erro |
+| `TimeRange`   | Início e fim em UTC. `end > start` sempre. Sabe dizer se intersecta outro                                                           |
+| `Duration`    | Minutos, positivo                                                                                                                   |
+| `PhoneNumber` | E.164 normalizado, com formatação brasileira na exibição                                                                            |
+| `Quantity`    | Quantidade + unidade. 🗣️ Frasco e aplicação primeiro; conversão interna                                                             |
 
 ---
 
@@ -98,11 +98,11 @@ Já argumentado no [glossário](06-GLOSSARIO.md#uma-distinção-que-precisa-sobr
 Em resumo: `Appointment` é a intenção, `Attendance` é o fato. A relação é 0..1 para
 0..1, nos **dois** sentidos.
 
-| Situação | Appointment | Attendance |
-| -------- | ----------- | ---------- |
-| Visita normal | existe | existe |
-| Encaixe | não existe | existe |
-| Falta | existe | não existe |
+| Situação                | Appointment       | Attendance |
+| ----------------------- | ----------------- | ---------- |
+| Visita normal           | existe            | existe     |
+| Encaixe                 | não existe        | existe     |
+| Falta                   | existe            | não existe |
 | Cancelamento antecipado | existe, cancelado | não existe |
 
 Nenhuma dessas quatro é exceção — as quatro acontecem toda semana. Um modelo que
@@ -150,7 +150,7 @@ avaliação química. Corrigido por [GAP-05](10-CENARIOS.md).
 
 ### 4.3 O teste de mecha é um portão que pode reprovar 🗣️
 
-> *"Inicio fazendo teste de mecha pra ver se o cabelo suporta o produto."*
+> _"Inicio fazendo teste de mecha pra ver se o cabelo suporta o produto."_
 
 Um teste que existe para verificar é um teste que pode falhar. Quando falha, a
 progressiva **não acontece** — mas a cliente veio, o horário foi ocupado e trabalho
@@ -181,7 +181,7 @@ verdade do que aconteceu. O que não existe é `AttendanceItem` do serviço impe
 (INV-17).
 
 Esta é a resposta ao caso 2 do roteiro — "um atendimento que deu errado" — que ela
-respondeu com *"kkkkkkkkk nunca deu"*. Ela está certa: para ela isso é
+respondeu com _"kkkkkkkkk nunca deu"_. Ela está certa: para ela isso é
 procedimento normal. É o modelo que precisava enxergar.
 
 **Se gera cobrança é política dela**, não do produto: vira chave de configuração
@@ -211,9 +211,9 @@ pausa do almoço?".
 "escova com nutrição" grava o item pai, com o preço, e as etapas como filhas, com o
 consumo.
 
-| Nível | Carrega |
-| ----- | ------- |
-| Item pai | `unitPriceCents` — o que a cliente paga |
+| Nível       | Carrega                                                 |
+| ----------- | ------------------------------------------------------- |
+| Item pai    | `unitPriceCents` — o que a cliente paga                 |
 | Itens folha | `ProductUsage` e o custo — o que a baixa de estoque usa |
 
 **Por quê.** O preço é do pacote; o consumo é da etapa. Gravar só o pai não dá
@@ -224,7 +224,7 @@ preço ou obriga a ratear por chute, e a margem por serviço vira ficção.
 > dois, ou o valor é contado em dobro.
 
 Descoberto pelo [cenário 3](10-CENARIOS.md#cenário-3--o-encaixe-que-virou-três-coisas).
-Sem isso, o DoD da Fase 7 — *"finalizar dá baixa automática correta"* — falharia em
+Sem isso, o DoD da Fase 7 — _"finalizar dá baixa automática correta"_ — falharia em
 silêncio no caso mais comum da Rosiele.
 
 ### 4.6 Preço é congelado no atendimento 🔒
@@ -262,28 +262,28 @@ sinalizar: "o registro está atrás da realidade, quer acertar?".
 Cada uma vira um teste unitário que roda sem banco, em milissegundos. Esta lista é
 o contrato entre a Fase 1 e a Fase 3.
 
-| # | Invariante | Onde é garantida |
-| - | ---------- | ---------------- |
-| INV-01 | Dois agendamentos do mesmo profissional nunca se sobrepõem | 🔒 `EXCLUDE USING gist` — banco. A checagem na UI é só UX |
-| INV-02 | CPF inválido pelos dígitos verificadores nunca é gravado | VO `Cpf` |
-| INV-03 | `cpfHash` é único por organização — **índice parcial**, `WHERE cpf_hash IS NOT NULL` | Banco · D-07 |
-| INV-04 | Todo valor monetário é `Int` em centavos | VO `Money` |
-| INV-05 | Preço e custo são snapshot, nunca referência viva | `AttendanceItem`, `ProductUsage` |
-| INV-06 | Intervalos de cronômetro não se sobrepõem | Agregado `Attendance` |
-| INV-07 | No máximo um intervalo aberto por atendimento | Agregado `Attendance` |
-| INV-08 | Atendimento finalizado é imutável; correção é um lançamento de ajuste, com autor e motivo | Agregado `Attendance` |
-| INV-09 | Finalizar gera receita, baixa de estoque e histórico **numa única transação** | 🔒 DoD da Fase 9 |
-| INV-10 | `ClientAccount` pertence a exatamente uma `Client`; `Client` tem no máximo uma conta | 🔒 DEC-008 |
-| INV-11 | Toda foto nasce com visibilidade explícita, padrão **só a profissional** | Agregado `Client` |
-| INV-12 | Toda entidade tem `organizationId` | Extension + RLS |
-| INV-13 | Toda data é UTC no banco; fuso vive na organização | 🔒 Arquitetura |
-| INV-14 | Revogar conta nunca altera a ficha | Fronteira de agregados |
-| INV-15 | Soft delete de cliente preserva o histórico financeiro, que é imutável | Agregado `Transaction` |
-| INV-16 | Atendimento com **serviço químico** tem exatamente uma `HairAssessment`, e o teste de mecha é etapa dela. Fora disso, segue a configuração | 🗣️ Corrigida por [GAP-05](10-CENARIOS.md) |
-| INV-17 | Teste reprovado nunca gera `AttendanceItem` do serviço impedido — mas **gera `ProductUsage`** do que o teste consumiu | 🗣️ Corrigida por [GAP-01](10-CENARIOS.md) |
-| INV-18 | O atendimento pertence ao dia da **finalização**, no fuso da organização. Um só instante decide receita, baixa e histórico | [GAP-04](10-CENARIOS.md) |
-| INV-19 | Em serviço composto, o **preço** vive no item pai e o **custo e a baixa** vivem nas folhas. Nunca nos dois | [GAP-02](10-CENARIOS.md) |
-| INV-20 | Fundir fichas que ambas têm conta deixa ativa a de login mais recente; a outra é **revogada, nunca apagada**, com registro em `AuditLog` | [GAP-03](10-CENARIOS.md) |
+| #      | Invariante                                                                                                                                 | Onde é garantida                                          |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------- |
+| INV-01 | Dois agendamentos do mesmo profissional nunca se sobrepõem                                                                                 | 🔒 `EXCLUDE USING gist` — banco. A checagem na UI é só UX |
+| INV-02 | CPF inválido pelos dígitos verificadores nunca é gravado                                                                                   | VO `Cpf`                                                  |
+| INV-03 | `cpfHash` é único por organização — **índice parcial**, `WHERE cpf_hash IS NOT NULL`                                                       | Banco · D-07                                              |
+| INV-04 | Todo valor monetário é `Int` em centavos                                                                                                   | VO `Money`                                                |
+| INV-05 | Preço e custo são snapshot, nunca referência viva                                                                                          | `AttendanceItem`, `ProductUsage`                          |
+| INV-06 | Intervalos de cronômetro não se sobrepõem                                                                                                  | Agregado `Attendance`                                     |
+| INV-07 | No máximo um intervalo aberto por atendimento                                                                                              | Agregado `Attendance`                                     |
+| INV-08 | Atendimento finalizado é imutável; correção é um lançamento de ajuste, com autor e motivo                                                  | Agregado `Attendance`                                     |
+| INV-09 | Finalizar gera receita, baixa de estoque e histórico **numa única transação**                                                              | 🔒 DoD da Fase 9                                          |
+| INV-10 | `ClientAccount` pertence a exatamente uma `Client`; `Client` tem no máximo uma conta                                                       | 🔒 DEC-008                                                |
+| INV-11 | Toda foto nasce com visibilidade explícita, padrão **só a profissional**                                                                   | Agregado `Client`                                         |
+| INV-12 | Toda entidade tem `organizationId`                                                                                                         | Extension + RLS                                           |
+| INV-13 | Toda data é UTC no banco; fuso vive na organização                                                                                         | 🔒 Arquitetura                                            |
+| INV-14 | Revogar conta nunca altera a ficha                                                                                                         | Fronteira de agregados                                    |
+| INV-15 | Soft delete de cliente preserva o histórico financeiro, que é imutável                                                                     | Agregado `Transaction`                                    |
+| INV-16 | Atendimento com **serviço químico** tem exatamente uma `HairAssessment`, e o teste de mecha é etapa dela. Fora disso, segue a configuração | 🗣️ Corrigida por [GAP-05](10-CENARIOS.md)                 |
+| INV-17 | Teste reprovado nunca gera `AttendanceItem` do serviço impedido — mas **gera `ProductUsage`** do que o teste consumiu                      | 🗣️ Corrigida por [GAP-01](10-CENARIOS.md)                 |
+| INV-18 | O atendimento pertence ao dia da **finalização**, no fuso da organização. Um só instante decide receita, baixa e histórico                 | [GAP-04](10-CENARIOS.md)                                  |
+| INV-19 | Em serviço composto, o **preço** vive no item pai e o **custo e a baixa** vivem nas folhas. Nunca nos dois                                 | [GAP-02](10-CENARIOS.md)                                  |
+| INV-20 | Fundir fichas que ambas têm conta deixa ativa a de login mais recente; a outra é **revogada, nunca apagada**, com registro em `AuditLog`   | [GAP-03](10-CENARIOS.md)                                  |
 
 ### Três cenários adversariais que a v1 precisa passar
 
@@ -349,20 +349,20 @@ Nenhuma delas foi resolvida perguntando à Rosiele. Por
 passou a ser **"quem sabe a resposta?"** — e a resposta manda a questão para a
 arquitetura, para a tela de configuração ou para o próprio uso.
 
-| # | Pergunta | Resolução | Onde vive |
-| - | -------- | --------- | --------- |
-| M-01 | Um serviço por visita ou vários? | **Sempre lista.** Serviço composto permite montar nutrição como etapa da escova ou como item à parte | 🏛️ Arquitetura |
-| M-02 | Atende duas clientes ao mesmo tempo? | **Modelo permite, interface começa com uma.** Sem invariante de atendimento único | 🏛️ Arquitetura |
-| M-03 | Trabalha com cronograma capilar? | Serviço composto + intervalo de retorno cobrem o caso sem entidade nova | ⚙️ Configuração |
-| M-04 | Tem cliente fixa quinzenal? | Recorrência como opção do agendamento, desligada por padrão | ⚙️ Configuração |
-| M-05 | Pensa estoque em quê? | **Frasco e aplicação primeiro**, conversão interna | ⚙️ Configuração |
-| M-06 | Cliente já ficou devendo? | `Payment` em lista desde sempre; fiado escondido até ser usado | 🏛️ Arquitetura |
-| M-07 | Atende de graça alguém? | Cortesia é estado próprio, nunca "não pago" | 🏛️ Arquitetura |
-| M-08 | Precisa saber a química anterior? | ✅ **Sim — portão de segurança.** Gerou `HairAssessment` e `ENCERRADO_SEM_SERVICO` | 🗣️ Da conversa |
-| M-09 | Preço varia por cabelo? | `ServiceVariant` opcional, eixo padrão **curvatura** | ⚙️ Configuração |
-| M-10 | Quando as mãos ficam livres? | Não se pergunta — **se mede**. O cronômetro mostra a janela real | 📈 Aprendizado |
-| M-11 | Teste reprovado gera cobrança? | O estado existe sempre; cobrar é política dela | ⚙️ Configuração |
-| M-12 | Trabalha sozinha? | `Membership` desde a Fase 3; interface só com mais de uma pessoa | 🏛️ Arquitetura |
+| #    | Pergunta                             | Resolução                                                                                            | Onde vive       |
+| ---- | ------------------------------------ | ---------------------------------------------------------------------------------------------------- | --------------- |
+| M-01 | Um serviço por visita ou vários?     | **Sempre lista.** Serviço composto permite montar nutrição como etapa da escova ou como item à parte | 🏛️ Arquitetura  |
+| M-02 | Atende duas clientes ao mesmo tempo? | **Modelo permite, interface começa com uma.** Sem invariante de atendimento único                    | 🏛️ Arquitetura  |
+| M-03 | Trabalha com cronograma capilar?     | Serviço composto + intervalo de retorno cobrem o caso sem entidade nova                              | ⚙️ Configuração |
+| M-04 | Tem cliente fixa quinzenal?          | Recorrência como opção do agendamento, desligada por padrão                                          | ⚙️ Configuração |
+| M-05 | Pensa estoque em quê?                | **Frasco e aplicação primeiro**, conversão interna                                                   | ⚙️ Configuração |
+| M-06 | Cliente já ficou devendo?            | `Payment` em lista desde sempre; fiado escondido até ser usado                                       | 🏛️ Arquitetura  |
+| M-07 | Atende de graça alguém?              | Cortesia é estado próprio, nunca "não pago"                                                          | 🏛️ Arquitetura  |
+| M-08 | Precisa saber a química anterior?    | ✅ **Sim — portão de segurança.** Gerou `HairAssessment` e `ENCERRADO_SEM_SERVICO`                   | 🗣️ Da conversa  |
+| M-09 | Preço varia por cabelo?              | `ServiceVariant` opcional, eixo padrão **curvatura**                                                 | ⚙️ Configuração |
+| M-10 | Quando as mãos ficam livres?         | Não se pergunta — **se mede**. O cronômetro mostra a janela real                                     | 📈 Aprendizado  |
+| M-11 | Teste reprovado gera cobrança?       | O estado existe sempre; cobrar é política dela                                                       | ⚙️ Configuração |
+| M-12 | Trabalha sozinha?                    | `Membership` desde a Fase 3; interface só com mais de uma pessoa                                     | 🏛️ Arquitetura  |
 
 **Legenda:** 🏛️ decidido na arquitetura, não é configurável ·
 ⚙️ [tela de configuração](09-CONFIGURACAO.md) · 📈 o sistema aprende ·

@@ -295,8 +295,8 @@ O RoHair chega **sabendo o domínio da beleza**. Traz um catálogo semente de
 serviços, produtos, unidades e categorias; a profissional **seleciona e ajusta** o
 que é dela. Nunca encara tela vazia, nunca digita do zero o que é inferível.
 
-É o princípio 2 da [visão de produto](01-VISAO-PRODUTO.md) — *"o app trabalha, a
-usuária confirma"* — aplicado ao cadastro, que era o único lugar onde ele não
+É o princípio 2 da [visão de produto](01-VISAO-PRODUTO.md) — _"o app trabalha, a
+usuária confirma"_ — aplicado ao cadastro, que era o único lugar onde ele não
 estava sendo aplicado.
 
 **Três níveis**, detalhados em [09-CONFIGURACAO.md](09-CONFIGURACAO.md):
@@ -356,8 +356,8 @@ configuração, quando houver horários realmente livres e bem definidos.
 
 Proposta completa em [03-ROADMAP.md](03-ROADMAP.md#fase-12).
 
-**Confirmado pela Rosiele** — *"Finalizo, deixo as orientações dos produtos que
-deve utilizar e o tempo do retoque e vou pra minha residência."*
+**Confirmado pela Rosiele** — _"Finalizo, deixo as orientações dos produtos que
+deve utilizar e o tempo do retoque e vou pra minha residência."_
 
 O item **"Meu cuidado"** deixa de ser hipótese: ela **já faz isso hoje**, falado, na
 porta, no fim do atendimento. Falado, some antes de a cliente chegar em casa. O
@@ -365,7 +365,7 @@ portal não inventa comportamento — digitaliza um que existe, que é a categor
 funcionalidade com maior chance de ser usada.
 
 O **"tempo do retoque"** também é confirmado, e é calculável: três meses para
-progressiva, *"ou antes dependendo da curvatura"*.
+progressiva, _"ou antes dependendo da curvatura"_.
 
 **O que restava vira chave de configuração** ([DEC-013](#dec-013)): o que a cliente
 vê do histórico, se vê valores, e a visibilidade padrão das fotos são políticas por
