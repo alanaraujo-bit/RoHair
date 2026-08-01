@@ -202,7 +202,8 @@ negócio testável, sem nenhuma dependência de framework.
 - [x] Migrations aplicam limpo em banco vazio, **e são idempotentes**
 - [x] CPF inválido é rejeitado antes de chegar ao banco
 - [x] Cobertura do domínio acima de 90% — **92,7% de statements, 96,9% de linhas**
-- [x] Duas requisições simultâneas no mesmo horário: uma falha **no banco**
+- [x] Duas requisições simultâneas no mesmo horário: uma falha **no banco** —
+      verificado no CI contra Postgres 18 real
 - [ ] **Revisado e aprovado pelo dono**
 
 ---

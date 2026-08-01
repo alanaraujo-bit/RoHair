@@ -164,12 +164,21 @@ não são regenerados:
 O intervalo semiaberto `[)` é a mesma semântica de `overlaps()` no kernel — as
 duas precisam concordar, ou a tela diria uma coisa e o banco outra.
 
-### O que **não** foi verificado
+### A migration foi verificada — no CI, contra Postgres 18 real
 
-**A migration não rodou nesta máquina.** O Docker está instalado mas sem daemon,
-então não deu para levantar um Postgres 18 local. A primeira verificação real
-acontece no CI, no job `banco`. Se ele falhar, a correção vem antes de qualquer
-coisa da Fase 4.
+Não deu para testar nesta máquina (Docker instalado, daemon parado), então a
+verificação aconteceu onde ela precisa viver de qualquer forma. O job
+`Migrations e garantias do banco` passou em todos os passos:
+
+| Passo                                 | Resultado |
+| ------------------------------------- | --------- |
+| Aplicar migrations em banco vazio     | ✅        |
+| **Reaplicar** — prova de idempotência | ✅        |
+| Garantias que só o banco pode dar     | ✅        |
+
+O último passo é o que importa: `EXCLUDE USING gist` recusando sobreposição,
+aceitando horários encostados, ignorando cancelados — e uma **corrida real** de
+dois agendamentos simultâneos em que exatamente um passa.
 
 ### Três dependências novas
 
@@ -413,8 +422,9 @@ Ordem cronológica inversa — mais recente no topo.
 - **Postgres 18 efêmero no CI**, com o job aplicando a migration duas vezes para
   provar idempotência — um deploy que reexecuta não pode derrubar produção.
 - **116 testes em 245ms**, cobertura de 92,7%.
-- ⚠️ **A migration não foi verificada localmente**: Docker sem daemon nesta
-  máquina. A primeira verificação real é no CI.
+- **A migration passou no CI na primeira execução**, inclusive na reaplicação e
+  na suíte de constraints. Não foi possível testá-la localmente (Docker sem
+  daemon), então o CI é a única rede de segurança para o SQL manual.
 
 ### 2026-07-31 (13) — Fase 2 aprovada e fechada · Fase 3 apresentada
 

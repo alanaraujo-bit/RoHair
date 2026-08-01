@@ -137,8 +137,9 @@ dev`, e quebrar `npm test` local não ajudaria ninguém.
   recriar a migration do zero, precisa reanexar os sete blocos. O cabeçalho no
   arquivo avisa, mas é disciplina, não ferramenta
 - O CI ficou mais lento: um job a mais, com contêiner
-- A migration **não foi verificada localmente** — o Docker desta máquina não
-  tem daemon rodando. A primeira verificação real acontece no CI
+- A migration **não é verificável nesta máquina** — o Docker local não tem
+  daemon. A verificação acontece só no CI, o que alonga o ciclo de correção de
+  qualquer erro de SQL. Na primeira execução ela passou, inclusive na reaplicação
 
 **Reversibilidade**
 
