@@ -24,9 +24,17 @@ import { Field, Input } from '@/shared/ui/primitives/field';
 
 export type LoginState = {
   readonly erro: string | null;
+  /**
+   * O que ela digitou no primeiro campo, devolvido para preencher de volta.
+   *
+   * React 19 limpa o formulário quando a ação termina. Sem isto, errar a senha
+   * apagaria também o usuário — e o próximo erro seria de digitação, causado
+   * pela tela. A senha, essa sim, nunca volta.
+   */
+  readonly identificador: string;
 };
 
-export const ESTADO_INICIAL: LoginState = { erro: null };
+export const ESTADO_INICIAL: LoginState = { erro: null, identificador: '' };
 
 export type LoginFormProps = {
   readonly action: (state: LoginState, formData: FormData) => Promise<LoginState>;
@@ -44,6 +52,8 @@ export function LoginForm({ action, destino }: LoginFormProps) {
         {(ids) => (
           <Input
             {...ids}
+            key={state.identificador}
+            defaultValue={state.identificador}
             name="identificador"
             type="text"
             autoComplete="username"

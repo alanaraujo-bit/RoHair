@@ -43,8 +43,11 @@ export async function entrarAction(
     destino: formData.get('destino'),
   });
 
+  // O identificador volta para a tela em todo caminho de erro; a senha, nunca.
+  const digitado = String(formData.get('identificador') ?? '').slice(0, 255);
+
   if (!parsed.success) {
-    return { erro: 'Preencha o usuário e a senha.' };
+    return { erro: 'Preencha o usuário e a senha.', identificador: digitado };
   }
 
   const resultado = await authenticateStaff(
@@ -63,7 +66,12 @@ export async function entrarAction(
     },
   );
 
-  if (!resultado.ok) return { erro: describeAuthenticationFailure(resultado.error) };
+  if (!resultado.ok) {
+    return {
+      erro: describeAuthenticationFailure(resultado.error),
+      identificador: digitado,
+    };
+  }
 
   await setSessionCookie(resultado.value.token);
 
