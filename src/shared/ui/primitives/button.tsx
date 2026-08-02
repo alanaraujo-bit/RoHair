@@ -47,6 +47,42 @@ const SIZE: Record<ButtonSize, string> = {
   lg: 'min-h-[3.25rem] px-6 text-[length:var(--text-md)] rounded-[var(--radius-lg)]',
 };
 
+/**
+ * As classes do botão, para quem **não é** um `<button>`.
+ *
+ * Existe por causa de um erro que este projeto cometeu e pagou: `<Link>` com um
+ * `<Button>` dentro. É HTML inválido — controle interativo dentro de controle
+ * interativo — e o preço não é teórico: o cálculo do nome acessível ignora o
+ * conteúdo interativo, então o link fica **sem nome** para leitor de tela. Foi
+ * assim que um teste em produção não achou o botão "Finalizar": ele existia na
+ * tela e não existia para quem navega por acessibilidade.
+ *
+ * Quem navega, navega por link. Quem age, aciona botão. Um link com cara de
+ * botão usa isto.
+ */
+export function buttonClasses({
+  variant = 'primary',
+  size = 'md',
+  block = false,
+  className,
+}: {
+  readonly variant?: ButtonVariant;
+  readonly size?: ButtonSize;
+  readonly block?: boolean;
+  readonly className?: string;
+} = {}): string {
+  return cn(
+    'relative inline-flex items-center justify-center gap-2',
+    'font-medium tracking-[-0.01em] whitespace-nowrap',
+    'transition-[background-color,box-shadow,transform] duration-[var(--duration-fast)] ease-[var(--ease-out-soft)]',
+    'active:translate-y-px',
+    VARIANT[variant],
+    SIZE[size],
+    block && 'w-full',
+    className,
+  );
+}
+
 export type ButtonProps = React.ComponentPropsWithoutRef<'button'> & {
   readonly variant?: ButtonVariant;
   readonly size?: ButtonSize;

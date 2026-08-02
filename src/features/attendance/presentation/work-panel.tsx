@@ -3,7 +3,7 @@
 import { useRef, useTransition } from 'react';
 import Link from 'next/link';
 
-import { Button } from '@/shared/ui/primitives/button';
+import { Button, buttonClasses } from '@/shared/ui/primitives/button';
 import { Card } from '@/shared/ui/primitives/surface';
 import { Timer } from '@/shared/ui/primitives/timer';
 import { formatMoney } from '@/shared/utils/format-money';
@@ -138,10 +138,8 @@ export function WorkPanel({
         Link e não ação de servidor: ir para o checkout não muda nada no banco,
         e uma ida a mais ao servidor aqui seria latência sem contrapartida.
       */}
-      <Link href={checkoutHref} className="block">
-        <Button size="lg" block>
-          Finalizar · {formatMoney(totalCents)}
-        </Button>
+      <Link href={checkoutHref} className={buttonClasses({ size: 'lg', block: true })}>
+        Finalizar · {formatMoney(totalCents)}
       </Link>
     </div>
   );

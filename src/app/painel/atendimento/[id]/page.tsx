@@ -13,7 +13,7 @@ import { AssessmentForm } from '@/features/attendance/presentation/assessment-fo
 import { ServicePicker } from '@/features/attendance/presentation/service-picker';
 import { WorkPanel } from '@/features/attendance/presentation/work-panel';
 import { requireStaffSession } from '@/features/auth/infrastructure/session-context';
-import { Button } from '@/shared/ui/primitives/button';
+import { buttonClasses } from '@/shared/ui/primitives/button';
 import { SafetyAlert } from '@/shared/ui/primitives/safety-alert';
 import { Badge, Card } from '@/shared/ui/primitives/surface';
 import { formatMoney } from '@/shared/utils/format-money';
@@ -224,10 +224,11 @@ function Resumo({ view }: { readonly view: AtendimentoView }) {
         </Card>
       )}
 
-      <Link href="/painel" className="block">
-        <Button variant="secondary" size="lg" block>
-          Voltar para hoje
-        </Button>
+      <Link
+        href="/painel"
+        className={buttonClasses({ variant: 'secondary', size: 'lg', block: true })}
+      >
+        Voltar para hoje
       </Link>
     </div>
   );

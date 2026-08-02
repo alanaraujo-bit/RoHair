@@ -9,7 +9,7 @@ import {
   resumoDeHoje,
 } from '@/features/painel/infrastructure/painel-repository';
 import { IconBottle, IconCalendar, IconReturn } from '@/shared/ui/icons/domain-icons';
-import { Button } from '@/shared/ui/primitives/button';
+import { buttonClasses } from '@/shared/ui/primitives/button';
 import { MoneyFigure } from '@/shared/ui/primitives/money-display';
 import { Badge, Card, EmptyState } from '@/shared/ui/primitives/surface';
 
@@ -69,8 +69,11 @@ export default async function HojePage() {
                 atendimento em andamento
               </p>
             </div>
-            <Link href={`/painel/atendimento/${aberto.id}`}>
-              <Button size="sm">Abrir</Button>
+            <Link
+              href={`/painel/atendimento/${aberto.id}`}
+              className={buttonClasses({ size: 'sm' })}
+            >
+              Abrir
             </Link>
           </Card>
         </section>
@@ -86,8 +89,8 @@ export default async function HojePage() {
               title="Nenhum horário hoje"
               description="Aproveite para conferir quem está para voltar."
               action={
-                <Link href="/painel/clientes">
-                  <Button size="sm">Ver clientes</Button>
+                <Link href="/painel/clientes" className={buttonClasses({ size: 'sm' })}>
+                  Ver clientes
                 </Link>
               }
             />
