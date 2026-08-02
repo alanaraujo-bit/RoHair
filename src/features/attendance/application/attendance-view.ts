@@ -60,7 +60,17 @@ export type AtendimentoView = {
   readonly custoCents: number;
   readonly sobrouCents: number;
 
+  /** Tudo que já passou, incluindo o intervalo aberto. Para exibir duração. */
   readonly decorridoMs: number;
+  /**
+   * Só os intervalos **fechados** — é isto que o cronômetro recebe.
+   *
+   * A distinção não é preciosismo: o `Timer` anima somando `agora −
+   * correndoDesde` ao valor que recebe. Passar o total já com o intervalo
+   * aberto dentro conta o mesmo tempo duas vezes, e foi o que aconteceu em
+   * produção — a tela marcava 14:47 num atendimento de 8 minutos.
+   */
+  readonly acumuladoFechadoMs: number;
   readonly minutos: number;
   /** ISO do intervalo aberto; `null` quando está pausado. */
   readonly correndoDesde: string | null;
@@ -125,6 +135,10 @@ export function montarView(screen: AttendanceScreen, agora: Date): AtendimentoVi
     sobrouCents: receita - custo,
 
     decorridoMs: decorrido,
+    acumuladoFechadoMs: elapsedMs(
+      attendance.timeEntries.filter((entrada) => entrada.endedAt !== null),
+      agora,
+    ),
     minutos: Math.round(decorrido / 60_000),
     correndoDesde: abertos[0]?.startedAt.toISOString() ?? null,
     emPausa: abertos.length === 0,

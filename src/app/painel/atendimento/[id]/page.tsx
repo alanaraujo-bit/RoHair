@@ -187,7 +187,7 @@ function RetomarInicio({ view }: { readonly view: AtendimentoView }) {
 function EmAndamento({ view }: { readonly view: AtendimentoView }) {
   return (
     <WorkPanel
-      elapsedMs={view.decorridoMs}
+      elapsedMs={view.acumuladoFechadoMs}
       runningSince={view.correndoDesde}
       emPausa={view.emPausa}
       produtos={view.produtos}
