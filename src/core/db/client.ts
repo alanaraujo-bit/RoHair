@@ -13,18 +13,32 @@ import { PrismaClient } from './generated/client';
  * próprio, o que é o caminho certo para o Railway: o proxy TCP não gosta de
  * conexão nova por requisição.
  *
- * O singleton em `globalThis` existe por causa do hot reload do Next: sem ele,
- * cada recarga do módulo abriria um pool novo e o banco esgotaria as conexões
- * em minutos de desenvolvimento.
+ * **O singleton vale também em produção**, e isso não é descuido: a versão
+ * anterior deste arquivo só guardava o cliente fora de produção, pensando em
+ * hot reload. Em função serverless o efeito foi o oposto do pretendido — cada
+ * invocação abria um pool novo, as conexões se acumulavam e o Postgres passou a
+ * responder `too many clients already` **em produção**, no meio de um
+ * atendimento. O escopo de módulo sobrevive entre invocações de uma mesma
+ * instância; é exatamente aí que o pool deve viver.
  */
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
+/**
+ * Poucas conexões por instância, liberadas rápido.
+ *
+ * Um pool grande não ajuda: cada instância atende uma requisição por vez, e o
+ * que multiplica conexão é a quantidade de instâncias, não o tamanho do pool.
+ * Teto baixo e ociosidade curta é o que mantém a soma dentro do limite do
+ * Railway quando a Vercel resolve abrir vinte instâncias.
+ */
+const POOL = { max: 3, idleTimeoutMillis: 10_000 } as const;
+
 export function createPrismaClient(connectionString: string): PrismaClient {
   return new PrismaClient({
-    adapter: new PrismaPg({ connectionString }),
+    adapter: new PrismaPg({ connectionString, ...POOL }),
   });
 }
 
@@ -40,6 +54,6 @@ export function prisma(): PrismaClient {
   }
 
   const client = createPrismaClient(connectionString);
-  if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = client;
+  globalForPrisma.prisma = client;
   return client;
 }
