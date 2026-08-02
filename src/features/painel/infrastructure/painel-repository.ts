@@ -11,17 +11,13 @@ import type {
 /**
  * Leituras do painel, direto no Prisma.
  *
- * Enquanto a Fase 4 não traz sessão, a organização é resolvida por nome. É
- * temporário e está marcado como tal — quando houver login, sai daqui e vem do
- * contexto da requisição.
+ * Toda função aqui recebe `organizationId` como primeiro argumento, e ele vem
+ * **sempre da sessão** — nunca da URL, nunca de um formulário. Enquanto não
+ * existia login, este arquivo resolvia a organização sozinho, pegando a
+ * primeira do banco; essa função sumiu junto com o painel aberto.
  */
 
 const FUSO = 'America/Sao_Paulo';
-
-export async function organizacaoAtual(): Promise<{ id: string; nome: string } | null> {
-  const org = await prisma().organization.findFirst({ orderBy: { createdAt: 'asc' } });
-  return org ? { id: org.id, nome: org.name } : null;
-}
 
 function inicioDoDia(): Date {
   const agora = new Date();

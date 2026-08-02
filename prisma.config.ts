@@ -1,6 +1,6 @@
-import { existsSync, readFileSync } from 'node:fs';
-
 import { defineConfig } from 'prisma/config';
+
+import { loadEnvLocal } from './prisma/load-env';
 
 /**
  * Configuração do Prisma 7.
@@ -10,26 +10,9 @@ import { defineConfig } from 'prisma/config';
  * ambiente e passa a ser puramente estrutural, sem risco de alguém commitar uma
  * credencial junto com uma tabela.
  *
- * O `.env.local` é lido à mão, sem `dotenv`. São doze linhas contra mais uma
- * dependência — e é a única coisa que precisa acontecer antes do Prisma subir.
+ * A leitura do `.env.local` mora em `prisma/load-env.ts`, porque os scripts de
+ * semente e de bootstrap precisam exatamente da mesma coisa antes de conectar.
  */
-
-function loadEnvLocal(): void {
-  if (!existsSync('.env.local')) return;
-
-  for (const line of readFileSync('.env.local', 'utf8').split('\n')) {
-    const match = /^\s*([A-Z0-9_]+)\s*=\s*(.*)$/.exec(line);
-    if (!match) continue;
-
-    const [, key, rawValue] = match;
-    if (!key || rawValue === undefined) continue;
-    // Variável real do ambiente sempre vence a do arquivo. É o que faz o CI se
-    // comportar de forma previsível mesmo se alguém commitar um .env por engano.
-    if (process.env[key] !== undefined) continue;
-
-    process.env[key] = rawValue.trim().replace(/^["']|["']$/g, '');
-  }
-}
 
 loadEnvLocal();
 

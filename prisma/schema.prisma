@@ -98,6 +98,23 @@ model Session {
   @@map("session")
 }
 
+/// Tentativa de login, para bloqueio progressivo.
+///
+/// Fica no Postgres e não no Redis (DEC-016): o estado de bloqueio precisa
+/// sobreviver a um reinício do cache. Um Redis vazio faria a contagem voltar a
+/// zero — exatamente o que um atacante quer.
+model LoginAttempt {
+  id        String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  /// Balde da contagem: `conta:<org>:<identificador>` ou `ip:<endereço>`.
+  /// Nunca guarda senha, nem tentada nem parcial.
+  bucket    String
+  succeeded Boolean
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([bucket, createdAt])
+  @@map("login_attempt")
+}
+
 enum AccountStatus {
   ACTIVE
   REVOKED

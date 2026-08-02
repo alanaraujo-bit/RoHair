@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
-import {
-  listaDeClientes,
-  organizacaoAtual,
-} from '@/features/painel/infrastructure/painel-repository';
+import { requireStaffSession } from '@/features/auth/infrastructure/session-context';
+import { listaDeClientes } from '@/features/painel/infrastructure/painel-repository';
 import { Badge, Card } from '@/shared/ui/primitives/surface';
 
 export const metadata: Metadata = { title: 'Clientes · RoHair' };
@@ -18,10 +16,9 @@ export const dynamic = 'force-dynamic';
  * sob um cabeçalho próprio.
  */
 export default async function ClientesPage() {
-  const org = await organizacaoAtual();
-  if (!org) return null;
+  const { organizationId } = await requireStaffSession();
 
-  const clientes = await listaDeClientes(org.id);
+  const clientes = await listaDeClientes(organizationId);
   const precisamVoltar = clientes.filter((c) => c.retornoVencido);
   const demais = clientes.filter((c) => !c.retornoVencido);
 

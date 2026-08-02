@@ -2,10 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import {
-  fichaDaCliente,
-  organizacaoAtual,
-} from '@/features/painel/infrastructure/painel-repository';
+import { requireStaffSession } from '@/features/auth/infrastructure/session-context';
+import { fichaDaCliente } from '@/features/painel/infrastructure/painel-repository';
 import { Button } from '@/shared/ui/primitives/button';
 import { MoneyText } from '@/shared/ui/primitives/money-display';
 import { SafetyAlert } from '@/shared/ui/primitives/safety-alert';
@@ -36,10 +34,12 @@ export default async function FichaPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const org = await organizacaoAtual();
-  if (!org) notFound();
+  const { organizationId } = await requireStaffSession();
 
-  const ficha = await fichaDaCliente(org.id, id);
+  // A ficha é buscada com o `organizationId` da SESSÃO, nunca com um vindo da
+  // URL. É isto que faz trocar o id no endereço não alcançar cliente de outra
+  // organização: o filtro não é palpite do cliente, é fato do servidor.
+  const ficha = await fichaDaCliente(organizationId, id);
   if (!ficha) notFound();
 
   return (

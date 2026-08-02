@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
+import { requireStaffSession } from '@/features/auth/infrastructure/session-context';
 import {
   agendaDeHoje,
   alertasDeHoje,
   atendimentoAberto,
-  organizacaoAtual,
   resumoDeHoje,
 } from '@/features/painel/infrastructure/painel-repository';
 import { IconBottle, IconCalendar, IconReturn } from '@/shared/ui/icons/domain-icons';
@@ -27,14 +27,13 @@ export const dynamic = 'force-dynamic';
  * porque escondê-lo seria desonesto.
  */
 export default async function HojePage() {
-  const org = await organizacaoAtual();
-  if (!org) return <SemOrganizacao />;
+  const { organizationId } = await requireStaffSession();
 
   const [resumo, agenda, alertas, aberto] = await Promise.all([
-    resumoDeHoje(org.id),
-    agendaDeHoje(org.id),
-    alertasDeHoje(org.id),
-    atendimentoAberto(org.id),
+    resumoDeHoje(organizationId),
+    agendaDeHoje(organizationId),
+    alertasDeHoje(organizationId),
+    atendimentoAberto(organizationId),
   ]);
 
   const hoje = new Intl.DateTimeFormat('pt-BR', {
@@ -162,17 +161,5 @@ function Titulo({ children }: { children: React.ReactNode }) {
     <h2 className="text-[length:var(--text-2xs)] font-semibold tracking-[0.09em] text-[var(--aurea-ink-subtle)] uppercase">
       {children}
     </h2>
-  );
-}
-
-function SemOrganizacao() {
-  return (
-    <Card tone="quiet">
-      <EmptyState
-        title="Nada cadastrado ainda"
-        description="O banco está vazio. Rode a semente para começar."
-        action={<span className="text-[length:var(--text-sm)]">npm run db:seed</span>}
-      />
-    </Card>
   );
 }

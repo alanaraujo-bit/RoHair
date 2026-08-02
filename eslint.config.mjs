@@ -29,6 +29,10 @@ const layers = defineConfig({
     // regra passaria a existir sem nunca acusar nada, que é pior do que não ter.
     'boundaries/elements': [
       { type: 'app', partialMatch: false, pattern: 'src/app' },
+      // O proxy é raiz de composição como qualquer rota: o Next exige que ele
+      // fique exatamente aqui, ao lado de `app/`. Sem esta entrada ele cairia
+      // como elemento desconhecido e todo import dele viraria erro.
+      { type: 'app', partialMatch: false, pattern: 'src/proxy.ts' },
       // O kernel vem ANTES de `core` porque o casamento é por ordem: se `core`
       // viesse primeiro, `src/core/kernel` cairia nele e a regra abaixo — a
       // única que o domínio pode importar — nunca se aplicaria.

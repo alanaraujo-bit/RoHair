@@ -3,7 +3,10 @@ import { createHmac } from 'node:crypto';
 import { PrismaPg } from '@prisma/adapter-pg';
 
 import { PrismaClient } from '../src/core/db/generated/client';
+import { loadEnvLocal } from './load-env';
 import { SEED_PRODUTOS, SEED_SERVICES } from './seed-catalog';
+
+loadEnvLocal();
 
 /**
  * Popula o banco com a organização da Rosiele e dados realistas.

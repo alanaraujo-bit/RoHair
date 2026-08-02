@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
-import {
-  agendaDeHoje,
-  organizacaoAtual,
-} from '@/features/painel/infrastructure/painel-repository';
+import { requireStaffSession } from '@/features/auth/infrastructure/session-context';
+import { agendaDeHoje } from '@/features/painel/infrastructure/painel-repository';
 import { Badge, Card } from '@/shared/ui/primitives/surface';
 
 export const metadata: Metadata = { title: 'Agenda · RoHair' };
@@ -22,10 +20,9 @@ const FECHAMENTO = 20;
  * vazio, não pelo compromisso marcado.
  */
 export default async function AgendaPage() {
-  const org = await organizacaoAtual();
-  if (!org) return null;
+  const { organizationId } = await requireStaffSession();
 
-  const agenda = await agendaDeHoje(org.id);
+  const agenda = await agendaDeHoje(organizationId);
   const ocupados = new Map(agenda.map((item) => [Number(item.hora.slice(0, 2)), item]));
 
   const hoje = new Intl.DateTimeFormat('pt-BR', {

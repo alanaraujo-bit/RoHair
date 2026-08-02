@@ -1,7 +1,10 @@
 import Link from 'next/link';
 
+import { sairAction } from '@/app/entrar/actions';
+import { requireStaffSession } from '@/features/auth/infrastructure/session-context';
 import { Monogram } from '@/shared/ui/brand/monogram';
 import { IconCalendar, IconMirror, IconMoney } from '@/shared/ui/icons/domain-icons';
+import { Button } from '@/shared/ui/primitives/button';
 import { ThemeToggle } from '@/shared/ui/theme/theme-toggle';
 
 /**
@@ -10,8 +13,11 @@ import { ThemeToggle } from '@/shared/ui/theme/theme-toggle';
  * Navegação inferior com quatro destinos e alvo de 44px, porque é usada com uma
  * mão e o polegar não alcança o topo da tela do iPhone.
  *
- * ⚠️ **Sem autenticação ainda.** A sessão chega na Fase 4; até lá o painel lê a
- * primeira organização do banco. Os dados são de demonstração.
+ * A casca exige sessão, mas **não é ela quem protege o painel**: layout e página
+ * renderizam em paralelo no App Router, então um guarda só aqui deixaria a
+ * consulta da página acontecer mesmo com o redirecionamento a caminho. Cada
+ * página chama `requireStaffSession()` por conta própria — e precisa mesmo, para
+ * saber de qual organização ler.
  */
 
 const DESTINOS = [
@@ -20,7 +26,13 @@ const DESTINOS = [
   { href: '/painel/clientes', rotulo: 'Clientes', Icone: IconMirror },
 ] as const;
 
-export default function PainelLayout({ children }: { children: React.ReactNode }) {
+export default async function PainelLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const sessao = await requireStaffSession();
+
   return (
     <div className="mx-auto flex min-h-[100dvh] max-w-lg flex-col">
       <header className="flex items-center justify-between px-5 pt-5 pb-2">
@@ -28,7 +40,15 @@ export default function PainelLayout({ children }: { children: React.ReactNode }
           <Monogram size="sm" />
           <span className="sr-only">RoHair — painel</span>
         </Link>
-        <ThemeToggle />
+        <div className="flex items-center gap-1">
+          <ThemeToggle />
+          <form action={sairAction}>
+            <Button type="submit" variant="ghost" size="sm">
+              <span className="sr-only">Sair da conta de {sessao.name}</span>
+              <span aria-hidden="true">Sair</span>
+            </Button>
+          </form>
+        </div>
       </header>
 
       <main className="flex-1 px-5 pb-28">{children}</main>
