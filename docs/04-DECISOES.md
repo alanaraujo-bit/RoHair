@@ -423,6 +423,36 @@ vazado vira acesso a tudo, sem deixar rastro.
 
 ---
 
+### DEC-018 · "Sobrou" conta dinheiro recebido, não preço combinado
+
+**Data:** 2026-08-02 · **Status:** ✅ Aceita
+
+O número grande do painel passa a somar **pagamentos com `paidAt` preenchido**,
+e não os itens do atendimento. O custo do produto continua contando sempre — ele
+saiu do estoque de qualquer jeito.
+
+**Motivo:** o produto inteiro existe por causa de uma frase — 🗣️ _"fim do dia
+estou com dinheiro mas fim do mês não tenho mais"_. Ela enxerga **caixa**. Um
+atendimento fiado tem preço mas não tem dinheiro; contá-lo em "sobrou" seria
+dizer que sobrou o que não entrou — a mesma ilusão do faturamento, entrando por
+outra porta.
+
+**Consequências:**
+
+- Fiado grava `Payment` com `paidAt` nulo e **não** lança `Transaction`. Quando a
+  Fase 10 construir "receber fiado", é ela que cria o lançamento.
+- Cortesia não tem pagamento nem receita, e o custo do produto aparece — o
+  checkout mostra em quanto sai o agrado, que é uma informação que ela merece
+  ter antes de fazer o próximo.
+- Atendimento de preço zero não gera pagamento: o banco recusa
+  (`payment_valor_positivo`), e com razão — pagamento de zero não é pagamento.
+
+**O que fica pendente para a Fase 10:** a distinção entre caixa e competência.
+Hoje o painel é caixa puro, que é o que ela entende. Um relatório de competência
+pode existir depois, **separado e nomeado**, nunca misturado no mesmo número.
+
+---
+
 ## Decisões pendentes
 
 ### D-03 · Domínio próprio

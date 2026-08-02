@@ -32,7 +32,7 @@ servidor. Ele revisa em produção, pelo iPhone.
 | Banco                     | Railway · Postgres 18 · migrado e populado                     |
 | CI                        | ✅ Verde — qualidade, banco, build, E2E                        |
 | **Dívida crítica**        | ✅ **Nenhuma.** O painel deixou de estar aberto em 2026-08-02  |
-| Trabalho em andamento     | Tela de atendimento — o coração do produto                     |
+| Trabalho em andamento     | Estoque e financeiro, para os alertas terem para onde levar    |
 
 > ⚠️ **O endereço mudou de mãos.** `rohair.vercel.app` **não é nosso** e devolve
 > 404 — a documentação anterior estava errada. O apelido de produção é
@@ -42,16 +42,39 @@ servidor. Ele revisa em produção, pelo iPhone.
 
 ## 1. O que JÁ FUNCIONA em produção
 
-Cinco telas navegáveis, lendo o Postgres real. **Não é mock.**
+Sete telas navegáveis, lendo o Postgres real. **Não é mock.**
 
-| Rota                    | O que faz                                                                        |
-| ----------------------- | -------------------------------------------------------------------------------- |
-| `/entrar`               | Login da equipe: e-mail ou usuário + senha, Argon2id, bloqueio progressivo       |
-| `/painel`               | "Sobrou hoje" em destaque, agenda do dia, alertas de estoque e de cliente sumida |
-| `/painel/agenda`        | Grade por hora das 9h às 20h, com "vaga" nos espaços livres                      |
-| `/painel/clientes`      | Lista ordenada por **quem precisa de ação**, não alfabética                      |
-| `/painel/clientes/[id]` | Ficha: alerta de química no topo, estatísticas, histórico                        |
-| `/design`               | Catálogo dos 19 primitivos do design system, nos dois temas                      |
+| Rota                                | O que faz                                                                        |
+| ----------------------------------- | -------------------------------------------------------------------------------- |
+| `/entrar`                           | Login da equipe: e-mail ou usuário + senha, Argon2id, bloqueio progressivo       |
+| `/painel`                           | "Sobrou hoje" em destaque, agenda do dia, alertas de estoque e de cliente sumida |
+| `/painel/agenda`                    | Grade por hora das 9h às 20h, com "vaga" nos espaços livres                      |
+| `/painel/clientes`                  | Lista ordenada por **quem precisa de ação**, não alfabética                      |
+| `/painel/clientes/[id]`             | Ficha: alerta de química no topo, estatísticas, histórico                        |
+| `/painel/atendimento/[id]`          | **O atendimento** — escolha de serviço, anamnese, cronômetro, produtos, resumo   |
+| `/painel/atendimento/[id]/checkout` | Fechamento com **o lucro na hora**, forma de pagamento e cortesia                |
+| `/design`                           | Catálogo dos 19 primitivos do design system, nos dois temas                      |
+
+### O atendimento, do início ao fim
+
+Uma rota só, quatro momentos, porque a pergunta dela ao abrir o celular é sempre
+"onde eu estou nesta cliente?". O mesmo link leva ao lugar certo, inclusive
+depois de fechar o app no meio.
+
+1. **Escolher o serviço.** Se nada for químico, já começa a trabalhar — um toque
+   a menos, porque não havia decisão nenhuma para tomar ali.
+2. **Anamnese**, se houver química: as cinco perguntas dela, pré-preenchidas
+   pelo último atendimento, terminando no teste de mecha. Aprovar já inicia o
+   cronômetro. **Reprovar é desfecho de sucesso** — o produto do teste vira
+   custo registrado e nada é cobrado.
+3. **Em andamento**: cronômetro que vive no banco (fechar o app não perde nada),
+   produtos pré-marcados pelo que o serviço costuma usar, cada mudança salvando
+   sozinha.
+4. **Checkout**: total, forma de pagamento, cortesia e **o lucro na hora** — o
+   antídoto direto para a frase da Rosiele.
+
+Finalizar é **uma transação só** (INV-09): status, pagamento, baixa de estoque e
+lançamento no caixa entram juntos ou não entram.
 
 ### Dados de demonstração já no banco
 
@@ -82,9 +105,10 @@ abertas** — é também a recuperação de senha da OWNER, que não tem a quem 
 | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Contas pelo painel    | A OWNER ainda não cria conta de assistente pela interface; só pelo script. Papéis existem no banco, mas nenhuma tela lê `role` ainda                              |
 | Identidade da cliente | `ClientAccount`, primeiro acesso por CPF, autocadastro e a rota de escape da [D-08](04-DECISOES.md#d-08) — a segunda metade da Fase 4, que vai junto com o portal |
-| Botões sem ação       | "Agendar", "WhatsApp" e "Iniciar atendimento" na ficha ainda não fazem nada                                                                                       |
-| Tela de atendimento   | Cronômetro, anamnese, checkout — o coração do produto                                                                                                             |
-| Estoque e financeiro  | Rotas `/painel/estoque` e `/painel/dinheiro` não existem (já há link para a primeira)                                                                             |
+| Botões sem ação       | "Agendar" e "WhatsApp" na ficha ainda não fazem nada. "Iniciar atendimento" **funciona**                                                                          |
+| Fotos do atendimento  | O antes e depois é a próxima coisa que falta na tela de atendimento; depende do upload para o R2                                                                  |
+| Retorno e cuidado     | O checkout ainda não sugere o retorno nem registra a orientação de casa — as duas coisas dependem, respectivamente, de "novo horário" e do portal                 |
+| Estoque e financeiro  | Rotas `/painel/estoque` e `/painel/dinheiro` não existem — e o alerta da tela Hoje **já aponta para a primeira**, dando 404                                       |
 | Portal da cliente     | Nada construído                                                                                                                                                   |
 | PWA                   | Sem manifest, sem service worker, sem fluxo de instalação                                                                                                         |
 
@@ -94,16 +118,18 @@ abertas** — é também a recuperação de senha da OWNER, que não tem a quem 
 
 **Construir, nesta ordem — sem apresentar nada, sem pedir aprovação:**
 
-1. **Tela de atendimento** — a mais importante do produto. Anamnese, portão do
-   teste de mecha, cronômetro, checkout com o lucro na hora. O agregado de
-   domínio **já está pronto e testado** em
-   `src/features/attendance/domain/attendance.ts`; falta a interface.
-2. **Estoque e financeiro**, para os alertas terem para onde levar.
-3. **Portal da cliente** — e com ele a segunda metade da autenticação
+1. **Estoque** (`/painel/estoque`). É o próximo por dois motivos: o alerta da
+   tela Hoje já leva para lá e dá 404, e o atendimento já está dando baixa —
+   existe saldo real no banco sem nenhuma tela que o mostre.
+2. **Financeiro** (`/painel/dinheiro`), incluindo **receber fiado**, que hoje
+   não tem como acontecer (DEC-018).
+3. **Fotos de antes e depois** no atendimento, com upload para o R2 — lembrar de
+   **rotacionar o token** antes de entrar foto real de cliente.
+4. **Portal da cliente** — e com ele a segunda metade da autenticação
    (`ClientAccount`, primeiro acesso por CPF, D-07 e D-08). As duas coisas são a
    mesma entrega: identidade de cliente sem portal não tem onde ser usada.
 
-~~Login e sessão~~ — **feito em 2026-08-02.**
+~~Login e sessão~~ · ~~Tela de atendimento~~ — **feitos em 2026-08-02.**
 
 O desenho de cada tela está em [12-WIREFRAMES.md](12-WIREFRAMES.md); a
 prioridade, em [13-BACKLOG.md](13-BACKLOG.md).
@@ -119,6 +145,7 @@ src/
   app/
     entrar/                 tela de login + Server Action
     painel/                 ← AS TELAS QUE ESTÃO NO AR
+      atendimento/[id]/       o atendimento e o checkout
       layout.tsx              casca com navegação inferior
       page.tsx                Hoje
       agenda/page.tsx
@@ -138,7 +165,8 @@ src/
     db/generated/           cliente gerado (gitignored, feito no postinstall)
     env/env.ts              validação de ambiente com Zod
   features/
-    attendance/domain/      agregado pronto e testado, AINDA SEM TELA
+    attendance/             agregado + casos de uso + a view que a tela consome
+                            (nenhum número é calculado na página)
     auth/                   senha, identificador, bloqueio progressivo,
                             caso de uso de login, Argon2id, sessão
     clients/                porta do repositório + adapter Prisma
@@ -207,17 +235,20 @@ Justificativas completas em [04-DECISOES.md](04-DECISOES.md) e [adr/](adr/).
 
 ## 7. Armadilhas conhecidas
 
-| Armadilha                                                                                    | O que fazer                                                                                                                |
-| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| Deploy da Vercel travado em "Deploying outputs"                                              | Já aconteceu e bloqueou a fila por 15min. `npx vercel remove <url> --yes` e o próximo anda                                 |
-| `DATABASE_URL` da Vercel estava quebrado (host `base`)                                       | Corrigido em 2026-08-01. Se aparecer P1001, conferir a variável antes de suspeitar do código                               |
-| `vercel env pull` não traz valor de variável Encrypted                                       | Use `vercel env ls` só para conferir existência                                                                            |
-| `npm audit`: 2 vulnerabilidades altas em `next` via `sharp`                                  | Pré-existente, não introduzida por nós. Tratar na Fase 15                                                                  |
-| Aviso do `eslint-plugin-boundaries` sobre "legacy selector syntax" e sobre padrão de arquivo | Ruído conhecido, não é erro. O segundo vem do `src/proxy.ts`, que é um arquivo solto e precisa ser classificado como `app` |
-| `rohair.vercel.app` devolve 404                                                              | **Não é nosso.** O endereço certo é `rohair.aionixdev.com`. A documentação de 2026-08-01 estava errada                     |
-| Login some depois de trocar a senha da OWNER                                                 | É o desenho: `db:owner` apaga as sessões abertas. Entrar de novo resolve                                                   |
-| Repositório **público** no GitHub                                                            | Decisão aberta do dono. Não há segredo versionado                                                                          |
-| Rotacionar o token do R2                                                                     | Antes de entrar foto real de cliente. TTL vence em 2027-07-31                                                              |
+| Armadilha                                                                                    | O que fazer                                                                                                                                                                                                         |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Deploy da Vercel travado em "Deploying outputs"                                              | Já aconteceu e bloqueou a fila por 15min. `npx vercel remove <url> --yes` e o próximo anda                                                                                                                          |
+| `DATABASE_URL` da Vercel estava quebrado (host `base`)                                       | Corrigido em 2026-08-01. Se aparecer P1001, conferir a variável antes de suspeitar do código                                                                                                                        |
+| `vercel env pull` não traz valor de variável Encrypted                                       | Use `vercel env ls` só para conferir existência                                                                                                                                                                     |
+| `npm audit`: 2 vulnerabilidades altas em `next` via `sharp`                                  | Pré-existente, não introduzida por nós. Tratar na Fase 15                                                                                                                                                           |
+| Aviso do `eslint-plugin-boundaries` sobre "legacy selector syntax" e sobre padrão de arquivo | Ruído conhecido, não é erro. O segundo vem do `src/proxy.ts`, que é um arquivo solto e precisa ser classificado como `app`                                                                                          |
+| `rohair.vercel.app` devolve 404                                                              | **Não é nosso.** O endereço certo é `rohair.aionixdev.com`. A documentação de 2026-08-01 estava errada                                                                                                              |
+| Login some depois de trocar a senha da OWNER                                                 | É o desenho: `db:owner` apaga as sessões abertas. Entrar de novo resolve                                                                                                                                            |
+| `too many clients already` vindo do Postgres                                                 | O singleton do Prisma vale **em produção também**. Guardá-lo só fora de produção abre um pool por invocação na Vercel. Corrigido em 2026-08-02 — se voltar, olhar `core/db/client.ts` antes de suspeitar do Railway |
+| `<Link>` com `<Button>` dentro                                                               | HTML inválido, e o link fica **sem nome acessível**. Use `buttonClasses()` no próprio `Link`                                                                                                                        |
+| Constraint do banco recusando o que a tela deixou passar                                     | São sete blocos de SQL à mão. `payment_valor_positivo` já derrubou o checkout de um serviço de preço zero. Erro `23514` é bug da aplicação, não do banco                                                            |
+| Repositório **público** no GitHub                                                            | Decisão aberta do dono. Não há segredo versionado                                                                                                                                                                   |
+| Rotacionar o token do R2                                                                     | Antes de entrar foto real de cliente. TTL vence em 2027-07-31                                                                                                                                                       |
 
 ---
 
@@ -264,7 +295,36 @@ restantes em vez de quantidade.
 
 Ordem cronológica inversa — mais recente no topo.
 
-### 2026-08-02 — O painel deixou de estar aberto na internet
+### 2026-08-02 (2) — O atendimento inteiro no ar, e quatro bugs que só produção mostra
+
+- **O coração do produto está de pé**: escolher serviço → anamnese → cronômetro
+  → checkout, com o lucro na hora. Percorrido em produção, no navegador, nos
+  dois desfechos — o normal e o do teste de mecha reprovado.
+- **Reprovar no teste funciona como desenhado**: sem vermelho de erro, o produto
+  do teste vira custo registrado e nada é cobrado da cliente.
+- **Finalizar é uma transação só** (INV-09) — status, pagamento, baixa de
+  estoque e caixa.
+- **DEC-018:** "sobrou" passou a contar **dinheiro recebido**, não preço
+  combinado. Fiado tem preço e não tem dinheiro.
+- **Quatro defeitos, todos achados no ar e nenhum em teste local:**
+  1. **`too many clients already`.** O singleton do Prisma só valia fora de
+     produção — um cuidado com hot reload que, em serverless, abre um pool por
+     invocação. O banco recusou conexão no meio de um atendimento. É o bug mais
+     sério do dia.
+  2. **Checkout de serviço com preço zero derrubava a página.** A constraint
+     `payment_valor_positivo` recusa pagamento de R$ 0 — e está certa. Junto,
+     finalizar deixou de virar tela branca quando algo inesperado falha: ela
+     acabou de trabalhar três horas, erro do sistema não pode custar isso.
+  3. **`<Link>` com `<Button>` dentro.** HTML inválido; o link fica **sem nome
+     acessível**. Descoberto porque o teste não achou o botão "Finalizar" que
+     estava na tela. Nasceu `buttonClasses()`.
+  4. **O cronômetro contava o intervalo aberto duas vezes** — 14:47 num
+     atendimento de 8 minutos. Achado comparando a tela com o checkout.
+- **Dois achados de arquitetura, os dois por ferramenta e não por revisão:** o
+  teste dos casos de uso pegou uma leitura logo após escrita, e o lint de
+  camadas pegou a página calculando preço menos custo por conta própria.
+
+### 2026-08-02 (1) — O painel deixou de estar aberto na internet
 
 - **A dívida crítica foi paga.** `/entrar` no ar, e as quatro rotas do painel
   respondem 307 para `/entrar` sem sessão. Testado em produção, no navegador,

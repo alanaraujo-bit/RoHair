@@ -18,9 +18,9 @@
 | 4   | Identidade, Autenticação & Permissões  | ambos   | 🔵 equipe no ar; cliente vai com a 12 |
 | 5   | App Shell & PWA                        | ambos   | 🔵 casca do painel no ar; falta PWA   |
 | 6   | Clientes                               | painel  | 🔵 lista e ficha no ar (leitura)      |
-| 7   | Serviços & Estoque                     | painel  | ⬜                                    |
+| 7   | Serviços & Estoque                     | painel  | 🔴 **próxima** — o alerta já dá 404   |
 | 8   | Agenda Inteligente                     | painel  | 🔵 agenda do dia no ar (leitura)      |
-| 9   | Atendimento                            | painel  | ⬜                                    |
+| 9   | Atendimento                            | painel  | 🔵 fluxo completo no ar; falta foto   |
 | 10  | Financeiro                             | painel  | ⬜                                    |
 | 11  | Dashboard, Estatísticas & Insights     | painel  | ⬜                                    |
 | 12  | **Portal da Cliente**                  | portal  | ⬜                                    |
@@ -423,30 +423,35 @@ de encontro entre as duas pontas do produto.
 
 **Entregáveis**
 
-- 🗣️ **Anamnese** abrindo o atendimento, com as cinco perguntas dela,
-  **pré-preenchidas pelo histórico** — confirmar em vez de digitar
-- 🗣️ **Teste de mecha como portão**, com o desfecho `ENCERRADO_SEM_SERVICO`
-  apresentado como trabalho bem feito, e a baixa do produto gasto no teste
-- Iniciar, pausar, retomar e finalizar, com cronômetro persistente
-- Cronômetro modelado como intervalos imutáveis — sobrevive a fechar o app
-- 🗣️ Contagem do **tempo de pausa** com hora de voltar
-- Produtos **pré-marcados pelo hábito daquela cliente**; ela desmarca o que não usou
-- Fotos antes/depois/referência direto da câmera, com visibilidade por foto
-- Observações rápidas por voz ou texto
-- Checkout com **o lucro daquele atendimento na tela**, não só o valor
-- Formas de pagamento incluindo **fiado e cortesia** como estados próprios
-- 🗣️ **Retorno sugerido e cuidado em casa** no checkout — o que ela já fala na porta,
-  agora chegando no portal da cliente
-- Widget persistente de atendimento em andamento
+- [x] 🗣️ **Anamnese** abrindo o atendimento, com as cinco perguntas dela,
+      **pré-preenchidas pelo histórico** — confirmar em vez de digitar
+- [x] 🗣️ **Teste de mecha como portão**, com o desfecho `ENCERRADO_SEM_SERVICO`
+      apresentado como trabalho bem feito, e o produto do teste virando custo
+- [x] Iniciar, pausar, retomar e finalizar, com cronômetro persistente
+- [x] Cronômetro modelado como intervalos imutáveis — sobrevive a fechar o app
+- [ ] 🗣️ Contagem do **tempo de pausa** com hora de voltar — o primitivo já
+      aceita `resumeAt`; falta a duração de ação do produto no catálogo
+- [x] Produtos **pré-marcados**; ela desmarca o que não usou. Hoje a sugestão vem
+      do serviço (`ServiceProductUse`); pelo **hábito daquela cliente**, ainda não
+- [ ] Fotos antes/depois/referência direto da câmera, com visibilidade por foto
+- [ ] Observações rápidas por voz ou texto
+- [x] Checkout com **o lucro daquele atendimento na tela**, não só o valor
+- [x] Formas de pagamento incluindo **fiado e cortesia** como estados próprios
+- [ ] 🗣️ **Retorno sugerido e cuidado em casa** no checkout — depende de "novo
+      horário" e do portal
+- [ ] Widget persistente de atendimento em andamento — hoje o acesso é o cartão
+      "Agora" da tela Hoje
 
 **DoD**
 
-- [ ] Fechar o app no meio do atendimento não perde um segundo do cronômetro
-- [ ] Do "iniciar" ao "finalizar" em no máximo 3 toques
-- [ ] Finalizar gera receita, baixa e histórico numa única transação (INV-09)
-- [ ] Teste reprovado encerra sem serviço, **dá baixa do produto do teste** e não
+- [x] Fechar o app no meio do atendimento não perde um segundo do cronômetro
+- [x] Do "iniciar" ao "finalizar" em no máximo 3 toques — iniciar, escolher o
+      serviço (ou aprovar o teste) e finalizar
+- [x] Finalizar gera receita, baixa e histórico numa única transação (INV-09)
+- [x] Teste reprovado encerra sem serviço, **mantém o consumo do teste** e não
       gera item do serviço impedido (INV-17)
-- [ ] O lucro do atendimento aparece antes de concluir
+- [x] O lucro do atendimento aparece antes de concluir — verificado em produção
+      em 2026-08-02: R$ 8,00 de R$ 50,00, com produto de R$ 42,00
 
 ---
 
