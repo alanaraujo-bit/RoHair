@@ -15,7 +15,7 @@
 | 1   | Descoberta & Documentação de Produto   | —       | ✅                                    |
 | 2   | Design System "Áurea"                  | —       | ✅                                    |
 | 3   | Modelagem de Dados & Camada de Domínio | —       | ✅                                    |
-| 4   | Identidade, Autenticação & Permissões  | ambos   | 🔴 **próxima — o painel está aberto** |
+| 4   | Identidade, Autenticação & Permissões  | ambos   | 🔵 equipe no ar; cliente vai com a 12 |
 | 5   | App Shell & PWA                        | ambos   | 🔵 casca do painel no ar; falta PWA   |
 | 6   | Clientes                               | painel  | 🔵 lista e ficha no ar (leitura)      |
 | 7   | Serviços & Estoque                     | painel  | ⬜                                    |
@@ -223,10 +223,12 @@ erro mais caro de corrigir depois. Modelo completo em **DEC-008**.
 
 **Entregáveis — equipe (`User`)**
 
-- Bootstrap da primeira conta OWNER por script, executado uma única vez
-- Criação de contas da equipe pelo painel (sem autocadastro)
-- Papéis `OWNER` · `PROFESSIONAL` · `ASSISTANT` com permissões declarativas
-- Login por e-mail ou usuário + senha
+- [x] Bootstrap da primeira conta OWNER por script (`npm run db:owner`), que
+      também troca senha e derruba sessões
+- [ ] Criação de contas da equipe pelo painel (sem autocadastro)
+- [ ] Papéis `OWNER` · `PROFESSIONAL` · `ASSISTANT` com permissões declarativas —
+      os papéis existem no banco e na sessão; nenhuma tela lê `role` ainda
+- [x] Login por e-mail ou usuário + senha, com sessão e sair
 
 **Entregáveis — cliente (`ClientAccount`)**
 
@@ -243,24 +245,32 @@ erro mais caro de corrigir depois. Modelo completo em **DEC-008**.
 
 **Entregáveis — transversais**
 
-- Argon2id, política de senha e verificação contra listas de senhas vazadas
-- Limite de tentativas por CPF e por IP, com bloqueio progressivo (Redis)
-- Notificação à profissional a cada ativação ou autocadastro, com revogar acesso
-- Prisma Client Extension injetando `organizationId` automaticamente
-- Row Level Security no Postgres como segunda barreira
-- Contexto de requisição via `AsyncLocalStorage`
-- Sessão da cliente com escopo restrito aos próprios dados
-- `AuditLog` de todo acesso e de toda ativação de conta
+- [x] Argon2id, política de senha e verificação contra listas de senhas vazadas
+      (a verificação roda ao **definir** senha, hoje só no script de bootstrap)
+- [x] Limite de tentativas com bloqueio progressivo — por conta e por endereço,
+      **no Postgres e não no Redis** ([DEC-016](04-DECISOES.md#dec-016))
+- [ ] Notificação à profissional a cada ativação ou autocadastro (vai com a cliente)
+- [ ] Prisma Client Extension injetando `organizationId` automaticamente
+- [ ] Row Level Security no Postgres como segunda barreira
+- [ ] Contexto de requisição via `AsyncLocalStorage` — hoje cada página pede a
+      sessão explicitamente, o que é mais verboso e mais difícil de burlar
+- [ ] Sessão da cliente com escopo restrito aos próprios dados
+- [x] `AuditLog` de login da equipe; falta o de acesso da cliente
 
 **DoD**
 
 - [ ] Teste automatizado prova que organização A não enxerga dado da organização B
+      — hoje o `organizationId` vem sempre da sessão, mas falta o teste que prova
 - [ ] Teste automatizado prova que uma sessão de cliente não alcança dado de outra
       cliente nem qualquer rota do painel
 - [ ] Cliente cadastrada pela Rosiele ativa a conta e vê o histórico anterior
 - [ ] Cliente que se autocadastrou aparece no painel marcada como novo cadastro
-- [ ] Força bruta em CPF é bloqueada e registrada
-- [ ] Nenhuma rota renderiza dado privado sem sessão válida, nem por um frame
+- [x] Força bruta é bloqueada e registrada — **verificado em produção** em
+      2026-08-02: seis erros seguidos deram 27s → 57s → 2min → 4min, e a senha
+      certa durante o bloqueio também foi barrada
+- [x] Nenhuma rota do painel renderiza dado privado sem sessão válida — o guarda
+      está em cada página, não só na casca, porque layout e página renderizam em
+      paralelo. E2E cobre as quatro rotas
 
 ---
 

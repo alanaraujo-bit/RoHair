@@ -24,24 +24,29 @@ servidor. Ele revisa em produção, pelo iPhone.
 
 ## Snapshot
 
-| Campo                     | Valor                                                     |
-| ------------------------- | --------------------------------------------------------- |
-| **Última atualização**    | 2026-08-01                                                |
-| **O que está no ar**      | **https://rohair.vercel.app/painel** ← painel funcionando |
-| Catálogo do design system | https://rohair.vercel.app/design                          |
-| Banco                     | Railway · Postgres 18 · **migrado e populado**            |
-| CI                        | ✅ Verde — qualidade, banco, build, E2E                   |
-| **Dívida crítica**        | 🔴 **O painel está aberto na internet, sem login**        |
-| Trabalho em andamento     | Construir as telas que faltam do painel                   |
+| Campo                     | Valor                                                          |
+| ------------------------- | -------------------------------------------------------------- |
+| **Última atualização**    | 2026-08-02                                                     |
+| **O que está no ar**      | **https://rohair.aionixdev.com/painel** ← painel **com login** |
+| Catálogo do design system | https://rohair.aionixdev.com/design                            |
+| Banco                     | Railway · Postgres 18 · migrado e populado                     |
+| CI                        | ✅ Verde — qualidade, banco, build, E2E                        |
+| **Dívida crítica**        | ✅ **Nenhuma.** O painel deixou de estar aberto em 2026-08-02  |
+| Trabalho em andamento     | Tela de atendimento — o coração do produto                     |
+
+> ⚠️ **O endereço mudou de mãos.** `rohair.vercel.app` **não é nosso** e devolve
+> 404 — a documentação anterior estava errada. O apelido de produção é
+> `rohair.aionixdev.com` (e `rohair-aionixdev.vercel.app`).
 
 ---
 
 ## 1. O que JÁ FUNCIONA em produção
 
-Quatro telas navegáveis, lendo o Postgres real. **Não é mock.**
+Cinco telas navegáveis, lendo o Postgres real. **Não é mock.**
 
 | Rota                    | O que faz                                                                        |
 | ----------------------- | -------------------------------------------------------------------------------- |
+| `/entrar`               | Login da equipe: e-mail ou usuário + senha, Argon2id, bloqueio progressivo       |
 | `/painel`               | "Sobrou hoje" em destaque, agenda do dia, alertas de estoque e de cliente sumida |
 | `/painel/agenda`        | Grade por hora das 9h às 20h, com "vaga" nos espaços livres                      |
 | `/painel/clientes`      | Lista ordenada por **quem precisa de ação**, não alfabética                      |
@@ -56,18 +61,32 @@ Beatriz, Paula, Denise), catálogo de 4 serviços, 4 produtos, agenda de hoje co
 
 Regerar a qualquer momento com `npm run db:seed` — a semente é **idempotente**.
 
+### Conta da equipe
+
+Existe uma conta OWNER (`rosiele`) na organização Rosiele Hair. A senha do
+primeiro acesso foi entregue ao dono em arquivo fora do repositório, **nunca
+pelo chat**. Criar outra conta ou trocar a senha:
+
+```
+echo "a-senha" | npm run db:owner -- <usuario> <email> "<Nome>"
+```
+
+Rodar de novo para o mesmo usuário **troca a senha e derruba as sessões
+abertas** — é também a recuperação de senha da OWNER, que não tem a quem pedir.
+
 ---
 
 ## 2. O que NÃO existe ainda
 
-| Falta                | Impacto                                                                                                                                                         |
-| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 🔴 **Autenticação**  | O painel está aberto na internet. Os dados são fictícios, então não há vazamento real — mas isto tem que ser resolvido antes de qualquer dado verdadeiro entrar |
-| Botões sem ação      | "Agendar", "WhatsApp" e "Iniciar atendimento" na ficha ainda não fazem nada                                                                                     |
-| Tela de atendimento  | Cronômetro, anamnese, checkout — o coração do produto                                                                                                           |
-| Estoque e financeiro | Rotas `/painel/estoque` e `/painel/dinheiro` não existem (já há link para a primeira)                                                                           |
-| Portal da cliente    | Nada construído                                                                                                                                                 |
-| PWA                  | Sem manifest, sem service worker, sem fluxo de instalação                                                                                                       |
+| Falta                 | Impacto                                                                                                                                                           |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Contas pelo painel    | A OWNER ainda não cria conta de assistente pela interface; só pelo script. Papéis existem no banco, mas nenhuma tela lê `role` ainda                              |
+| Identidade da cliente | `ClientAccount`, primeiro acesso por CPF, autocadastro e a rota de escape da [D-08](04-DECISOES.md#d-08) — a segunda metade da Fase 4, que vai junto com o portal |
+| Botões sem ação       | "Agendar", "WhatsApp" e "Iniciar atendimento" na ficha ainda não fazem nada                                                                                       |
+| Tela de atendimento   | Cronômetro, anamnese, checkout — o coração do produto                                                                                                             |
+| Estoque e financeiro  | Rotas `/painel/estoque` e `/painel/dinheiro` não existem (já há link para a primeira)                                                                             |
+| Portal da cliente     | Nada construído                                                                                                                                                   |
+| PWA                   | Sem manifest, sem service worker, sem fluxo de instalação                                                                                                         |
 
 ---
 
@@ -75,16 +94,16 @@ Regerar a qualquer momento com `npm run db:seed` — a semente é **idempotente*
 
 **Construir, nesta ordem — sem apresentar nada, sem pedir aprovação:**
 
-1. **Login e sessão.** O painel aberto é a única coisa que impede o uso real. O
-   modelo já está decidido em [DEC-008](04-DECISOES.md#dec-008): `User` e
-   `ClientAccount` em tabelas separadas, Argon2id, cookie `httpOnly`. O schema já
-   existe no banco; falta o fluxo, o middleware e o script da primeira OWNER.
-2. **Tela de atendimento** — a mais importante do produto. Anamnese, portão do
+1. **Tela de atendimento** — a mais importante do produto. Anamnese, portão do
    teste de mecha, cronômetro, checkout com o lucro na hora. O agregado de
    domínio **já está pronto e testado** em
    `src/features/attendance/domain/attendance.ts`; falta a interface.
-3. **Estoque e financeiro**, para os alertas terem para onde levar.
-4. **Portal da cliente.**
+2. **Estoque e financeiro**, para os alertas terem para onde levar.
+3. **Portal da cliente** — e com ele a segunda metade da autenticação
+   (`ClientAccount`, primeiro acesso por CPF, D-07 e D-08). As duas coisas são a
+   mesma entrega: identidade de cliente sem portal não tem onde ser usada.
+
+~~Login e sessão~~ — **feito em 2026-08-02.**
 
 O desenho de cada tela está em [12-WIREFRAMES.md](12-WIREFRAMES.md); a
 prioridade, em [13-BACKLOG.md](13-BACKLOG.md).
@@ -95,7 +114,10 @@ prioridade, em [13-BACKLOG.md](13-BACKLOG.md).
 
 ```
 src/
+  proxy.ts                ← porta do painel (era "middleware", renomeado
+                            porque o Next 16.2 depreciou a convenção)
   app/
+    entrar/                 tela de login + Server Action
     painel/                 ← AS TELAS QUE ESTÃO NO AR
       layout.tsx              casca com navegação inferior
       page.tsx                Hoje
@@ -107,12 +129,18 @@ src/
     kernel/                 Result · Money · Cpf · Duration · TimeRange ·
                             Quantity · PhoneNumber — o único módulo que o
                             domínio pode importar. Não importa nada.
+    auth/                   nome do cookie e vida da sessão — em `core` porque
+                            proxy, infraestrutura e caso de uso precisam
+                            concordar sobre o mesmo número
     crypto/cpf-crypto.ts    HMAC + AES-GCM do CPF
+    crypto/session-token.ts token opaco + SHA-256 que vai para o banco
     db/client.ts            único lugar que instancia o Prisma
     db/generated/           cliente gerado (gitignored, feito no postinstall)
     env/env.ts              validação de ambiente com Zod
   features/
     attendance/domain/      agregado pronto e testado, AINDA SEM TELA
+    auth/                   senha, identificador, bloqueio progressivo,
+                            caso de uso de login, Argon2id, sessão
     clients/                porta do repositório + adapter Prisma
     painel/                 leituras das telas que estão no ar
   shared/ui/
@@ -134,15 +162,16 @@ gist, índices parciais, CHECKs — **não são regenerados** por
 
 ## 5. Comandos
 
-| Comando                                            | O que faz                                              |
-| -------------------------------------------------- | ------------------------------------------------------ |
-| `npm run verify`                                   | Tipos + lint + testes. **Rodar sempre antes de subir** |
-| `npm run build`                                    | Build de produção                                      |
-| `npm run db:seed`                                  | Repopula o banco (idempotente)                         |
-| `npm run db:deploy`                                | Aplica migrations                                      |
-| `git push`                                         | Commit direto na `main` → CI → deploy automático       |
-| `npx vercel logs https://rohair.vercel.app --json` | Erro de runtime em produção                            |
-| `npx vercel ls rohair`                             | Estado dos deploys                                     |
+| Comando                                        | O que faz                                              |
+| ---------------------------------------------- | ------------------------------------------------------ |
+| `npm run verify`                               | Tipos + lint + testes. **Rodar sempre antes de subir** |
+| `npm run build`                                | Build de produção                                      |
+| `npm run db:seed`                              | Repopula o banco (idempotente)                         |
+| `npm run db:deploy`                            | Aplica migrations                                      |
+| `npm run db:owner`                             | Cria a primeira OWNER ou troca a senha dela            |
+| `git push`                                     | Commit direto na `main` → CI → deploy automático       |
+| `npx vercel logs https://rohair.aionixdev.com` | Erro de runtime em produção                            |
+| `npx vercel ls rohair`                         | Estado dos deploys                                     |
 
 `DATABASE_URL` e demais segredos vivem em `.env.local`, nunca versionado.
 
@@ -178,15 +207,17 @@ Justificativas completas em [04-DECISOES.md](04-DECISOES.md) e [adr/](adr/).
 
 ## 7. Armadilhas conhecidas
 
-| Armadilha                                                          | O que fazer                                                                                  |
-| ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
-| Deploy da Vercel travado em "Deploying outputs"                    | Já aconteceu e bloqueou a fila por 15min. `npx vercel remove <url> --yes` e o próximo anda   |
-| `DATABASE_URL` da Vercel estava quebrado (host `base`)             | Corrigido em 2026-08-01. Se aparecer P1001, conferir a variável antes de suspeitar do código |
-| `vercel env pull` não traz valor de variável Encrypted             | Use `vercel env ls` só para conferir existência                                              |
-| `npm audit`: 2 vulnerabilidades altas em `next` via `sharp`        | Pré-existente, não introduzida por nós. Tratar na Fase 15                                    |
-| Aviso do `eslint-plugin-boundaries` sobre "legacy selector syntax" | Ruído conhecido, não é erro                                                                  |
-| Repositório **público** no GitHub                                  | Decisão aberta do dono. Não há segredo versionado                                            |
-| Rotacionar o token do R2                                           | Antes de entrar foto real de cliente. TTL vence em 2027-07-31                                |
+| Armadilha                                                                                    | O que fazer                                                                                                                |
+| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Deploy da Vercel travado em "Deploying outputs"                                              | Já aconteceu e bloqueou a fila por 15min. `npx vercel remove <url> --yes` e o próximo anda                                 |
+| `DATABASE_URL` da Vercel estava quebrado (host `base`)                                       | Corrigido em 2026-08-01. Se aparecer P1001, conferir a variável antes de suspeitar do código                               |
+| `vercel env pull` não traz valor de variável Encrypted                                       | Use `vercel env ls` só para conferir existência                                                                            |
+| `npm audit`: 2 vulnerabilidades altas em `next` via `sharp`                                  | Pré-existente, não introduzida por nós. Tratar na Fase 15                                                                  |
+| Aviso do `eslint-plugin-boundaries` sobre "legacy selector syntax" e sobre padrão de arquivo | Ruído conhecido, não é erro. O segundo vem do `src/proxy.ts`, que é um arquivo solto e precisa ser classificado como `app` |
+| `rohair.vercel.app` devolve 404                                                              | **Não é nosso.** O endereço certo é `rohair.aionixdev.com`. A documentação de 2026-08-01 estava errada                     |
+| Login some depois de trocar a senha da OWNER                                                 | É o desenho: `db:owner` apaga as sessões abertas. Entrar de novo resolve                                                   |
+| Repositório **público** no GitHub                                                            | Decisão aberta do dono. Não há segredo versionado                                                                          |
+| Rotacionar o token do R2                                                                     | Antes de entrar foto real de cliente. TTL vence em 2027-07-31                                                              |
 
 ---
 
@@ -232,6 +263,39 @@ restantes em vez de quantidade.
 ## 10. Log de sessões
 
 Ordem cronológica inversa — mais recente no topo.
+
+### 2026-08-02 — O painel deixou de estar aberto na internet
+
+- **A dívida crítica foi paga.** `/entrar` no ar, e as quatro rotas do painel
+  respondem 307 para `/entrar` sem sessão. Testado em produção, no navegador,
+  com senha certa, senha errada e conta inexistente.
+- **Argon2id** por `@node-rs/argon2` — binding nativo com binário pronto, que é
+  o que não quebra na Vercel. Parâmetros explícitos (19 MiB, t=2, p=1), porque
+  padrão de biblioteca pode cair numa atualização menor e ninguém veria.
+- **Sessão por token opaco** (DEC-017): o cookie leva 256 bits aleatórios, o
+  banco guarda só o SHA-256. Cookie `__Host-`, `httpOnly`, `Secure`,
+  `SameSite=Lax` — conferido no navegador, em produção.
+- **`organizacaoAtual()` morreu.** Era a função que pegava a primeira
+  organização do banco. Agora todo `organizationId` vem da sessão, inclusive na
+  ficha — trocar o id na URL não alcança cliente de outra organização.
+- **O guarda ficou em cada página, não só na casca.** Layout e página renderizam
+  em paralelo no App Router: um guarda só no layout deixaria a consulta da
+  página acontecer com o redirecionamento a caminho. Não é detalhe de estilo, é
+  o que separa "protegido" de "parece protegido".
+- **Bloqueio progressivo provado em produção**, e não só em teste: seis erros
+  seguidos devolveram 27s → 57s → 2min → 4min, e a senha **certa** durante o
+  bloqueio também foi barrada. Vive no Postgres, não no Redis (**DEC-016**).
+- **Duas coisas que só apareceram por ir ao ar:**
+  - `rohair.vercel.app`, registrado ontem como o endereço de produção, **não é
+    nosso** e devolve 404. O apelido real é `rohair.aionixdev.com`.
+  - Errar a senha **apagava o campo do usuário** — o React 19 limpa o formulário
+    quando a Server Action termina. Descoberto olhando a captura de tela, não o
+    código; corrigido devolvendo o identificador no estado da ação.
+- **`middleware.ts` virou `proxy.ts`**: o Next 16.2 depreciou a convenção antiga
+  e avisava a cada build. Construir em cima de API depreciada é dívida com data
+  marcada.
+- **Fase 4 pela metade**, de propósito: a identidade da **cliente** só faz
+  sentido junto com o portal, e vai com ele.
 
 ### 2026-08-01 — O dono parou o processo. O aplicativo foi ao ar.
 

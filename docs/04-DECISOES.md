@@ -370,6 +370,59 @@ para o agente verificar antes de subir, e não deixam nada de pé.
 
 ---
 
+### DEC-016 · Bloqueio de tentativas no Postgres, não no Redis
+
+**Data:** 2026-08-02 · **Status:** ✅ Aceita
+**Ajusta um entregável da Fase 4 no [roadmap](03-ROADMAP.md#fase-4)**
+
+O roadmap dizia "limite de tentativas por CPF e por IP, com bloqueio progressivo
+(Redis)". A implementação usa uma tabela `login_attempt` no Postgres.
+
+**Motivo:** bloqueio que evapora quando o cache reinicia não é bloqueio. Um
+Redis vazio faz a contagem voltar a zero — exatamente o que um atacante quer, e
+exatamente o que acontece num plano gratuito que despeja chaves sob pressão de
+memória. O estado de "esta conta está sob ataque" precisa ser durável.
+
+**O custo é irrisório:** algumas linhas por login, com índice em
+`(bucket, createdAt)`. Não é caminho quente — só existe escrita quando alguém
+digita uma senha.
+
+**Segundo motivo, igualmente importante:** uma dependência a menos no caminho do
+login. Se o Redis estivesse no meio, uma queda dele obrigaria a escolher entre
+deixar passar sem contar (inseguro) e barrar todo mundo (indisponível). Sem essa
+escolha, não há esse dia ruim.
+
+O Redis continua provisionado e volta a fazer sentido quando houver algo de alta
+frequência — cache de leitura, fila offline. Contagem de login não é isso.
+
+---
+
+### DEC-017 · A sessão da equipe é token opaco no banco, não JWT
+
+**Data:** 2026-08-02 · **Status:** ✅ Aceita · **Detalha [DEC-008](#dec-008)**
+
+O cookie carrega 256 bits aleatórios; o banco guarda o **SHA-256** disso. Nada
+de identidade, papel ou organização viaja no cookie.
+
+**Por que não JWT:** o produto exige "revogar acesso em um toque" (DEC-008). Um
+JWT válido continua válido até expirar, a menos que exista uma lista de
+revogação — que é uma consulta ao banco, ou seja, exatamente o custo que o JWT
+prometia evitar. Sem o benefício, sobra só o risco: um segredo de assinatura
+vazado vira acesso a tudo, sem deixar rastro.
+
+**Consequências que valem a pena registrar:**
+
+- Guardar o hash, e não o token, faz um vazamento da tabela `session` não virar
+  acesso. Argon2 seria desperdício aqui: 256 bits aleatórios não se adivinham.
+- Trinta dias de validade, renovados a cada uso. Ela abre o app entre um
+  atendimento e outro, às vezes de luva; pedir senha toda semana faria o produto
+  ser fechado, não protegido. A segurança vem de poder revogar, não de expirar
+  cedo.
+- O `proxy.ts` do Next **não valida sessão** — ele só redireciona quem não tem
+  cookie e rola a validade do cookie. Quem valida é o servidor, em cada página.
+
+---
+
 ## Decisões pendentes
 
 ### D-03 · Domínio próprio

@@ -25,11 +25,11 @@ Nasce para uma profissional. É construído, desde a primeira linha, para milhar
 
 ## Estado atual
 
-> 📍 **Fase 1 — Descoberta & Documentação de Produto** · entregue, aguardando
-> revisão do dono
+> 📍 **Painel profissional no ar, com login**, em
+> https://rohair.aionixdev.com/painel — cinco telas lendo o Postgres real.
 >
-> Fase 0 concluída: aplicação no ar em https://rohair.vercel.app, CI verde,
-> PostgreSQL, Redis e R2 provisionados.
+> O trabalho não anda mais por fases fechadas: a unidade de entrega é tela
+> funcionando em produção ([DEC-014](docs/04-DECISOES.md#dec-014)).
 >
 > Consulte **[docs/00-ESTADO-ATUAL.md](docs/00-ESTADO-ATUAL.md)** para o estado
 > exato do projeto. Esse arquivo é sempre a fonte de verdade.
