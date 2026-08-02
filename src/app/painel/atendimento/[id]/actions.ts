@@ -208,17 +208,32 @@ export async function finalizarAction(
 
   if (!cortesia && !forma.success) return 'Escolha como ela pagou.';
 
-  const resultado = await finalizar(
-    {
-      organizationId,
-      attendanceId,
-      fechamento: {
-        courtesy: cortesia,
-        method: cortesia ? null : (forma.data ?? null),
+  /**
+   * O `try` cobre só a chamada do caso de uso, e nunca o `redirect` abaixo —
+   * `redirect` funciona lançando, e engoli-lo faria a navegação sumir.
+   *
+   * Ele existe porque esta é a ação mais cara de falhar: ela acabou de
+   * trabalhar três horas e quer fechar. Uma falha inesperada aqui virava tela
+   * branca com "ERROR 3272828623" — aconteceu de verdade, com um serviço de
+   * preço zero. Erro do sistema não pode custar o atendimento dela.
+   */
+  let resultado;
+  try {
+    resultado = await finalizar(
+      {
+        organizationId,
+        attendanceId,
+        fechamento: {
+          courtesy: cortesia,
+          method: cortesia ? null : (forma.data ?? null),
+        },
       },
-    },
-    deps(),
-  );
+      deps(),
+    );
+  } catch (erro) {
+    console.error('[atendimento] falha ao finalizar', { attendanceId, erro });
+    return 'Não deu para fechar agora. O atendimento continua aberto — tente de novo.';
+  }
 
   if (!resultado.ok) return mensagem(resultado.error);
 

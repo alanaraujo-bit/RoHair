@@ -360,6 +360,34 @@ describe('finalizar', () => {
     timeEntries: [{ startedAt: new Date('2026-08-02T11:00:00Z'), endedAt: null }],
   });
 
+  it('serviço de preço zero não gera pagamento', async () => {
+    // Pegou uma falha real em produção: o banco recusa `amountCents = 0`
+    // (`payment_valor_positivo`), e a transação inteira caía com 500 na cara de
+    // quem só queria fechar o atendimento.
+    const { deps, registro } = cenario({
+      ...trabalhando(),
+      items: [
+        {
+          id: 'i1',
+          parentId: null,
+          serviceId: CORTE.id,
+          name: CORTE.name,
+          unitPriceCents: moneyOf(0),
+        },
+      ],
+    });
+
+    const resultado = await finalizar(
+      { ...ENTRADA, fechamento: { method: 'PIX', courtesy: false } },
+      deps,
+    );
+
+    expect(resultado.ok).toBe(true);
+    const fim = registro.finalizacoes.at(0);
+    expect(fim?.payment).toBeNull();
+    expect(fim?.status).toBe('FINALIZADO');
+  });
+
   it('pago no Pix lança receita e registra o pagamento', async () => {
     const { deps, registro } = cenario(trabalhando());
 

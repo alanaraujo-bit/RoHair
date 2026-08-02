@@ -369,7 +369,11 @@ export async function finalizar(
     ? moneyOf(0)
     : totalPrice(carregado.value.attendance.items);
 
-  const method = input.fechamento.courtesy ? null : input.fechamento.method;
+  // Pagamento de zero não é pagamento — e o banco concorda: a constraint
+  // `payment_valor_positivo` recusa a linha. Acontece de verdade, com serviço
+  // de preço zero no catálogo, e o teste abaixo é o que impede a volta.
+  const method =
+    input.fechamento.courtesy || total === 0 ? null : input.fechamento.method;
   const recebido = method !== null && method !== 'FIADO';
 
   await deps.repository.finalize({
