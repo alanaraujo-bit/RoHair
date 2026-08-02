@@ -48,6 +48,11 @@ function formatarSaldo(milli: number): string {
  * Calcula **o que sobrou**, não o que entrou: receita menos o custo do produto
  * consumido. É a decisão de produto mais importante do painel — faturamento é a
  * ilusão que ela já tem, e o app não pode ser mais uma fonte dela.
+ *
+ * A receita vem dos **pagamentos recebidos**, não dos itens do atendimento
+ * (DEC-018). Um serviço fiado tem preço mas não tem dinheiro; contá-lo aqui
+ * diria que sobrou o que não entrou — a mesma ilusão, por outro caminho. O
+ * custo do produto, esse, conta sempre: ele saiu do estoque de qualquer jeito.
  */
 export async function resumoDeHoje(organizationId: string): Promise<ResumoDoDia> {
   const atendimentos = await prisma().attendance.findMany({
@@ -63,11 +68,9 @@ export async function resumoDeHoje(organizationId: string): Promise<ResumoDoDia>
   let custo = 0;
 
   for (const atendimento of atendimentos) {
-    if (!atendimento.courtesy) {
-      // Só os itens de topo: em serviço composto o preço vive no pai (INV-19)
-      for (const item of atendimento.items) {
-        if (item.parentId === null) entrou += item.unitPriceCents;
-      }
+    for (const pagamento of atendimento.payments) {
+      // `paidAt` nulo é fiado: o valor existe, o dinheiro ainda não.
+      if (pagamento.paidAt !== null) entrou += pagamento.amountCents;
     }
     for (const uso of atendimento.usages) {
       custo += Math.round((uso.quantityMilli * uso.unitCostCents) / 1000);

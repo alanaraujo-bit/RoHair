@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import { iniciarAtendimentoAction } from '@/app/painel/atendimento/[id]/actions';
 import { requireStaffSession } from '@/features/auth/infrastructure/session-context';
 import { fichaDaCliente } from '@/features/painel/infrastructure/painel-repository';
 import { Button } from '@/shared/ui/primitives/button';
@@ -94,7 +95,12 @@ export default async function FichaPage({
           WhatsApp
         </Button>
       </div>
-      <Button block>Iniciar atendimento</Button>
+      <form action={iniciarAtendimentoAction}>
+        <input type="hidden" name="clienteId" value={ficha.id} />
+        <Button type="submit" size="lg" block>
+          Iniciar atendimento
+        </Button>
+      </form>
 
       <section className="flex flex-col gap-2">
         <h2 className="text-[length:var(--text-2xs)] font-semibold tracking-[0.09em] text-[var(--aurea-ink-subtle)] uppercase">

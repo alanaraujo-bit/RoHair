@@ -69,7 +69,9 @@ export default async function HojePage() {
                 atendimento em andamento
               </p>
             </div>
-            <Button size="sm">Abrir</Button>
+            <Link href={`/painel/atendimento/${aberto.id}`}>
+              <Button size="sm">Abrir</Button>
+            </Link>
           </Card>
         </section>
       )}
