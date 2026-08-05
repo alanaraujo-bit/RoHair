@@ -179,7 +179,7 @@ export function totalPrice(items: readonly AttendanceItem[]): Money {
 /**
  * O que foi gasto de produto. Inclui o consumo do **teste de mecha** (INV-17):
  * custo sem receita é a verdade do que aconteceu, e esconder isso faria o
- * estoque mentir — que é exatamente a dor da Rosiele.
+ * estoque mentir — que é exatamente a dor da Roziele.
  */
 export function totalCost(usages: readonly ProductUsage[]): Money {
   return usages.reduce(
@@ -250,7 +250,7 @@ export function recordAssessment(
  * Começa a trabalhar.
  *
  * Se o serviço é químico, exige anamnese com teste aprovado — o portão de
- * segurança da Rosiele virado em código.
+ * segurança da Roziele virado em código.
  */
 export function startWork(
   attendance: Attendance,

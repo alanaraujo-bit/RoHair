@@ -11,7 +11,7 @@ const SIZE: Record<MonogramSize, string> = {
 /**
  * Monograma "Ro" — o núcleo da identidade do RoHair (DEC-011).
  *
- * O nome vem de Rosiele. A marca é pessoal por decisão de produto, então o
+ * O nome vem de Roziele. A marca é pessoal por decisão de produto, então o
  * monograma carrega o nome dela e não uma abstração genérica de "beleza".
  */
 export function Monogram({

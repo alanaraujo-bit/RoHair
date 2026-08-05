@@ -26,7 +26,7 @@ loadEnvLocal();
  * comando: argumento fica no histórico do shell e aparece na lista de processos
  * da máquina inteira.
  *
- *   echo "a-senha" | npm run db:owner -- rosiele rosiele@exemplo.com "Rosiele"
+ *   echo "a-senha" | npm run db:owner -- roziele roziele@exemplo.com "Roziele"
  *
  * Idempotente no que importa: rodar de novo para o mesmo usuário **troca a
  * senha** em vez de duplicar a conta — o que também o torna a ferramenta de

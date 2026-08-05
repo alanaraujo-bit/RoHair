@@ -9,7 +9,7 @@ import { cn } from '@/shared/utils/cn';
  *   > 🗣️ "Fim do dia estou com dinheiro mas fim do mês não tenho mais devido
  *   > comprar algo que está faltando."
  *
- * A Rosiele enxerga **caixa**, não lucro — e faturamento é justamente a ilusão
+ * A Roziele enxerga **caixa**, não lucro — e faturamento é justamente a ilusão
  * que ela já tem. O app não pode ser mais uma fonte dela. Por isso o valor em
  * destaque é sempre o que **sobrou**, e o que **entrou** aparece pequeno ao
  * lado: escondê-lo seria desonesto, mas ele não é a manchete.

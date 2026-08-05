@@ -1,10 +1,10 @@
-# Roteiro de conversa com a Rosiele
+# Roteiro de conversa com a Roziele
 
 > **Entregável 1.1 da Fase 1.** Este documento é para o **Alan** usar, não para a
-> Rosiele ler. Ela não deve ver o roteiro — ver as perguntas antecipadamente faz
+> Roziele ler. Ela não deve ver o roteiro — ver as perguntas antecipadamente faz
 > qualquer pessoa preparar a resposta "certa" em vez de contar o que acontece.
 >
-> As respostas vão para [respostas-rosiele.md](respostas-rosiele.md), do jeito
+> As respostas vão para [respostas-roziele.md](respostas-roziele.md), do jeito
 > que saírem. Não organize, não resuma, não corrija o português. O jeito como ela
 > nomeia as coisas **é dado de projeto** — vira nome de tela, de botão e de tabela.
 
@@ -315,7 +315,7 @@ Para cada um, se ela não contar espontaneamente, puxe:
 ## Depois da conversa — o que fazer
 
 1. **Transcreva no mesmo dia.** Memória de conversa dura poucas horas.
-2. Cole tudo em [respostas-rosiele.md](respostas-rosiele.md), na ordem dos blocos.
+2. Cole tudo em [respostas-roziele.md](respostas-roziele.md), na ordem dos blocos.
    Respostas pela metade, contraditórias ou "não sei" são informação legítima —
    **mantenha**. Um "não sei" na pergunta 47 vale mais que uma estimativa inventada.
 3. Anote também o que ela disse **fora** das perguntas, e o que ela demorou para

@@ -15,8 +15,12 @@ import { expect, test } from '@playwright/test';
 const ROTAS_PRIVADAS = [
   '/painel',
   '/painel/agenda',
+  '/painel/agenda/nova',
   '/painel/clientes',
   '/painel/clientes/qualquer-id',
+  '/painel/clientes/nova',
+  '/painel/dinheiro',
+  '/painel/estoque',
 ];
 
 test.describe('painel fechado', () => {

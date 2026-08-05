@@ -6,15 +6,15 @@ import { ACCOUNT_POLICY, describeWait, evaluateThrottle } from './throttle';
 
 describe('identificador de login', () => {
   it('normaliza espaços e caixa', () => {
-    expect(normalizeIdentifier('  Rosiele  ').value).toBe('rosiele');
-    expect(normalizeIdentifier('ROSIELE@EXEMPLO.COM').value).toBe(
-      'rosiele@exemplo.com',
+    expect(normalizeIdentifier('  Roziele  ').value).toBe('roziele');
+    expect(normalizeIdentifier('ROZIELE@EXEMPLO.COM').value).toBe(
+      'roziele@exemplo.com',
     );
   });
 
   it('reconhece e-mail pela arroba', () => {
-    expect(normalizeIdentifier('rosiele@exemplo.com').looksLikeEmail).toBe(true);
-    expect(normalizeIdentifier('rosiele').looksLikeEmail).toBe(false);
+    expect(normalizeIdentifier('roziele@exemplo.com').looksLikeEmail).toBe(true);
+    expect(normalizeIdentifier('roziele').looksLikeEmail).toBe(false);
   });
 });
 

@@ -17,7 +17,7 @@ export const dynamic = 'force-dynamic';
  * A porta do painel.
  *
  * Uma caixa só, no meio da tela, com o monograma acima — a mesma gramática da
- * tela 13 do portal. 🗣️ O tom é da Rosiele, na primeira pessoa: quem entra aqui
+ * tela 13 do portal. 🗣️ O tom é da Roziele, na primeira pessoa: quem entra aqui
  * é ela e a equipe dela, não "usuários do sistema".
  *
  * Sem "criar conta": pela DEC-008 não existe autocadastro de equipe. A primeira

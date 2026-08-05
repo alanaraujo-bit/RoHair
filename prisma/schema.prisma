@@ -22,7 +22,7 @@ datasource db {
   provider = "postgresql"
 }
 
-/// A unidade de isolamento. Hoje: a Rosiele. Amanhã: cada assinante.
+/// A unidade de isolamento. Hoje: a Roziele. Amanhã: cada assinante.
 model Organization {
   id        String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
   name      String
@@ -430,7 +430,7 @@ enum StrandTestResult {
   NOT_APPLICABLE
 }
 
-/// A anamnese. 🗣️ As cinco perguntas que a Rosiele já faz a toda cliente.
+/// A anamnese. 🗣️ As cinco perguntas que a Roziele já faz a toda cliente.
 ///
 /// Pertence ao atendimento e não à ficha: "qual a última vez que alisou" muda a
 /// cada retorno, e guardar na ficha perderia o histórico que evita sobrepor

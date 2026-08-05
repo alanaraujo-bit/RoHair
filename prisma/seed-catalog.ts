@@ -6,7 +6,7 @@
  * de configuração começa vazia.
  *
  * 🗣️ A ordem não é alfabética de propósito. Progressiva, nutrição, escova e
- * corte de pontas vêm primeiro porque é o que a Rosiele faz — e é uma aposta
+ * corte de pontas vêm primeiro porque é o que a Roziele faz — e é uma aposta
  * razoável para autônoma de cabelo em geral. Quatro toques e o catálogo está
  * pronto.
  *
@@ -296,6 +296,14 @@ export const SEED_CATEGORIAS_DESPESA: readonly string[] = [
   'Equipamento',
   'Marketing',
   'Impostos',
+];
+
+/**
+ * Categorias de produto, derivadas da semente — sugestão do formulário de
+ * cadastro, nunca bloqueio: a profissional pode digitar a dela.
+ */
+export const SEED_CATEGORIAS_PRODUTO: readonly string[] = [
+  ...new Set(SEED_PRODUTOS.map((produto) => produto.category)),
 ];
 
 /**

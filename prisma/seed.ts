@@ -9,7 +9,7 @@ import { SEED_PRODUTOS, SEED_SERVICES } from './seed-catalog';
 loadEnvLocal();
 
 /**
- * Popula o banco com a organização da Rosiele e dados realistas.
+ * Popula o banco com a organização da Roziele e dados realistas.
  *
  * Idempotente: roda quantas vezes for preciso sem duplicar nada. É o que
  * permite rodá-lo contra produção sem medo enquanto não há dado de verdade.
@@ -40,8 +40,8 @@ function daysAgo(days: number, hour = 10): Date {
 
 async function main() {
   const organization =
-    (await db.organization.findFirst({ where: { name: 'Rosiele Hair' } })) ??
-    (await db.organization.create({ data: { name: 'Rosiele Hair' } }));
+    (await db.organization.findFirst({ where: { name: 'Roziele Hair' } })) ??
+    (await db.organization.create({ data: { name: 'Roziele Hair' } }));
 
   const organizationId = organization.id;
   console.log(`Organização: ${organization.name}`);

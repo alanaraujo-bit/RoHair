@@ -12,10 +12,10 @@ import type { StaffCredentials } from './ports';
  * exercitada.
  */
 
-const ROSIELE: StaffCredentials = {
+const ROZIELE: StaffCredentials = {
   userId: 'user-1',
   organizationId: 'org-1',
-  name: 'Rosiele',
+  name: 'Roziele',
   passwordHash: 'hash-verdadeiro',
   roles: ['OWNER'],
 };
@@ -81,10 +81,10 @@ function cenario(options: {
 
 describe('entrar no painel', () => {
   it('cria sessão quando a senha confere', async () => {
-    const c = cenario({ conta: ROSIELE });
+    const c = cenario({ conta: ROZIELE });
 
     const resultado = await authenticateStaff(
-      { identifier: 'Rosiele', password: 'senha-certa', address: '1.1.1.1' },
+      { identifier: 'Roziele', password: 'senha-certa', address: '1.1.1.1' },
       c.deps,
     );
 
@@ -95,10 +95,10 @@ describe('entrar no painel', () => {
   });
 
   it('grava o HASH do token, nunca o token', async () => {
-    const c = cenario({ conta: ROSIELE });
+    const c = cenario({ conta: ROZIELE });
 
     const resultado = await authenticateStaff(
-      { identifier: 'rosiele', password: 'senha-certa', address: null },
+      { identifier: 'roziele', password: 'senha-certa', address: null },
       c.deps,
     );
 
@@ -110,10 +110,10 @@ describe('entrar no painel', () => {
   });
 
   it('recusa senha errada sem criar sessão', async () => {
-    const c = cenario({ conta: ROSIELE });
+    const c = cenario({ conta: ROZIELE });
 
     const resultado = await authenticateStaff(
-      { identifier: 'rosiele', password: 'senha-errada', address: null },
+      { identifier: 'roziele', password: 'senha-errada', address: null },
       c.deps,
     );
 
@@ -125,14 +125,14 @@ describe('entrar no painel', () => {
 
   it('responde a mesma coisa quando a conta não existe', async () => {
     const semConta = cenario({ conta: null });
-    const comConta = cenario({ conta: ROSIELE });
+    const comConta = cenario({ conta: ROZIELE });
 
     const a = await authenticateStaff(
       { identifier: 'ninguem', password: 'senha-errada', address: null },
       semConta.deps,
     );
     const b = await authenticateStaff(
-      { identifier: 'rosiele', password: 'senha-errada', address: null },
+      { identifier: 'roziele', password: 'senha-errada', address: null },
       comConta.deps,
     );
 
@@ -151,24 +151,24 @@ describe('entrar no painel', () => {
   });
 
   it('conta a falha nos dois baldes', async () => {
-    const c = cenario({ conta: ROSIELE });
+    const c = cenario({ conta: ROZIELE });
 
     await authenticateStaff(
-      { identifier: 'rosiele', password: 'errada', address: '1.1.1.1' },
+      { identifier: 'roziele', password: 'errada', address: '1.1.1.1' },
       c.deps,
     );
 
     expect(c.tentativas).toEqual([
-      { bucket: 'conta:rosiele', succeeded: false },
+      { bucket: 'conta:roziele', succeeded: false },
       { bucket: 'ip:1.1.1.1', succeeded: false },
     ]);
   });
 
   it('bloqueia depois das tentativas livres, sem nem consultar a senha', async () => {
     const c = cenario({
-      conta: ROSIELE,
+      conta: ROZIELE,
       falhas: {
-        'conta:rosiele': {
+        'conta:roziele': {
           failures: ACCOUNT_POLICY.freeAttempts + 1,
           lastFailureAt: AGORA,
         },
@@ -176,7 +176,7 @@ describe('entrar no painel', () => {
     });
 
     const resultado = await authenticateStaff(
-      { identifier: 'rosiele', password: 'senha-certa', address: null },
+      { identifier: 'roziele', password: 'senha-certa', address: null },
       c.deps,
     );
 
@@ -192,9 +192,9 @@ describe('entrar no painel', () => {
 
   it('conta a tentativa feita durante o bloqueio — insistir não sai de graça', async () => {
     const c = cenario({
-      conta: ROSIELE,
+      conta: ROZIELE,
       falhas: {
-        'conta:rosiele': {
+        'conta:roziele': {
           failures: ACCOUNT_POLICY.freeAttempts + 1,
           lastFailureAt: AGORA,
         },
@@ -202,29 +202,29 @@ describe('entrar no painel', () => {
     });
 
     await authenticateStaff(
-      { identifier: 'rosiele', password: 'errada', address: null },
+      { identifier: 'roziele', password: 'errada', address: null },
       c.deps,
     );
 
-    expect(c.tentativas).toEqual([{ bucket: 'conta:rosiele', succeeded: false }]);
+    expect(c.tentativas).toEqual([{ bucket: 'conta:roziele', succeeded: false }]);
   });
 
   it('zera o balde da conta ao acertar, mas não o do endereço', async () => {
-    const c = cenario({ conta: ROSIELE });
+    const c = cenario({ conta: ROZIELE });
 
     await authenticateStaff(
-      { identifier: 'rosiele', password: 'senha-certa', address: '1.1.1.1' },
+      { identifier: 'roziele', password: 'senha-certa', address: '1.1.1.1' },
       c.deps,
     );
 
-    expect(c.limpos).toEqual(['conta:rosiele']);
+    expect(c.limpos).toEqual(['conta:roziele']);
   });
 
   it('registra o login na auditoria', async () => {
-    const c = cenario({ conta: ROSIELE });
+    const c = cenario({ conta: ROZIELE });
 
     await authenticateStaff(
-      { identifier: 'rosiele', password: 'senha-certa', address: null },
+      { identifier: 'roziele', password: 'senha-certa', address: null },
       c.deps,
     );
 

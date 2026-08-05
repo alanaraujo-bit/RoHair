@@ -1,7 +1,7 @@
 # Leitura da primeira rodada
 
-> O que as respostas da Rosiele confirmam, revelam, corrigem e ainda deixam em
-> aberto. Respostas cruas em [respostas-rosiele.md](respostas-rosiele.md).
+> O que as respostas da Roziele confirmam, revelam, corrigem e ainda deixam em
+> aberto. Respostas cruas em [respostas-roziele.md](respostas-roziele.md).
 
 ---
 

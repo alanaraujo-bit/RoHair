@@ -16,7 +16,7 @@
 **Ataca:** histórico, anamnese repetida, snapshot de preço, retorno calculado.
 
 > Carla fez progressiva há três meses. O sistema avisou que era hora de voltar; ela
-> confirmou pelo portal. Chega no horário. A Rosiele abre a ficha e faz a anamnese
+> confirmou pelo portal. Chega no horário. A Roziele abre a ficha e faz a anamnese
 > de sempre: já fez alisamento — sim, aqui mesmo, em abril; está quebrando — um
 > pouco nas pontas; está caindo — não. Teste de mecha passa. Progressiva e corte de
 > pontas. Duas horas e quarenta. Paga R$ 220 no Pix. Foto do antes e do depois,
@@ -39,10 +39,10 @@
 **Ataca:** o portão de segurança, o estado `ENCERRADO_SEM_SERVICO`, o estoque.
 
 > Denise nunca veio. Marcou progressiva. Na anamnese conta que fez alisamento com
-> guanidina há dois meses, num salão que fechou. A Rosiele faz o teste de mecha: o
+> guanidina há dois meses, num salão que fechou. A Roziele faz o teste de mecha: o
 > fio esgarça. **Não dá para fazer.** Explica, indica reconstrução por algumas
 > semanas e marca um retorno para reavaliar. Denise vai embora sem progressiva. A
-> Rosiele não cobra nada.
+> Roziele não cobra nada.
 
 | Verificação                              | Resultado                                 |
 | ---------------------------------------- | ----------------------------------------- |
@@ -56,7 +56,7 @@
 > A INV-17 dizia: _"atendimento com teste reprovado nunca gera `ProductUsage` do
 > produto reprovado"_. **Está errada.** O teste de mecha **usa** o produto — pouco,
 > mas usa. Se não houver baixa, o estoque mente, e mentir sobre estoque é
-> exatamente a dor da Rosiele: _"comprar algo que está faltando"_.
+> exatamente a dor da Roziele: _"comprar algo que está faltando"_.
 >
 > **Correção:** `ENCERRADO_SEM_SERVICO` **tem** `ProductUsage` — o consumido no
 > teste. O que não pode existir é o `AttendanceItem` do serviço impedido.
@@ -68,7 +68,7 @@
 
 **Ataca:** atendimento sem agendamento, serviço composto, custo por etapa.
 
-> Sábado, 16h. Uma cliente liga: deu tempo, pode ir? A Rosiele encaixa. Era para ser
+> Sábado, 16h. Uma cliente liga: deu tempo, pode ir? A Roziele encaixa. Era para ser
 > escova. Ao lavar, vê o cabelo ressecado e sugere nutrição antes. As pontas estão
 > feias, corta. Sai escova + nutrição + corte de pontas por R$ 90 — o preço da
 > escova com nutrição, que ela cadastrou como serviço composto, mais nada pelo
@@ -104,13 +104,13 @@
 
 **Ataca:** o encontro das duas pontas, fusão de fichas, unicidade da conta.
 
-> A Rosiele atende Juliana há dois anos. Ficha antiga: nome, telefone, sem CPF, sem
+> A Roziele atende Juliana há dois anos. Ficha antiga: nome, telefone, sem CPF, sem
 > data de nascimento. Juliana descobre o app, tenta entrar, o CPF não acha nada e
 > ela **se autocadastra**. Ficha nova, `SELF_REGISTERED`, com CPF e conta ativa.
-> Marca um horário pelo portal e é atendida — a Rosiele lança o atendimento na
+> Marca um horário pelo portal e é atendida — a Roziele lança o atendimento na
 > ficha nova, que apareceu na busca.
 >
-> Semanas depois, a Rosiele percebe a duplicata na bandeja de novos cadastros e
+> Semanas depois, a Roziele percebe a duplicata na bandeja de novos cadastros e
 > funde as duas. **E a ficha antiga também tinha uma conta**, criada num teste
 > antigo que ninguém lembra.
 
@@ -133,7 +133,7 @@
 >
 > Por que não apagar: a conta perdedora pode ser a que a cliente realmente usa, e
 > uma escolha automática errada tranca a pessoa fora do próprio histórico. Revogada
-> e registrada, a Rosiele reverte em um toque.
+> e registrada, a Roziele reverte em um toque.
 
 ---
 
@@ -141,7 +141,7 @@
 
 **Ataca:** cronômetro persistente, pagamento parcial, cortesia, fuso, anamnese.
 
-> Sexta, 21h40. A prima da Rosiele chega para uma escova, de graça — nunca cobra
+> Sexta, 21h40. A prima da Roziele chega para uma escova, de graça — nunca cobra
 > dela. No meio, o celular descarrega e o app fecha. Termina 00h20 de sábado. Não há
 > pagamento: é cortesia. A foto do depois fica marcada como **só a profissional**,
 > porque a prima não gosta de aparecer.

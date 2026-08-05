@@ -17,11 +17,11 @@
 | 3   | Modelagem de Dados & Camada de Domínio | —       | ✅                                    |
 | 4   | Identidade, Autenticação & Permissões  | ambos   | 🔵 equipe no ar; cliente vai com a 12 |
 | 5   | App Shell & PWA                        | ambos   | 🔵 casca do painel no ar; falta PWA   |
-| 6   | Clientes                               | painel  | 🔵 lista e ficha no ar (leitura)      |
-| 7   | Serviços & Estoque                     | painel  | 🔴 **próxima** — o alerta já dá 404   |
-| 8   | Agenda Inteligente                     | painel  | 🔵 agenda do dia no ar (leitura)      |
+| 6   | Clientes                               | painel  | 🔵 lista, ficha e cadastro no ar; falta fusão e bandeja |
+| 7   | Serviços & Estoque                     | painel  | 🔵 estoque no ar; falta configurar o catálogo |
+| 8   | Agenda Inteligente                     | painel  | 🔵 agenda do dia e novo horário no ar; falta semana/mês |
 | 9   | Atendimento                            | painel  | 🔵 fluxo completo no ar; falta foto   |
-| 10  | Financeiro                             | painel  | ⬜                                    |
+| 10  | Financeiro                             | painel  | 🔵 dinheiro no ar (mês, despesa, fiado); falta relatório e meta |
 | 11  | Dashboard, Estatísticas & Insights     | painel  | ⬜                                    |
 | 12  | **Portal da Cliente**                  | portal  | ⬜                                    |
 | 13  | Offline-first & Sincronização          | ambos   | ⬜                                    |
@@ -71,19 +71,19 @@ verificado, sem que nada precise rodar na máquina do dono. Nada de UI aqui.
 ### Descoberta & Documentação de Produto
 
 **Objetivo.** Saber exatamente o que será construído e por quê, antes de desenhar
-qualquer pixel. Esta fase é feita **junto com a usuária real** (Rosiele).
+qualquer pixel. Esta fase é feita **junto com a usuária real** (Roziele).
 
 Sem código. Dividida em duas sub-etapas porque parte do trabalho depende de
-informação que só a Rosiele tem.
+informação que só a Roziele tem.
 
 #### Fase 1A — o que não depende dela · ✅ concluída
 
-- **1.1** [Roteiro de conversa](descoberta/roteiro-rosiele.md) — para o Alan
+- **1.1** [Roteiro de conversa](descoberta/roteiro-roziele.md) — para o Alan
   conduzir, sem o agente no meio
 - **1.2** [Glossário do domínio](06-GLOSSARIO.md) — rascunho, com o que confirmar
 - **1.3** [Fluxos das duas pontas](07-FLUXOS.md) — identidade e pontos de encontro
 - **1.4** [Modelo de domínio v0](08-MODELO-DE-DOMINIO.md) — agregados, invariantes
-  e as dez perguntas que o modelo faz à Rosiele
+  e as dez perguntas que o modelo faz à Roziele
 
 #### Fase 1B — o produto se configura · ✅ concluída
 
@@ -113,7 +113,7 @@ de pesquisa — e um método que exige entrevistar cada profissional não é pro
 - [x] Nenhuma tela do roadmap está sem wireframe, **incluindo o onboarding**
 - [x] O modelo de domínio foi validado contra 5 cenários de atendimento —
       **5 buracos encontrados e corrigidos**
-- [x] Uma profissional que não é a Rosiele configura o sistema pelo catálogo
+- [x] Uma profissional que não é a Roziele configura o sistema pelo catálogo
       semente, sem nenhum campo em branco obrigatório
 - [x] **Documentos revisados e aprovados pelo dono** — 2026-07-31
 
@@ -135,7 +135,7 @@ com a plataforma servindo de base acessível onde ela já resolve melhor.
 
 **Entregáveis**
 
-- Identidade da marca: **"Ro" de Rosiele** (DEC-011) — monograma e tom de voz
+- Identidade da marca: **"Ro" de Roziele** (DEC-011) — monograma e tom de voz
 - Design tokens em OKLCH: cor, tipografia fluida, raio, sombra, movimento
 - **Porcelana** e **Veludo**, cada um desenhado do zero
 - Par `action` / `on-action`, garantindo AA de texto sobre a cor de marca nos
@@ -263,7 +263,7 @@ erro mais caro de corrigir depois. Modelo completo em **DEC-008**.
       — hoje o `organizationId` vem sempre da sessão, mas falta o teste que prova
 - [ ] Teste automatizado prova que uma sessão de cliente não alcança dado de outra
       cliente nem qualquer rota do painel
-- [ ] Cliente cadastrada pela Rosiele ativa a conta e vê o histórico anterior
+- [ ] Cliente cadastrada pela Roziele ativa a conta e vê o histórico anterior
 - [ ] Cliente que se autocadastrou aparece no painel marcada como novo cadastro
 - [x] Força bruta é bloqueada e registrada — **verificado em produção** em
       2026-08-02: seis erros seguidos deram 27s → 57s → 2min → 4min, e a senha
@@ -323,9 +323,9 @@ de encontro entre as duas pontas do produto.
 - 🗣️ Curvatura como lista de nomes: liso, ondulado, cacheado, crespo
 - Busca por CPF que **encontra ficha autocadastrada** em vez de duplicar
 - **Fusão de fichas assistida** — o painel sugere candidatas por nome e telefone e
-  a Rosiele funde com um toque, preservando todo o histórico das duas
+  a Roziele funde com um toque, preservando todo o histórico das duas
   (ver [D-07](04-DECISOES.md#d-07--como-as-duas-pontas-se-encontram-quando-a-ficha-não-tem-cpf))
-- Bandeja de novos cadastros vindos do portal, para a Rosiele confirmar
+- Bandeja de novos cadastros vindos do portal, para a Roziele confirmar
 - Indicador de "tem conta no app" e ação de revogar acesso
 - Ficha completa: histórico de atendimentos, produtos usados, valor gasto,
   tempo médio, frequência, última visita
@@ -419,7 +419,7 @@ de encontro entre as duas pontas do produto.
 **Objetivo.** O momento de verdade. Mãos ocupadas, cliente na cadeira.
 
 > **Escopo fechado na Fase 1.** Telas [8, 9 e 10](12-WIREFRAMES.md#8--atendimento--abertura-e-anamnese).
-> A fase mais afetada pela conversa com a Rosiele.
+> A fase mais afetada pela conversa com a Roziele.
 
 **Entregáveis**
 
@@ -519,7 +519,7 @@ de encontro entre as duas pontas do produto.
 ### Portal da Cliente
 
 **Objetivo.** A outra ponta do produto. A cliente vê o próprio cuidado com o
-cabelo virar história — e a Rosiele ganha um canal que tira a conversa do
+cabelo virar história — e a Roziele ganha um canal que tira a conversa do
 WhatsApp.
 
 > **Escopo fechado na Fase 1.** Telas [13 a 16](12-WIREFRAMES.md#13--portal--primeiro-acesso).
@@ -549,7 +549,7 @@ WhatsApp.
 - [ ] Uma cliente entra, vê o próprio antes e depois e sai sem precisar de ajuda
 - [ ] Nenhuma consulta do portal consegue alcançar dado de outra cliente
 - [ ] O portal instala como app próprio no iPhone
-- [ ] Ação da cliente aparece no painel da Rosiele sem recarregar
+- [ ] Ação da cliente aparece no painel da Roziele sem recarregar
 
 ---
 
@@ -630,7 +630,7 @@ Fases 3 e 5.
 
 ### Comercialização
 
-**Objetivo.** Transformar o sistema da Rosiele em produto para milhares.
+**Objetivo.** Transformar o sistema da Roziele em produto para milhares.
 
 **Entregáveis**
 

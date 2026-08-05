@@ -107,7 +107,7 @@ describe('Portão de segurança · o teste de mecha pode reprovar', () => {
   it('INV-17 · o produto do teste continua contando como gasto', () => {
     // GAP-01: a versão anterior dizia que atendimento reprovado não gerava
     // ProductUsage. O teste consome produto de verdade; sem baixa, o estoque
-    // mente — que é exatamente a dor da Rosiele.
+    // mente — que é exatamente a dor da Roziele.
     const avaliado = unwrap(recordAssessment(base(), REPROVADA));
     const comGasto: Attendance = {
       ...avaliado,

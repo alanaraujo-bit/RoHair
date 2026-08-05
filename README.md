@@ -53,7 +53,7 @@ Nasce para uma profissional. É construído, desde a primeira linha, para milhar
 | [docs/11-PERSONAS.md](docs/11-PERSONAS.md)                           | Personas e Jobs to be Done                                         |
 | [docs/12-WIREFRAMES.md](docs/12-WIREFRAMES.md)                       | **As 16 telas, em baixa fidelidade**                               |
 | [docs/13-BACKLOG.md](docs/13-BACKLOG.md)                             | 42 itens priorizados pela distância até a dor central              |
-| [docs/descoberta/](docs/descoberta/)                                 | A conversa com a Rosiele e o que saiu dela                         |
+| [docs/descoberta/](docs/descoberta/)                                 | A conversa com a Roziele e o que saiu dela                         |
 | [docs/adr/](docs/adr/)                                               | Architecture Decision Records                                      |
 
 ## Stack

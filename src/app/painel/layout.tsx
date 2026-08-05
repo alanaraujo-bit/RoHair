@@ -3,7 +3,12 @@ import Link from 'next/link';
 import { sairAction } from '@/app/entrar/actions';
 import { requireStaffSession } from '@/features/auth/infrastructure/session-context';
 import { Monogram } from '@/shared/ui/brand/monogram';
-import { IconCalendar, IconMirror, IconMoney } from '@/shared/ui/icons/domain-icons';
+import {
+  IconCalendar,
+  IconHome,
+  IconMirror,
+  IconMoney,
+} from '@/shared/ui/icons/domain-icons';
 import { Button } from '@/shared/ui/primitives/button';
 import { ThemeToggle } from '@/shared/ui/theme/theme-toggle';
 
@@ -21,9 +26,10 @@ import { ThemeToggle } from '@/shared/ui/theme/theme-toggle';
  */
 
 const DESTINOS = [
-  { href: '/painel', rotulo: 'Hoje', Icone: IconMoney },
+  { href: '/painel', rotulo: 'Hoje', Icone: IconHome },
   { href: '/painel/agenda', rotulo: 'Agenda', Icone: IconCalendar },
   { href: '/painel/clientes', rotulo: 'Clientes', Icone: IconMirror },
+  { href: '/painel/dinheiro', rotulo: 'Dinheiro', Icone: IconMoney },
 ] as const;
 
 export default async function PainelLayout({

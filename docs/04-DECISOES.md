@@ -89,7 +89,7 @@ nenhuma é pulada; nenhuma é entregue em conjunto com outra para "adiantar".
 O produto deixou de ter apenas o painel profissional. São **dois produtos que
 conversam**:
 
-- **Painel Profissional** — a Rosiele gerencia agenda, atendimentos, estoque e
+- **Painel Profissional** — a Roziele gerencia agenda, atendimentos, estoque e
   financeiro
 - **Portal da Cliente** — a cliente acessa o próprio histórico, fotos de antes e
   depois e agendamentos
@@ -132,7 +132,7 @@ improvável e passa a ser arquiteturalmente impossível.
 `Client` é o **registro de negócio** (a ficha). `ClientAccount` é a **credencial**.
 Relação 1:1 opcional.
 
-Uma cliente cadastrada pela Rosiele que nunca abrir o app funciona normalmente —
+Uma cliente cadastrada pela Roziele que nunca abrir o app funciona normalmente —
 tem ficha, histórico, fotos. Se um dia baixar o app, a conta se **acopla** à ficha
 existente, trazendo todo o histórico junto. É isso que faz as duas pontas
 conversarem.
@@ -161,7 +161,7 @@ conversarem.
 4. **Recuperação de senha:** a mesma tela de primeiro acesso. CPF + nascimento
    confere → define nova senha. Sem e-mail, sem SMS, custo zero
 
-**Consequência desejada:** quando a Rosiele for lançar um atendimento e digitar o
+**Consequência desejada:** quando a Roziele for lançar um atendimento e digitar o
 CPF de alguém que se autocadastrou, a ficha já aparece preenchida. As duas pontas
 se encontram pelo CPF.
 
@@ -187,7 +187,7 @@ custaria dinheiro (SMS) ou fricção que o dono não quer.
 
 **Vazamento de existência (aceito):** para o autocadastro funcionar, a tela
 precisa informar que um CPF não tem cadastro — o que revela se alguém é cliente da
-Rosiele. Impossível eliminar sem matar o autocadastro. Impacto considerado
+Roziele. Impossível eliminar sem matar o autocadastro. Impacto considerado
 desprezível; registrado por transparência.
 
 ---
@@ -234,16 +234,16 @@ trocar um adapter, sem tocar em nenhuma feature.
 
 ---
 
-### DEC-011 · Identidade da marca — "Ro" de Rosiele
+### DEC-011 · Identidade da marca — "Ro" de Roziele
 
 **Data:** 2026-07-31 · **Status:** ✅ Aceita · **Resolve D-04**
 
-**RoHair = Rosiele + Hair.** O nome carrega o nome da profissional.
+**RoHair = Roziele + Hair.** O nome carrega o nome da profissional.
 
 **Consequência para a Fase 2:** a marca não pode ser genérica. O monograma "Ro"
 vira o núcleo da identidade — ícone do app, splash screen, marca d'água opcional
 nas fotos de antes e depois, elemento de carregamento. O tom de voz é pessoal, na
-primeira pessoa da Rosiele, não institucional.
+primeira pessoa da Roziele, não institucional.
 
 ---
 
@@ -316,7 +316,7 @@ rodada de respostas cumpriu isso muito bem — gerou `HairAssessment`, o estado
 `ENCERRADO_SEM_SERVICO` e o vocabulário do glossário. **Não haverá rodada 2.**
 
 **Alternativa descartada:** continuar entrevistando até fechar o escopo. Produziria
-um sistema perfeito para a Rosiele e inútil para a segunda cliente.
+um sistema perfeito para a Roziele e inútil para a segunda cliente.
 
 ---
 
@@ -462,7 +462,7 @@ pode existir depois, **separado e nomeado**, nunca misturado no mesmo número.
 Ainda não há domínio. Seguimos no subdomínio da Vercel até a Fase 5, quando o PWA
 instalável e o portal público da cliente tornam um domínio próprio desejável.
 
-Sugestões a avaliar: `rohair.app` · `rohair.com.br` · `rosielehair.com.br`
+Sugestões a avaliar: `rohair.app` · `rohair.com.br` · `rozielehair.com.br`
 
 ### D-05 · Poder de agendamento da cliente no portal
 
@@ -475,7 +475,7 @@ raciocínio abaixo continua valendo, mas como escolha do **padrão**, não como
 imposição a todas.
 
 A cliente pode **agendar direto** na agenda, ou apenas **solicitar um horário**
-que a Rosiele aprova?
+que a Roziele aprova?
 
 **Recomendação: solicitar.** Agendamento direto entrega o controle da agenda a
 terceiros — risco de encaixe ruim, deslocamento inviável e conflito com o ritmo
@@ -489,7 +489,7 @@ configuração, quando houver horários realmente livres e bem definidos.
 
 Proposta completa em [03-ROADMAP.md](03-ROADMAP.md#fase-12).
 
-**Confirmado pela Rosiele** — _"Finalizo, deixo as orientações dos produtos que
+**Confirmado pela Roziele** — _"Finalizo, deixo as orientações dos produtos que
 deve utilizar e o tempo do retoque e vou pra minha residência."_
 
 O item **"Meu cuidado"** deixa de ser hipótese: ela **já faz isso hoje**, falado, na
@@ -510,18 +510,18 @@ organização, com padrão conservador. Ver
 **Status:** ⏳ Aguardando · **Bloqueia:** Fases 3, 4 e 6
 **Origem:** ACHADO-01 da Fase 1A — ver [07-FLUXOS.md](07-FLUXOS.md#6-três-buracos-encontrados-ao-escrever-este-documento)
 
-A DEC-008 supõe que a ficha da cliente tem CPF. Na prática, a Rosiele não pede CPF
+A DEC-008 supõe que a ficha da cliente tem CPF. Na prática, a Roziele não pede CPF
 de ninguém hoje. Se a ficha existente não tiver CPF, a cliente que se autocadastrar
 vira uma **ficha duplicada** — e o momento mais valioso do produto, o histórico de
 dois anos aparecendo de uma vez, nunca acontece.
 
 **Recomendação: fusão assistida + CPF opcional pedido com insistência.** O
 autocadastro sempre cria ficha nova; o painel sugere candidatas por nome e telefone
-e a Rosiele funde com um toque.
+e a Roziele funde com um toque.
 
 **Por quê:** casar automaticamente por telefone expõe o histórico de uma pessoa
 para outra quando o número tiver sido reaproveitado — risco inaceitável para um
-produto que guarda foto de cliente. A Rosiele conhece as clientes pelo nome; ela é
+produto que guarda foto de cliente. A Roziele conhece as clientes pelo nome; ela é
 o melhor desambiguador disponível, e é grátis.
 
 **Consequências se aceita:** fusão de fichas vira funcionalidade de primeira classe
@@ -537,12 +537,12 @@ A ativação exige CPF **e** data de nascimento conferindo. Dois casos deixam a
 cliente presa para sempre, sem explicação:
 
 - A ficha existe mas **não tem** data de nascimento — não há contra o que comparar
-- A data foi **digitada errada** pela Rosiele — a cliente digita a correta, o
+- A data foi **digitada errada** pela Roziele — a cliente digita a correta, o
   sistema nega e ainda a bloqueia progressivamente
 
 **Recomendação: aprovação manual como rota de escape.** Quando a ficha é encontrada
-mas a validação não conclui, em vez de negar, o fluxo pede liberação à Rosiele —
-"pedimos para a Rosiele liberar seu acesso" — com notificação de um toque no
+mas a validação não conclui, em vez de negar, o fluxo pede liberação à Roziele —
+"pedimos para a Roziele liberar seu acesso" — com notificação de um toque no
 painel. Um beco sem saída vira uma espera de minutos.
 
 **Exige também** notificar a profissional das tentativas **falhas**, não só das

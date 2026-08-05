@@ -22,10 +22,12 @@ import {
   duration,
   durationOf,
   formatDuration,
+  monthBounds,
   overlaps,
   rangeFrom,
   rangeMinutes,
   timeRange,
+  zonedTimeToUtc,
 } from './time';
 
 /**
@@ -247,6 +249,44 @@ describe('businessDay — INV-18', () => {
 
     // A invariante: vale o instante da FINALIZAÇÃO. Um só campo decide.
     expect(businessDay(fim, SP)).not.toBe(businessDay(inicio, SP));
+  });
+});
+
+describe('monthBounds — o filtro do financeiro', () => {
+  it('abrange o mês inteiro na convenção de meia-noite UTC', () => {
+    const { start, end } = monthBounds(2026, 8);
+    expect(start.toISOString()).toBe('2026-08-01T00:00:00.000Z');
+    expect(end.toISOString()).toBe('2026-09-01T00:00:00.000Z');
+  });
+
+  it('dezembro vira janeiro do ano seguinte', () => {
+    const { start, end } = monthBounds(2026, 12);
+    expect(start.toISOString()).toBe('2026-12-01T00:00:00.000Z');
+    expect(end.toISOString()).toBe('2027-01-01T00:00:00.000Z');
+  });
+});
+
+describe('zonedTimeToUtc — o agendamento pensado na hora do salão', () => {
+  const SP = 'America/Sao_Paulo';
+
+  it('converte hora de parede de São Paulo para o instante UTC', () => {
+    // 14:00 em SP (UTC-3) é 17:00 UTC.
+    expect(zonedTimeToUtc('2026-08-06', '14:00', SP).toISOString()).toBe(
+      '2026-08-06T17:00:00.000Z',
+    );
+  });
+
+  it('redondo: o instante volta a mostrar a mesma hora de parede no fuso', () => {
+    const instante = zonedTimeToUtc('2026-11-06', '09:00', SP);
+    const hora = new Intl.DateTimeFormat('en-CA', {
+      timeZone: SP,
+      hour: '2-digit',
+      minute: '2-digit',
+      hourCycle: 'h23',
+    }).format(instante);
+
+    expect(hora).toBe('09:00');
+    expect(businessDay(instante, SP)).toBe('2026-11-06');
   });
 });
 

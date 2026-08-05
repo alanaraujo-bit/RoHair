@@ -116,3 +116,82 @@ export function businessDay(instant: Date, timeZone: string): string {
     day: '2-digit',
   }).format(instant);
 }
+
+/**
+ * O fuso padrão de uma organização nova.
+ *
+ * O modelo guarda `timeZone` na organização; enquanto não existe tela de
+ * configuração, é este o valor que toda a borda usa — repositório, páginas e
+ * actions. Uma única constante em vez de um literal copiado por arquivo.
+ */
+export const DEFAULT_TIME_ZONE = 'America/Sao_Paulo';
+
+/**
+ * Os limites de um mês, no formato em que `businessDay` é guardado.
+ *
+ * O livro-caixa guarda o dia de negócio como a meia-noite UTC da data
+ * (`${dia}T00:00:00.000Z`). Por isso o filtro de mês é livre de fuso: basta
+ * comparar a data de negócio com a meia-noite UTC do primeiro dia do mês e do
+ * mês seguinte. O fuso só entrou na hora de **escolher** o dia (INV-18); na
+ * hora de **consultar**, ele não precisa mais.
+ */
+export function monthBounds(
+  year: number,
+  month: number,
+): {
+  readonly start: Date;
+  readonly end: Date;
+} {
+  // `Date.UTC(ano, 12, 1)` já vira janeiro do ano seguinte — o caso de
+  // dezembro não precisa de caso especial.
+  return {
+    start: new Date(Date.UTC(year, month - 1, 1)),
+    end: new Date(Date.UTC(year, month, 1)),
+  };
+}
+
+/**
+ * Converte hora de parede (data + hora no salão) para o instante UTC.
+ *
+ * O agendamento é guardado com `startsAt`/`endsAt` em UTC, mas quem digita
+ * "quinta 14:00" pensa na hora do fuso da organização. O `Intl` sabe o
+ * relógio de parede de cada fuso: a diferença entre o instante candidato e o
+ * que esse fuso mostra nele é exatamente o deslocamento — incluindo DST, sem
+ * tabela de offsets na mão.
+ */
+export function zonedTimeToUtc(date: string, time: string, timeZone: string): Date {
+  // Os padrões de fallback existem por causa do `noUncheckedIndexedAccess`;
+  // quem chama isto já validou o formato (AAAA-MM-DD e HH:MM).
+  const [ano = 0, mes = 0, dia = 0] = date.split('-').map((parte) => Number(parte));
+  const [hora = 0, minuto = 0] = time.split(':').map((parte) => Number(parte));
+
+  const candidato = new Date(Date.UTC(ano, mes - 1, dia, hora, minuto));
+
+  const formato = new Intl.DateTimeFormat('en-US', {
+    timeZone,
+    hourCycle: 'h23',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+  const partes = Object.fromEntries(
+    formato.formatToParts(candidato).map((parte) => [parte.type, parte.value]),
+  );
+
+  const mostrado = new Date(
+    Date.UTC(
+      Number(partes.year),
+      Number(partes.month) - 1,
+      Number(partes.day),
+      Number(partes.hour),
+      Number(partes.minute),
+    ),
+  );
+
+  // O que o fuso mostra num instante é o próprio instante deslocado: somar a
+  // diferença entre o candidato e o que o fuso mostra nele devolve o instante
+  // em que o relógio de parede marca o horário pedido.
+  return new Date(candidato.getTime() + (candidato.getTime() - mostrado.getTime()));
+}

@@ -70,3 +70,6 @@ desktop.ini
 
 # Cliente Prisma gerado — reconstruído por `postinstall`
 /src/core/db/generated/
+
+.vercel
+.env*

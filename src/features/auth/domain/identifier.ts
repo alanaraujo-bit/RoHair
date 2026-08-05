@@ -7,7 +7,7 @@
  *
  * A normalização é minúscula e sem espaços nas pontas. Minúscula em e-mail é
  * pacífica; em nome de usuário é decisão nossa, e a mesma normalização vale no
- * cadastro — senão "Rosiele" e "rosiele" viram duas contas.
+ * cadastro — senão "Roziele" e "roziele" viram duas contas.
  */
 
 export type LoginIdentifier = {

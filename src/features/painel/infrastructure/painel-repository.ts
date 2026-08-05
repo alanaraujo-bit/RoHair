@@ -1,11 +1,20 @@
+import { businessDay, DEFAULT_TIME_ZONE as FUSO } from '@/core/kernel/time';
 import { prisma } from '@/core/db/client';
 
 import type {
   AlertaDoDia,
   ClienteDaLista,
+  Curvatura,
+  EscritaResultado,
   FichaDaCliente,
+  FiadoAberto,
   ItemDaAgenda,
+  OpcoesParaAgendar,
+  ProdutoDoEstoque,
   ResumoDoDia,
+  ResumoDoMes,
+  TransacaoDoMes,
+  Unidade,
 } from '../application/painel-queries';
 
 /**
@@ -16,8 +25,6 @@ import type {
  * existia login, este arquivo resolvia a organização sozinho, pegando a
  * primeira do banco; essa função sumiu junto com o painel aberto.
  */
-
-const FUSO = 'America/Sao_Paulo';
 
 function inicioDoDia(): Date {
   const agora = new Date();
@@ -292,4 +299,430 @@ export async function fichaDaCliente(
       : null,
     visitas,
   };
+}
+
+/* ----------------------------------------------------------------- Estoque */
+
+/**
+ * Produtos com o saldo calculado, na ordem de trabalho: quem está acabando
+ * primeiro. O alerta fala em **atendimentos restantes**, nunca em quantidade.
+ */
+export async function produtosDoEstoque(
+  organizationId: string,
+): Promise<ProdutoDoEstoque[]> {
+  const produtos = await prisma().product.findMany({
+    where: { organizationId, active: true },
+    include: { movements: true },
+    orderBy: { name: 'asc' },
+  });
+
+  return produtos
+    .map((produto) => {
+      const saldoMilli = produto.movements.reduce(
+        (total, movimento) => total + movimento.quantityMilli,
+        0,
+      );
+      const rendimento = produto.yieldPerUnit ?? 10;
+      const aplicacoes = Math.floor((saldoMilli / 1000) * rendimento);
+
+      return {
+        id: produto.id,
+        name: produto.name,
+        brand: produto.brand,
+        unit: produto.unit.toLowerCase(),
+        unitCostCents: produto.unitCostCents,
+        saldo: formatarSaldo(saldoMilli),
+        aplicacoes,
+        critico: aplicacoes <= 4,
+        zerado: aplicacoes <= 0,
+      };
+    })
+    .sort((a, b) => {
+      if (a.critico !== b.critico) return a.critico ? -1 : 1;
+      return a.name.localeCompare(b.name, 'pt-BR');
+    });
+}
+
+/**
+ * Compra registrada: entra no estoque com o custo do momento, e o custo atual
+ * do produto acompanha a última compra — é ele que o próximo atendimento vai
+ * usar para calcular o custo real.
+ */
+export async function registrarCompra(
+  organizationId: string,
+  input: {
+    readonly productId: string;
+    readonly quantityUnits: number;
+    readonly unitCostCents: number;
+  },
+): Promise<EscritaResultado> {
+  const produto = await prisma().product.findFirst({
+    where: { id: input.productId, organizationId, active: true },
+    select: { id: true },
+  });
+  if (produto === null) return { ok: false, erro: 'Produto não encontrado.' };
+
+  // O custo atual só acompanha a compra quando ela tem custo informado: um
+  // zero digitado (ou produto comprado sem preço) não pode apagar o custo
+  // registrado — senão o próximo atendimento calcularia lucro inflado.
+  await prisma().$transaction([
+    prisma().stockMovement.create({
+      data: {
+        productId: input.productId,
+        quantityMilli: input.quantityUnits * 1000,
+        reason: 'PURCHASE',
+        unitCostCents: input.unitCostCents,
+      },
+    }),
+    ...(input.unitCostCents > 0
+      ? [
+          prisma().product.update({
+            where: { id: input.productId },
+            data: { unitCostCents: input.unitCostCents },
+          }),
+        ]
+      : []),
+  ]);
+
+  return { ok: true };
+}
+
+export async function criarProduto(
+  organizationId: string,
+  input: {
+    readonly name: string;
+    readonly brand: string | null;
+    readonly category: string;
+    readonly unit: Unidade;
+    readonly unitCostCents: number;
+    readonly yieldPerUnit: number | null;
+  },
+): Promise<EscritaResultado> {
+  await prisma().product.create({
+    data: {
+      organizationId,
+      name: input.name,
+      brand: input.brand,
+      category: input.category,
+      unit: input.unit,
+      unitCostCents: input.unitCostCents,
+      yieldPerUnit: input.yieldPerUnit,
+    },
+  });
+  return { ok: true };
+}
+
+/* --------------------------------------------------------------- Financeiro */
+
+/**
+ * O mês resolvido para a tela Dinheiro: sobrou, entrou, produto e despesas.
+ *
+ * Entrou = transações RECEITA (dinheiro recebido, DEC-018). Produto = compras
+ * do mês. Despesas = transações DESPESA manuais. Sobrou é o que sobra das
+ * três — a mesma hierarquia da tela Hoje, no tamanho do mês.
+ */
+export async function resumoDoMes(
+  organizationId: string,
+  bounds: { readonly start: Date; readonly end: Date },
+): Promise<ResumoDoMes> {
+  const [transacoes, compras, atendimentos] = await Promise.all([
+    prisma().transaction.findMany({
+      where: {
+        organizationId,
+        businessDay: { gte: bounds.start, lt: bounds.end },
+      },
+    }),
+    prisma().stockMovement.findMany({
+      where: {
+        reason: 'PURCHASE',
+        createdAt: { gte: bounds.start, lt: bounds.end },
+        product: { organizationId },
+      },
+    }),
+    prisma().attendance.findMany({
+      where: {
+        organizationId,
+        status: 'FINALIZADO',
+        finishedAt: { gte: bounds.start, lt: bounds.end },
+      },
+      include: { usages: true },
+    }),
+  ]);
+
+  let entrou = 0;
+  let despesas = 0;
+  for (const transacao of transacoes) {
+    if (transacao.kind === 'RECEITA') entrou += transacao.amountCents;
+    else despesas += transacao.amountCents;
+  }
+
+  const produtoCents = compras.reduce(
+    (total, compra) =>
+      total + Math.round((compra.quantityMilli * compra.unitCostCents) / 1000),
+    0,
+  );
+
+  const custoProduto = atendimentos.reduce(
+    (total, atendimento) =>
+      total +
+      atendimento.usages.reduce(
+        (soma, uso) =>
+          soma + Math.round((uso.quantityMilli * uso.unitCostCents) / 1000),
+        0,
+      ),
+    0,
+  );
+
+  return {
+    sobrouCents: entrou - produtoCents - despesas,
+    entrouCents: entrou,
+    produtoCents,
+    despesasCents: despesas,
+    atendimentos: atendimentos.length,
+    custoPorAtendimentoCents: atendimentos.length
+      ? Math.round(custoProduto / atendimentos.length)
+      : 0,
+  };
+}
+
+export async function transacoesDoMes(
+  organizationId: string,
+  bounds: { readonly start: Date; readonly end: Date },
+): Promise<TransacaoDoMes[]> {
+  const transacoes = await prisma().transaction.findMany({
+    where: {
+      organizationId,
+      businessDay: { gte: bounds.start, lt: bounds.end },
+    },
+    include: {
+      attendance: {
+        include: { client: { select: { id: true, name: true } } },
+      },
+    },
+    orderBy: [{ businessDay: 'desc' }, { createdAt: 'desc' }],
+  });
+
+  return transacoes.map((transacao) => ({
+    id: transacao.id,
+    kind: transacao.kind,
+    category: transacao.category,
+    amountCents: transacao.amountCents,
+    description: transacao.description,
+    businessDay: transacao.businessDay,
+    origem: transacao.attendance
+      ? {
+          type: 'atendimento',
+          clientId: transacao.attendance.client.id,
+          clientName: transacao.attendance.client.name,
+        }
+      : { type: 'manual' },
+  }));
+}
+
+/**
+ * A receber: pagamentos fiados ainda não recebidos, do mais antigo para o
+ * mais novo — a dívida velha é a que mais merece o toque.
+ */
+export async function fiadosAbertos(organizationId: string): Promise<FiadoAberto[]> {
+  const pagamentos = await prisma().payment.findMany({
+    where: {
+      paidAt: null,
+      attendance: { organizationId, status: 'FINALIZADO' },
+    },
+    include: {
+      attendance: {
+        include: {
+          client: { select: { id: true, name: true } },
+          items: true,
+        },
+      },
+    },
+    orderBy: { attendance: { startedAt: 'asc' } },
+  });
+
+  return pagamentos.map((pagamento) => ({
+    paymentId: pagamento.id,
+    attendanceId: pagamento.attendanceId,
+    clientId: pagamento.attendance.client.id,
+    clientName: pagamento.attendance.client.name,
+    amountCents: pagamento.amountCents,
+    data: pagamento.attendance.finishedAt ?? pagamento.attendance.startedAt,
+    servico:
+      pagamento.attendance.items
+        .filter((item) => item.parentId === null)
+        .map((item) => item.name)
+        .join(' + ') || 'Sem serviço',
+  }));
+}
+
+/**
+ * Recebe um fiado: o pagamento ganha a data de recebimento e o caixa ganha a
+ * receita — DEC-018. Fiado só vira "sobrou" no dia em que o dinheiro entrou.
+ */
+export async function receberFiado(
+  organizationId: string,
+  paymentId: string,
+): Promise<EscritaResultado> {
+  const pagamento = await prisma().payment.findFirst({
+    where: {
+      id: paymentId,
+      paidAt: null,
+      attendance: { organizationId },
+    },
+    include: {
+      attendance: { include: { client: { select: { name: true } } } },
+    },
+  });
+  if (pagamento === null) {
+    return { ok: false, erro: 'Cobrança não encontrada ou já recebida.' };
+  }
+
+  const agora = new Date();
+  await prisma().$transaction(async (tx) => {
+    await tx.payment.update({
+      where: { id: paymentId },
+      data: { paidAt: agora },
+    });
+    await tx.transaction.create({
+      data: {
+        organizationId,
+        attendanceId: pagamento.attendanceId,
+        kind: 'RECEITA',
+        category: 'fiado',
+        amountCents: pagamento.amountCents,
+        businessDay: new Date(`${businessDay(agora, FUSO)}T00:00:00.000Z`),
+        description: `Fiado recebido · ${pagamento.attendance.client.name}`,
+      },
+    });
+  });
+
+  return { ok: true };
+}
+
+/** Despesa manual: sai do caixa, entra no livro com o dia de hoje. */
+export async function lancarDespesa(
+  organizationId: string,
+  input: {
+    readonly category: string;
+    readonly amountCents: number;
+    readonly description: string | null;
+  },
+): Promise<EscritaResultado> {
+  const hoje = businessDay(new Date(), FUSO);
+  await prisma().transaction.create({
+    data: {
+      organizationId,
+      kind: 'DESPESA',
+      category: input.category,
+      amountCents: input.amountCents,
+      businessDay: new Date(`${hoje}T00:00:00.000Z`),
+      description: input.description,
+    },
+  });
+  return { ok: true };
+}
+
+/* ------------------------------------------------------------------ Cliente */
+
+export async function criarCliente(
+  organizationId: string,
+  input: {
+    readonly name: string;
+    readonly phone: string | null;
+    readonly curvature: Curvatura | null;
+  },
+): Promise<EscritaResultado> {
+  const criado = await prisma().client.create({
+    data: {
+      organizationId,
+      name: input.name,
+      phone: input.phone,
+      curvature: input.curvature,
+      origin: 'CREATED_BY_STAFF',
+    },
+    select: { id: true },
+  });
+  return { ok: true, id: criado.id };
+}
+
+/* --------------------------------------------------------------- Agendamento */
+
+export async function opcoesParaAgendar(
+  organizationId: string,
+): Promise<OpcoesParaAgendar> {
+  const [clientes, servicos] = await Promise.all([
+    prisma().client.findMany({
+      where: { organizationId, deletedAt: null, mergedIntoId: null },
+      select: { id: true, name: true },
+      orderBy: { name: 'asc' },
+    }),
+    prisma().service.findMany({
+      where: { organizationId, active: true, parentId: null },
+      select: { id: true, name: true, durationMin: true, priceCents: true },
+      orderBy: { name: 'asc' },
+    }),
+  ]);
+
+  return { clients: clientes, services: servicos };
+}
+
+/**
+ * Cria o agendamento com checagem de conflito amigável.
+ *
+ * A constraint `EXCLUDE USING gist` no banco é a garantia final (INV-01); esta
+ * checagem é a que devolve uma frase em vez de erro de banco. A action que
+ * chama isto também captura o erro da constraint como rede de segurança.
+ */
+export async function criarAgendamento(
+  organizationId: string,
+  input: {
+    readonly clientId: string;
+    readonly serviceId: string | null;
+    readonly startsAt: Date;
+    readonly endsAt: Date;
+  },
+): Promise<EscritaResultado> {
+  // A cliente e o serviço vêm do formulário; os dois precisam ser da mesma
+  // organização da sessão. A FK só confere existência da linha, não o escopo —
+  // sem esta checagem, um POST forjado agendaria contra a ficha de outra
+  // organização (a mesma regra de `registrarCompra` e `receberFiado`).
+  const cliente = await prisma().client.findFirst({
+    where: { id: input.clientId, organizationId, deletedAt: null, mergedIntoId: null },
+    select: { id: true },
+  });
+  if (cliente === null) return { ok: false, erro: 'Cliente não encontrada.' };
+
+  if (input.serviceId !== null) {
+    const servico = await prisma().service.findFirst({
+      where: { id: input.serviceId, organizationId, active: true },
+      select: { id: true },
+    });
+    if (servico === null) return { ok: false, erro: 'Serviço não encontrado.' };
+  }
+
+  const conflito = await prisma().appointment.findFirst({
+    where: {
+      organizationId,
+      status: { notIn: ['CANCELADO', 'FALTOU'] },
+      startsAt: { lt: input.endsAt },
+      endsAt: { gt: input.startsAt },
+    },
+    select: { id: true },
+  });
+  if (conflito !== null) {
+    return { ok: false, erro: 'Esse horário já está ocupado. Escolha outro.' };
+  }
+
+  const criado = await prisma().appointment.create({
+    data: {
+      organizationId,
+      clientId: input.clientId,
+      serviceId: input.serviceId,
+      startsAt: input.startsAt,
+      endsAt: input.endsAt,
+      status: 'AGENDADO',
+    },
+    select: { id: true },
+  });
+  return { ok: true, id: criado.id };
 }

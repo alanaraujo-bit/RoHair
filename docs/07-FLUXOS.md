@@ -2,7 +2,7 @@
 
 > **Entregável 1.3 da Fase 1.**
 >
-> Este documento não depende da conversa com a Rosiele: ele deriva de decisões já
+> Este documento não depende da conversa com a Roziele: ele deriva de decisões já
 > tomadas — [DEC-007](04-DECISOES.md#dec-007) (dois públicos, um código),
 > [DEC-008](04-DECISOES.md#dec-008) (dois domínios de identidade) e
 > [DEC-009](04-DECISOES.md#dec-009) (CPF com hash e criptografia).
@@ -81,7 +81,7 @@ uma segunda OWNER.
 
 ```mermaid
 sequenceDiagram
-    participant U as Rosiele
+    participant U as Roziele
     participant S as Servidor
     participant DB as Postgres
     participant R as Redis
@@ -113,7 +113,7 @@ hash descartável. Sem isso, o tempo de resposta revela quais e-mails são váli
 A OWNER cria as demais pelo painel. Papéis: `OWNER` · `PROFESSIONAL` · `ASSISTANT`.
 
 ⚠️ Só vira tela real se a resposta à pergunta 4 do roteiro indicar que alguém
-ajuda a Rosiele. Caso contrário, o modelo de dados existe desde a Fase 3 — porque
+ajuda a Roziele. Caso contrário, o modelo de dados existe desde a Fase 3 — porque
 tirá-lo depois é migração de identidade — mas a interface fica para a Fase 16.
 
 ---
@@ -138,7 +138,7 @@ flowchart TD
     I -->|sim| J["Define usuário e senha"]
     J --> K["Cria ClientAccount vinculada à ficha"]
     K --> L["Histórico inteiro aparece de uma vez"]
-    L --> M["Notifica a Rosiele — ativação"]
+    L --> M["Notifica a Roziele — ativação"]
 
     I -->|"SAÍDA 2<br/>não confere"| N["Mensagem genérica<br/>+ incrementa tentativas"]
     N --> O["Sem pista de qual campo errou"]
@@ -147,19 +147,19 @@ flowchart TD
     P --> Q["Nome, CPF, nascimento, telefone"]
     Q --> R["Cria Client com origem SELF_REGISTERED"]
     R --> S["Cria ClientAccount"]
-    S --> T["Notifica a Rosiele — novo cadastro"]
+    S --> T["Notifica a Roziele — novo cadastro"]
 
     style L fill:#e8f5e9
     style O fill:#ffebee
     style T fill:#fff8e1
 ```
 
-**A saída 1 é o coração do produto.** Uma cliente que a Rosiele atende há dois anos
+**A saída 1 é o coração do produto.** Uma cliente que a Roziele atende há dois anos
 abre o app pela primeira vez e vê dois anos de antes e depois. Não é
 funcionalidade — é o momento em que o produto se justifica.
 
 **A saída 3 é o ponto de encontro invertido.** A cliente chega antes do cadastro, e
-quando a Rosiele for lançar o atendimento a ficha já está lá, preenchida por ela
+quando a Roziele for lançar o atendimento a ficha já está lá, preenchida por ela
 mesma.
 
 ### F-05 · Acessos seguintes
@@ -179,7 +179,7 @@ flowchart LR
     C -->|não| D["Mensagem genérica"]
     C -->|sim| E["Define nova senha"]
     E --> F["Invalida TODAS as sessões da conta"]
-    F --> G["Notifica a Rosiele"]
+    F --> G["Notifica a Roziele"]
 ```
 
 Invalidar as sessões existentes é obrigatório: sem isso, quem tomou a conta
@@ -210,7 +210,7 @@ A parte que faz os dois aplicativos serem um produto só.
 sequenceDiagram
     participant C as Cliente
     participant Sys as RoHair
-    participant R as Rosiele
+    participant R as Roziele
 
     C->>Sys: autocadastro com CPF
     Sys->>Sys: cria Client origem SELF_REGISTERED
@@ -222,7 +222,7 @@ sequenceDiagram
     Sys-->>R: ficha já preenchida — nunca duplica
 ```
 
-A ficha autocadastrada precisa ser **visualmente distinta** no painel até a Rosiele
+A ficha autocadastrada precisa ser **visualmente distinta** no painel até a Roziele
 confirmar. Dado que entrou sozinho no sistema não pode se misturar ao dado que ela
 mesma conferiu.
 
@@ -230,7 +230,7 @@ mesma conferiu.
 
 ```mermaid
 sequenceDiagram
-    participant R as Rosiele
+    participant R as Roziele
     participant Sys as RoHair
     participant C as Cliente
 
@@ -246,7 +246,7 @@ sequenceDiagram
     Sys-->>C: retorno recomendado, se houver
 ```
 
-**A visibilidade da foto é decisão da Rosiele, por foto, no momento do
+**A visibilidade da foto é decisão da Roziele, por foto, no momento do
 atendimento** — nunca um padrão global. Uma foto de "antes" que a cliente odiou
 não pode aparecer no app dela por omissão.
 
@@ -254,7 +254,7 @@ não pode aparecer no app dela por omissão.
 
 ```mermaid
 flowchart LR
-    A["Rosiele recebe notificação<br/>de ativação suspeita"] --> B["Revogar acesso — um toque"]
+    A["Roziele recebe notificação<br/>de ativação suspeita"] --> B["Revogar acesso — um toque"]
     B --> C["ClientAccount desativada"]
     C --> D["Todas as sessões invalidadas"]
     D --> E["A FICHA PERMANECE INTACTA"]
@@ -273,9 +273,9 @@ duas coisas separadas — é exatamente para isto que a separação existe.
 
 ```mermaid
 stateDiagram-v2
-    [*] --> CREATED_BY_STAFF: Rosiele cadastra
+    [*] --> CREATED_BY_STAFF: Roziele cadastra
     [*] --> SELF_REGISTERED: cliente se autocadastra
-    SELF_REGISTERED --> CONFIRMED: Rosiele confere na bandeja
+    SELF_REGISTERED --> CONFIRMED: Roziele confere na bandeja
     SELF_REGISTERED --> MERGED: fundida com ficha existente
     CREATED_BY_STAFF --> MERGED: fundida com duplicata
     MERGED --> [*]
@@ -289,14 +289,14 @@ stateDiagram-v2
 stateDiagram-v2
     [*] --> NONE: ficha sem conta — estado normal
     NONE --> ACTIVE: ativação por CPF + nascimento
-    ACTIVE --> REVOKED: Rosiele revoga
-    REVOKED --> ACTIVE: Rosiele reativa
+    ACTIVE --> REVOKED: Roziele revoga
+    REVOKED --> ACTIVE: Roziele reativa
     ACTIVE --> LOCKED: excesso de tentativas
     LOCKED --> ACTIVE: expira o bloqueio
 ```
 
 `NONE` **é o estado normal**, não um estado incompleto. A maioria das clientes da
-Rosiele nunca vai abrir o app, e o produto tem que funcionar perfeitamente para
+Roziele nunca vai abrir o app, e o produto tem que funcionar perfeitamente para
 elas. Se o painel tratar "sem conta" como pendência, ele vai ficar cheio de alertas
 falsos.
 
@@ -309,7 +309,7 @@ Estes achados são o motivo pelo qual esta etapa veio antes dos wireframes.
 ### ACHADO-01 · O ponto de encontro depende de um CPF que talvez não exista ⚠️ crítico
 
 A DEC-008 supõe que a ficha tem CPF. Percorrendo o fluxo, isso não se sustenta: a
-Rosiele atende clientes hoje e **não pede CPF de ninguém**. As fichas que ela
+Roziele atende clientes hoje e **não pede CPF de ninguém**. As fichas que ela
 cadastrar terão nome e telefone.
 
 Consequência: a cliente se autocadastra com CPF, o sistema procura o `cpfHash`, não
@@ -323,11 +323,11 @@ Três caminhos, nenhum indolor:
 | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | **CPF obrigatório na ficha**                                                                                                      | Fricção no cadastro; ela vai ter que pedir CPF a cada cliente | Ela simplesmente não pede, e o campo fica vazio na marra                                                                 |
 | **Casar por telefone como segunda chave**                                                                                         | Índice e fluxo de fusão adicionais                            | Telefone muda e é reutilizado; casamento errado expõe histórico de outra pessoa — **inaceitável sem confirmação humana** |
-| **Fusão assistida** — autocadastro sempre cria ficha nova, e o painel sugere candidatas por nome e telefone para a Rosiele fundir | Tela de fusão na Fase 6                                       | Depende de ela fazer a fusão, mas **nenhum dado vaza sem decisão humana**                                                |
+| **Fusão assistida** — autocadastro sempre cria ficha nova, e o painel sugere candidatas por nome e telefone para a Roziele fundir | Tela de fusão na Fase 6                                       | Depende de ela fazer a fusão, mas **nenhum dado vaza sem decisão humana**                                                |
 
 **Minha recomendação: o terceiro, combinado com CPF opcional mas pedido com
 insistência no cadastro.** É o único em que um erro de casamento não expõe o
-histórico de uma pessoa para outra. A fusão é uma ação consciente da Rosiele, que
+histórico de uma pessoa para outra. A fusão é uma ação consciente da Roziele, que
 conhece as clientes pelo nome — ela é o melhor algoritmo de desambiguação
 disponível, e é grátis.
 
@@ -339,7 +339,7 @@ Vira decisão pendente **D-07**.
 
 ### ACHADO-02 · A data de nascimento tem o mesmo problema, e é pior
 
-A ativação exige CPF **e** data de nascimento conferindo. Se a Rosiele cadastrou a
+A ativação exige CPF **e** data de nascimento conferindo. Se a Roziele cadastrou a
 cliente sem data de nascimento, nem o CPF salva: a comparação não tem contra o quê
 comparar.
 
@@ -348,32 +348,32 @@ assim a ativação falha, com uma mensagem genérica que não explica nada. A cl
 não tem como saber que o problema é um campo vazio no cadastro dela.
 
 Mitigação: quando a ficha existe mas não tem data de nascimento, o fluxo não pode
-simplesmente negar. Deve **encaminhar para aprovação manual da Rosiele** — "pedimos
-para a Rosiele liberar seu acesso" — com notificação de um toque no painel. Isso
+simplesmente negar. Deve **encaminhar para aprovação manual da Roziele** — "pedimos
+para a Roziele liberar seu acesso" — com notificação de um toque no painel. Isso
 transforma um beco sem saída em uma espera de minutos.
 
 Vira decisão pendente **D-08**.
 
-### ACHADO-03 · Erro de digitação da Rosiele vira bloqueio permanente da cliente
+### ACHADO-03 · Erro de digitação da Roziele vira bloqueio permanente da cliente
 
 Se a data de nascimento na ficha estiver digitada errada, a cliente **nunca**
 consegue ativar. Ela digita a data correta, o sistema compara com a errada, nega,
 conta a tentativa e a bloqueia progressivamente. Do lado dela, é um app quebrado
 sem explicação.
 
-Mesma mitigação do ACHADO-02: a rota de escape pela Rosiele resolve os dois. O que
+Mesma mitigação do ACHADO-02: a rota de escape pela Roziele resolve os dois. O que
 o ACHADO-03 acrescenta é que **a notificação de tentativa falha também precisa
-chegar ao painel** — não só a de sucesso. Sem isso, a Rosiele nunca fica sabendo
+chegar ao painel** — não só a de sucesso. Sem isso, a Roziele nunca fica sabendo
 que uma cliente está batendo na porta.
 
-Detalhe importante: notificar tentativa falha vaza para a Rosiele que alguém tentou
+Detalhe importante: notificar tentativa falha vaza para a Roziele que alguém tentou
 entrar com aquele CPF. Como a organização é dela e as clientes são dela, é
 aceitável — mas a notificação não pode incluir a data de nascimento tentada, ou
 vira um oráculo para descobrir dado de terceiros.
 
 ---
 
-## 7. O que ainda depende da Rosiele
+## 7. O que ainda depende da Roziele
 
 | #   | Pergunta                                    | Resolve                                                                                 |
 | --- | ------------------------------------------- | --------------------------------------------------------------------------------------- |

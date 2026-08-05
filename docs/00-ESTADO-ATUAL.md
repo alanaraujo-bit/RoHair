@@ -26,13 +26,13 @@ servidor. Ele revisa em produção, pelo iPhone.
 
 | Campo                     | Valor                                                          |
 | ------------------------- | -------------------------------------------------------------- |
-| **Última atualização**    | 2026-08-02                                                     |
+| **Última atualização**    | 2026-08-05                                                     |
 | **O que está no ar**      | **https://rohair.aionixdev.com/painel** ← painel **com login** |
 | Catálogo do design system | https://rohair.aionixdev.com/design                            |
 | Banco                     | Railway · Postgres 18 · migrado e populado                     |
 | CI                        | ✅ Verde — qualidade, banco, build, E2E                        |
 | **Dívida crítica**        | ✅ **Nenhuma.** O painel deixou de estar aberto em 2026-08-02  |
-| Trabalho em andamento     | Estoque e financeiro, para os alertas terem para onde levar    |
+| Trabalho em andamento     | Fotos antes/depois no atendimento, depois o portal da cliente |
 
 > ⚠️ **O endereço mudou de mãos.** `rohair.vercel.app` **não é nosso** e devolve
 > 404 — a documentação anterior estava errada. O apelido de produção é
@@ -49,10 +49,14 @@ Sete telas navegáveis, lendo o Postgres real. **Não é mock.**
 | `/entrar`                           | Login da equipe: e-mail ou usuário + senha, Argon2id, bloqueio progressivo       |
 | `/painel`                           | "Sobrou hoje" em destaque, agenda do dia, alertas de estoque e de cliente sumida |
 | `/painel/agenda`                    | Grade por hora das 9h às 20h, com "vaga" nos espaços livres                      |
-| `/painel/clientes`                  | Lista ordenada por **quem precisa de ação**, não alfabética                      |
-| `/painel/clientes/[id]`             | Ficha: alerta de química no topo, estatísticas, histórico                        |
+| `/painel/agenda/nova`               | **Novo horário** — cliente, serviço, dia e hora, com conflito barrado no banco   |
+| `/painel/clientes`                  | Lista ordenada por **quem precisa de ação**, não alfabética, com "+ Nova"        |
+| `/painel/clientes/nova`             | **Cadastro de cliente** — nome, telefone (normalizado p/ WhatsApp) e curvatura   |
+| `/painel/clientes/[id]`             | Ficha: alerta de química no topo, estatísticas, histórico — **Agendar e WhatsApp agora funcionam** |
 | `/painel/atendimento/[id]`          | **O atendimento** — escolha de serviço, anamnese, cronômetro, produtos, resumo   |
 | `/painel/atendimento/[id]/checkout` | Fechamento com **o lucro na hora**, forma de pagamento e cortesia                |
+| `/painel/estoque`                   | **Estoque** — quem está acabando primeiro, "Comprei" e "Novo produto", gasto do mês |
+| `/painel/dinheiro`                  | **Dinheiro** — sobrou do mês por mês, lançar despesa, **receber fiado** (DEC-018) |
 | `/design`                           | Catálogo dos 19 primitivos do design system, nos dois temas                      |
 
 ### O atendimento, do início ao fim
@@ -71,14 +75,14 @@ depois de fechar o app no meio.
    produtos pré-marcados pelo que o serviço costuma usar, cada mudança salvando
    sozinha.
 4. **Checkout**: total, forma de pagamento, cortesia e **o lucro na hora** — o
-   antídoto direto para a frase da Rosiele.
+   antídoto direto para a frase da Roziele.
 
 Finalizar é **uma transação só** (INV-09): status, pagamento, baixa de estoque e
 lançamento no caixa entram juntos ou não entram.
 
 ### Dados de demonstração já no banco
 
-Organização **Rosiele Hair**, com 6 clientes (Carla, Juliana, Márcia, Ana
+Organização **Roziele Hair**, com 6 clientes (Carla, Juliana, Márcia, Ana
 Beatriz, Paula, Denise), catálogo de 4 serviços, 4 produtos, agenda de hoje com
 2 horários, e histórico que dispara os dois alertas.
 
@@ -86,7 +90,8 @@ Regerar a qualquer momento com `npm run db:seed` — a semente é **idempotente*
 
 ### Conta da equipe
 
-Existe uma conta OWNER (`rosiele`) na organização Rosiele Hair. A senha do
+Existe uma conta OWNER (`roziele` / `roziele@rohair.app`) na organização
+**Roziele Hair** — banco alinhado com a documentação em 2026-08-05. A senha do
 primeiro acesso foi entregue ao dono em arquivo fora do repositório, **nunca
 pelo chat**. Criar outra conta ou trocar a senha:
 
@@ -105,10 +110,10 @@ abertas** — é também a recuperação de senha da OWNER, que não tem a quem 
 | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Contas pelo painel    | A OWNER ainda não cria conta de assistente pela interface; só pelo script. Papéis existem no banco, mas nenhuma tela lê `role` ainda                              |
 | Identidade da cliente | `ClientAccount`, primeiro acesso por CPF, autocadastro e a rota de escape da [D-08](04-DECISOES.md#d-08) — a segunda metade da Fase 4, que vai junto com o portal |
-| Botões sem ação       | "Agendar" e "WhatsApp" na ficha ainda não fazem nada. "Iniciar atendimento" **funciona**                                                                          |
-| Fotos do atendimento  | O antes e depois é a próxima coisa que falta na tela de atendimento; depende do upload para o R2                                                                  |
-| Retorno e cuidado     | O checkout ainda não sugere o retorno nem registra a orientação de casa — as duas coisas dependem, respectivamente, de "novo horário" e do portal                 |
-| Estoque e financeiro  | Rotas `/painel/estoque` e `/painel/dinheiro` não existem — e o alerta da tela Hoje **já aponta para a primeira**, dando 404                                       |
+| Configuração do catálogo | Serviços e produtos só nascem pela semente ou pelo "Novo produto" do estoque; falta editar serviço/preço/duração pela interface                                |
+| Fotos do atendimento  | O antes e depois é a próxima coisa que falta na tela de atendimento; depende do upload para o R2 (rotacionar o token antes)                                      |
+| Retorno e cuidado     | O checkout ainda não sugere o retorno nem registra a orientação de casa — dependem, respectivamente, de "novo horário" (já existe) e do portal                    |
+| Relatórios e metas    | O Dinheiro está no ar; faltam exportação (PDF/CSV), metas e fechamento de caixa diário                                                                            |
 | Portal da cliente     | Nada construído                                                                                                                                                   |
 | PWA                   | Sem manifest, sem service worker, sem fluxo de instalação                                                                                                         |
 
@@ -118,18 +123,18 @@ abertas** — é também a recuperação de senha da OWNER, que não tem a quem 
 
 **Construir, nesta ordem — sem apresentar nada, sem pedir aprovação:**
 
-1. **Estoque** (`/painel/estoque`). É o próximo por dois motivos: o alerta da
-   tela Hoje já leva para lá e dá 404, e o atendimento já está dando baixa —
-   existe saldo real no banco sem nenhuma tela que o mostre.
-2. **Financeiro** (`/painel/dinheiro`), incluindo **receber fiado**, que hoje
-   não tem como acontecer (DEC-018).
-3. **Fotos de antes e depois** no atendimento, com upload para o R2 — lembrar de
-   **rotacionar o token** antes de entrar foto real de cliente.
-4. **Portal da cliente** — e com ele a segunda metade da autenticação
+1. **Fotos de antes e depois** no atendimento, com upload para o R2 — lembrar de
+   **rotacionar o token** antes de entrar foto real de cliente. É o que falta
+   para o atendimento fechar o ciclo.
+2. **Portal da cliente** — e com ele a segunda metade da autenticação
    (`ClientAccount`, primeiro acesso por CPF, D-07 e D-08). As duas coisas são a
    mesma entrega: identidade de cliente sem portal não tem onde ser usada.
+3. **Configuração do catálogo** pela interface (editar serviço, preço, duração)
+   e **contas da equipe** pelo painel, para a fase de assistente.
 
 ~~Login e sessão~~ · ~~Tela de atendimento~~ — **feitos em 2026-08-02.**
+~~Estoque e financeiro~~ · ~~Cadastro de cliente~~ · ~~Novo horário~~ —
+**feitos em 2026-08-05.**
 
 O desenho de cada tela está em [12-WIREFRAMES.md](12-WIREFRAMES.md); a
 prioridade, em [13-BACKLOG.md](13-BACKLOG.md).
@@ -243,6 +248,7 @@ Justificativas completas em [04-DECISOES.md](04-DECISOES.md) e [adr/](adr/).
 | `npm audit`: 2 vulnerabilidades altas em `next` via `sharp`                                  | Pré-existente, não introduzida por nós. Tratar na Fase 15                                                                                                                                                           |
 | Aviso do `eslint-plugin-boundaries` sobre "legacy selector syntax" e sobre padrão de arquivo | Ruído conhecido, não é erro. O segundo vem do `src/proxy.ts`, que é um arquivo solto e precisa ser classificado como `app`                                                                                          |
 | `rohair.vercel.app` devolve 404                                                              | **Não é nosso.** O endereço certo é `rohair.aionixdev.com`. A documentação de 2026-08-01 estava errada                                                                                                              |
+| `DATABASE_URL` **global na máquina do dono** (host `base`)                                  | Sobrescreve o `.env.local` em todo script local — `db:owner`/`db:seed` falham com P1001 apontando para `base`. Conserto: remover a variável de ambiente global (ou passar a URL certa explicitamente no comando) |
 | Login some depois de trocar a senha da OWNER                                                 | É o desenho: `db:owner` apaga as sessões abertas. Entrar de novo resolve                                                                                                                                            |
 | `too many clients already` vindo do Postgres                                                 | O singleton do Prisma vale **em produção também**. Guardá-lo só fora de produção abre um pool por invocação na Vercel. Corrigido em 2026-08-02 — se voltar, olhar `core/db/client.ts` antes de suspeitar do Railway |
 | `<Link>` com `<Button>` dentro                                                               | HTML inválido, e o link fica **sem nome acessível**. Use `buttonClasses()` no próprio `Link`                                                                                                                        |
@@ -269,7 +275,7 @@ Justificativas completas em [04-DECISOES.md](04-DECISOES.md) e [adr/](adr/).
 | [11-PERSONAS.md](11-PERSONAS.md)                           | Personas e Jobs to be Done                               |
 | [12-WIREFRAMES.md](12-WIREFRAMES.md)                       | **As 16 telas — o desenho do que construir**             |
 | [13-BACKLOG.md](13-BACKLOG.md)                             | 42 itens priorizados                                     |
-| [descoberta/](descoberta/)                                 | A conversa com a Rosiele e o que saiu dela               |
+| [descoberta/](descoberta/)                                 | A conversa com a Roziele e o que saiu dela               |
 | [adr/](adr/)                                               | ADR-0001 fundação · 0002 Áurea · 0003 domínio            |
 
 ---
@@ -277,7 +283,7 @@ Justificativas completas em [04-DECISOES.md](04-DECISOES.md) e [adr/](adr/).
 ## 9. A frase que orienta o produto inteiro
 
 > 🗣️ **"Fim do dia estou com dinheiro mas fim do mês não tenho mais devido
-> comprar algo que está faltando."** — Rosiele
+> comprar algo que está faltando."** — Roziele
 
 Ela enxerga **caixa**, não lucro. E compra produto sempre **depois** da falta.
 Os dois problemas são o mesmo: o custo do produto não está ligado ao atendimento
@@ -294,6 +300,56 @@ restantes em vez de quantidade.
 ## 10. Log de sessões
 
 Ordem cronológica inversa — mais recente no topo.
+
+### 2026-08-05 (3) — O painel fechou o ciclo do dia a dia: estoque, dinheiro, cliente e agendamento
+
+- **Estoque no ar** (`/painel/estoque`) — o alerta da tela Hoje deixou de dar
+  404. Produtos ordenados por quem está acabando, "Comprei" registra compra
+  (append-only, com o custo do momento atualizando o custo do produto),
+  "Novo produto" cadastra pela interface, e o card "No mês" mostra gasto em
+  produto e custo médio por atendimento.
+- **Dinheiro no ar** (`/painel/dinheiro`), com navegação por mês — sobrou,
+  entrou, produto e despesas na mesma hierarquia da tela Hoje, comparação com
+  o mês anterior em uma frase, lançamento de despesa manual e **receber
+  fiado**: o pagamento ganha `paidAt` e o caixa ganha a RECEITA no dia em que
+  o dinheiro entra (DEC-018). Entrou na navegação inferior como quarto item.
+- **Cadastro de cliente** pela interface (`/painel/clientes/nova`) — antes só
+  existia pela semente. Telefone passa pelo value object do kernel e já
+  alimenta o botão **WhatsApp** da ficha, que agora funciona; **Agendar** leva
+  ao novo horário com a cliente pré-selecionada.
+- **Novo horário** (`/painel/agenda/nova`) — cliente, serviço (com duração do
+  catálogo na tela), dia e hora. Conflito barrado com mensagem amigável antes
+  da constraint `EXCLUDE USING gist` (INV-01), que segue como garantia final.
+- **Kernel:** `monthBounds` (o filtro do financeiro, livre de fuso porque o
+  dia de negócio já é guardado como meia-noite UTC) e `zonedTimeToUtc` (a hora
+  do salão vira instante UTC) — os dois com teste. Suíte em 179 testes verdes;
+  typecheck, lint e build limpos.
+
+### 2026-08-05 (2) — Banco renomeado para Roziele
+
+- A pedido do dono, a organização virou **"Roziele Hair"** e o usuário OWNER
+  virou **`roziele` / `roziele@rohair.app` / "Roziele"** — uma transação só, em
+  produção. O banco agora está alinhado com a documentação (que já tinha sido
+  renomeada).
+- **Login verificado em produção pelo caso de uso real** (`authenticateStaff`)
+  com o identificador `roziele`: senha conferida, sessão criada, auditoria
+  registrada. A semente já criava "Roziele Hair", então re-seed não reverte.
+
+### 2026-08-05 (1) — Credencial de teste para o dono · três descobertas
+
+- A pedido do dono, a senha da conta OWNER foi **trocada** (via `db:owner`) e a
+  nova credencial entregue a ele, verificada pelo hash Argon2id no banco.
+- **A conta real era `rosiele`, não `roziele`** como este documento dizia — o
+  banco estava com o nome antigo em dois lugares (organização e usuário).
+  Renomeado no mesmo dia (ver 2026-08-05 (2)).
+- **`DATABASE_URL` quebrada em dois lugares:** o `.env.local` tinha o
+  placeholder `base` (corrigido com a `DATABASE_PUBLIC_URL` do Railway) e a
+  **máquina do dono tem uma variável de ambiente `DATABASE_URL` global com o
+  mesmo placeholder**, que vence o arquivo local em qualquer script
+  (`db:owner`, `db:seed`). Remover essa variável global é o conserto definitivo.
+- Acesso ao Railway obtido via CLI (`railway login`, autorizado pelo dono no
+  navegador) para puxar a URL pública do Postgres — a `DATABASE_URL` da Vercel
+  é Encrypted e o `vercel env pull` não a traz.
 
 ### 2026-08-02 (2) — O atendimento inteiro no ar, e quatro bugs que só produção mostra
 
@@ -454,7 +510,7 @@ Ordem cronológica inversa — mais recente no topo.
   buracos**, todos corrigidos; o modelo subiu para **v1** com as invariantes
   INV-18, INV-19 e INV-20 novas e INV-16 e INV-17 reescritas.
 - **1.7 · Personas** ([11-PERSONAS.md](11-PERSONAS.md)) escritas do domínio. A
-  Rosiele é a primeira instância da persona, não a definição dela.
+  Roziele é a primeira instância da persona, não a definição dela.
 - **1.8 · Dezesseis wireframes** ([12-WIREFRAMES.md](12-WIREFRAMES.md)) —
   onboarding, 11 telas do painel, 4 do portal. Regra dos 3 toques verificada nas
   seis ações do dia a dia; a única em risco era "dar baixa em produto", resolvida
@@ -526,13 +582,13 @@ Ordem cronológica inversa — mais recente no topo.
 
 ### 2026-07-31 (6) — Fase 1 aprovada · Fase 1A executada
 
-- Fase 1 apresentada e aprovada. Dividida em **1A** (não depende da Rosiele) e
+- Fase 1 apresentada e aprovada. Dividida em **1A** (não depende da Roziele) e
   **1B** (depende das respostas dela).
 - **1A entregue por completo:** roteiro de conversa, glossário do domínio, fluxos
   das duas pontas e modelo de domínio v0. Detalhes na seção 5.
 - **Escrever os fluxos com rigor expôs três buracos no modelo de identidade.** O
   mais grave: o ponto de encontro entre painel e portal depende de um CPF na ficha
-  que, na prática, não vai existir — a Rosiele não pede CPF de ninguém hoje.
+  que, na prática, não vai existir — a Roziele não pede CPF de ninguém hoje.
   Viraram **D-07** e **D-08**, com recomendação registrada.
 - **Método adotado para o modelo v0:** afirmar em vez de generalizar. Um modelo
   vago sobrevive a qualquer entrevista porque não diz nada; este declara 10
@@ -604,7 +660,7 @@ Ordem cronológica inversa — mais recente no topo.
 - Modelo de identidade definido pelo dono e detalhado em DEC-008.
 - D-01 revogada: sem Better Auth e sem passkey. Lucia descartada (descontinuada).
 - D-02 substituída pela DEC-010: Cloudflare R2 com compressão no dispositivo.
-- D-04 resolvida pela DEC-011: RoHair = Rosiele + Hair.
+- D-04 resolvida pela DEC-011: RoHair = Roziele + Hair.
 - Roadmap ampliado para 17 fases; **Fase 12 — Portal da Cliente** criada.
 
 ### 2026-07-31 (1) — Planejamento e fundação documental

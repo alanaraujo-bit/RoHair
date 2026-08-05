@@ -9,7 +9,7 @@
 > Todos desenhados na largura do iPhone, uma mão. Desktop é adaptação, nunca origem.
 >
 > **Legenda:** `[ ]` botão · `( )` opção · `▸` navega · `···` menu · 🗣️ vem da
-> conversa com a Rosiele
+> conversa com a Roziele
 
 ---
 
@@ -279,7 +279,7 @@ dados; esta é uma lista de trabalho.
 │                              │
 │ NOTAS                        │
 │ "não gosta de cheiro forte"  │
-│ 14 mai · Rosiele             │
+│ 14 mai · Roziele             │
 │                              │
 │ ⚙ Preferências · LGPD      ▸ │
 └──────────────────────────────┘
@@ -329,7 +329,7 @@ BANDEJA                         FUSÃO
 
 **A máquina sugere, a pessoa decide.** Casar por telefone automaticamente exporia o
 histórico de alguém para outra pessoa quando o número tiver sido reaproveitado —
-risco inaceitável num produto que guarda foto de cliente. A Rosiele conhece as
+risco inaceitável num produto que guarda foto de cliente. A Roziele conhece as
 clientes pelo nome; é o melhor desambiguador que existe, e é grátis.
 
 Telefone e CPF aparecem **mascarados** mesmo para ela: o suficiente para reconhecer,
@@ -554,7 +554,7 @@ tocável e leva à transação de origem — DoD da Fase 10.
 │            Ro                │
 │                              │
 │   O seu cabelo, com a        │
-│   Rosiele.                   │
+│   Roziele.                   │
 │                              │
 │ CPF                          │
 │ [ ___.___.___-__ ]           │
@@ -570,10 +570,10 @@ tocável e leva à transação de origem — DoD da Fase 10.
 ```
 
 Duas caixas. Sem "criar conta", sem "esqueci a senha" em destaque — a mesma porta
-serve para tudo. 🗣️ Tom na primeira pessoa da Rosiele, nunca institucional.
+serve para tudo. 🗣️ Tom na primeira pessoa da Roziele, nunca institucional.
 
 Quando a ficha existe mas falta a data de nascimento, esta tela **não nega**: pede
-liberação à Rosiele, que resolve em um toque (D-08).
+liberação à Roziele, que resolve em um toque (D-08).
 
 ---
 
@@ -597,11 +597,11 @@ liberação à Rosiele, que resolve em um toque (D-08).
 │ ┌────┐┌────┐┌────┐┌────┐    │
 │ │nov ││ago ││mai ││fev │  ▸ │
 │ └────┘└────┘└────┘└────┘    │
-│ 8 visitas com a Rosiele      │
+│ 8 visitas com a Roziele      │
 │                              │
 │ ┌──────────────────────────┐ │
 │ │ 💧 Shampoo sem sal       │ │
-│ │ Recomendado pela Rosiele │ │
+│ │ Recomendado pela Roziele │ │
 │ │                       ▸  │ │
 │ └──────────────────────────┘ │
 │                              │
@@ -610,7 +610,7 @@ liberação à Rosiele, que resolve em um toque (D-08).
 └──────────────────────────────┘
 ```
 
-Confirmar presença em **1 toque** — e essa confirmação aparece no painel da Rosiele
+Confirmar presença em **1 toque** — e essa confirmação aparece no painel da Roziele
 sem recarregar.
 
 Sem valores: 🗣️ o histórico de preços nasce desligado na configuração.
@@ -649,7 +649,7 @@ O coração emocional do portal.
 ```
 
 Uma foto por vez, arrastar para comparar, linha do tempo embaixo. **Só aparecem as
-fotos liberadas** pela Rosiele — a cliente não sabe que existem outras, e não pode
+fotos liberadas** pela Roziele — a cliente não sabe que existem outras, e não pode
 saber (INV-11).
 
 O card do fim é o que faz ela não trocar de profissional.
@@ -658,13 +658,13 @@ O card do fim é o que faz ela não trocar de profissional.
 
 ## 16 · Portal — meu cuidado
 
-🗣️ A tela que digitaliza o que a Rosiele já faz falando na porta.
+🗣️ A tela que digitaliza o que a Roziele já faz falando na porta.
 
 ```
 ┌──────────────────────────────┐
 │ ‹         Meu cuidado        │
 │                              │
-│ DA ROSIELE PARA VOCÊ         │
+│ DA ROZIELE PARA VOCÊ         │
 │ 12 de agosto                 │
 │                              │
 │ ┌──────────────────────────┐ │
@@ -694,7 +694,7 @@ O card do fim é o que faz ela não trocar de profissional.
 Falado, isso se perde antes de a cliente chegar em casa. Escrito, vira o motivo de
 ela abrir o app de novo.
 
-**"Pedir esse horário"**, não "agendar" — é o padrão de D-05, e a Rosiele aprova.
+**"Pedir esse horário"**, não "agendar" — é o padrão de D-05, e a Roziele aprova.
 
 ---
 

@@ -5,7 +5,7 @@
 > corrigidos aqui. É esta versão que vira schema Prisma na Fase 3.
 >
 > Duas fontes o formaram: as decisões já registradas, e a
-> [conversa com a Rosiele](descoberta/leitura-01.md), que trouxe `HairAssessment`
+> [conversa com a Roziele](descoberta/leitura-01.md), que trouxe `HairAssessment`
 > e o portão do teste de mecha. Nada aqui depende de perguntar a alguém como
 > trabalha — o que varia por profissional é
 > [configuração](09-CONFIGURACAO.md), não modelo.
@@ -13,7 +13,7 @@
 | Marca | Significa                                                                  |
 | ----- | -------------------------------------------------------------------------- |
 | 🔒    | **Travado** por decisão registrada. Não se rediscute sem revogar a decisão |
-| 🗣️    | Veio da conversa com a Rosiele                                             |
+| 🗣️    | Veio da conversa com a Roziele                                             |
 | ⚠️    | Hipótese do domínio, não confirmada por uso real                           |
 
 ---
@@ -113,7 +113,7 @@ trate encaixe ou falta como caso especial já nasce errado.
 **Entidade que não existia na v0.** Veio da primeira rodada, e é a mudança mais
 importante desta versão.
 
-A Rosiele descreveu a mesma sequência de perguntas duas vezes, em blocos
+A Roziele descreveu a mesma sequência de perguntas duas vezes, em blocos
 diferentes, sem que nada pedisse isso:
 
 ```
@@ -225,7 +225,7 @@ preço ou obriga a ratear por chute, e a margem por serviço vira ficção.
 
 Descoberto pelo [cenário 3](10-CENARIOS.md#cenário-3--o-encaixe-que-virou-três-coisas).
 Sem isso, o DoD da Fase 7 — _"finalizar dá baixa automática correta"_ — falharia em
-silêncio no caso mais comum da Rosiele.
+silêncio no caso mais comum da Roziele.
 
 ### 4.6 Preço é congelado no atendimento 🔒
 
@@ -246,7 +246,7 @@ recusar a baixa nem travar a finalização do atendimento.
 
 **Por quê:** o princípio de honestidade de estado
 ([01-VISAO-PRODUTO.md](01-VISAO-PRODUTO.md)) vale para o estoque. Bloquear a baixa
-obrigaria a Rosiele a mentir para o app com a cliente na cadeira, e no minuto em
+obrigaria a Roziele a mentir para o app com a cliente na cadeira, e no minuto em
 que ela mente uma vez o estoque inteiro deixa de valer. Melhor aceitar o negativo e
 sinalizar: "o registro está atrás da realidade, quer acertar?".
 
@@ -287,7 +287,7 @@ o contrato entre a Fase 1 e a Fase 3.
 
 ### Três cenários adversariais que a v1 precisa passar
 
-Além dos cinco casos reais da Rosiele, o modelo tem que sobreviver a:
+Além dos cinco casos reais da Roziele, o modelo tem que sobreviver a:
 
 1. **Corrida de agendamento** — duas requisições simultâneas no mesmo horário. Uma
    tem que falhar no banco, não na aplicação (INV-01).
@@ -344,7 +344,7 @@ uso, na Fase 11.
 
 ## 7. As perguntas do modelo — todas resolvidas
 
-Nenhuma delas foi resolvida perguntando à Rosiele. Por
+Nenhuma delas foi resolvida perguntando à Roziele. Por
 [DEC-013](04-DECISOES.md#dec-013), a pergunta certa deixou de ser "o que ela faz?" e
 passou a ser **"quem sabe a resposta?"** — e a resposta manda a questão para a
 arquitetura, para a tela de configuração ou para o próprio uso.
@@ -375,7 +375,7 @@ Detalhamento das decisões de arquitetura em
 
 ## 8. O que acontece agora
 
-1. ✅ Conversa com a Rosiele lida — [leitura](descoberta/leitura-01.md). Gerou
+1. ✅ Conversa com a Roziele lida — [leitura](descoberta/leitura-01.md). Gerou
    `HairAssessment`, `ENCERRADO_SEM_SERVICO` e o vocabulário
 2. ✅ M-01 a M-12 resolvidas por arquitetura, configuração ou aprendizado
    ([DEC-013](04-DECISOES.md#dec-013)) — **não haverá segunda rodada**

@@ -3,7 +3,7 @@ import { err, ok, type Result } from './result';
 /**
  * Quantidade de produto, com unidade.
  *
- * 🗣️ A Rosiele pensa em **frasco** e em **aplicação**, não em mililitro:
+ * 🗣️ A Roziele pensa em **frasco** e em **aplicação**, não em mililitro:
  * *"esse frasco dá umas oito escovas"*. O produto fala a língua dela, e a
  * conversão acontece por dentro (09-CONFIGURACAO.md, § 2).
  *

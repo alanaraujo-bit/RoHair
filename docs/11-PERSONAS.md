@@ -2,7 +2,7 @@
 
 > **Entregável 1.7 da Fase 1.**
 >
-> Escritas do **domínio**, não de uma pessoa. A Rosiele é a primeira instância da
+> Escritas do **domínio**, não de uma pessoa. A Roziele é a primeira instância da
 > persona, não a definição dela — se o produto só servir para ela, a Fase 16 não
 > existe ([DEC-013](04-DECISOES.md#dec-013)).
 >
@@ -86,7 +86,7 @@ Não quer um app de salão. Quer duas coisas específicas, e o resto é ruído.
 | 4   | 🗣️ **"Quando eu devo voltar?"**           | O retorno é calculável — 3 meses para progressiva, antes se for cacheado                       |
 | 5   | **"Quero marcar"**                        | Sem depender de ela estar com o celular na mão                                                 |
 
-Os jobs 3 e 4 **não foram inventados**: a Rosiele já faz os dois, falando, no fim do
+Os jobs 3 e 4 **não foram inventados**: a Roziele já faz os dois, falando, no fim do
 atendimento. O portal não cria comportamento novo — impede que o existente evapore
 no caminho até em casa.
 

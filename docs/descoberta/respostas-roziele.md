@@ -1,4 +1,4 @@
-# Respostas da Rosiele
+# Respostas da Roziele
 
 > **Status:** ✅ encerrado. **Rodada única** — não haverá segunda
 > ([DEC-013](../04-DECISOES.md#dec-013)).

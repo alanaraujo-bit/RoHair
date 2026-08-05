@@ -1,7 +1,7 @@
 # Glossário do domínio
 
 > **Entregável 1.2 da Fase 1 — v0.5**, atualizado com a primeira rodada de
-> respostas da Rosiele ([leitura-01.md](descoberta/leitura-01.md)).
+> respostas da Roziele ([leitura-01.md](descoberta/leitura-01.md)).
 >
 > Este documento existe por um motivo específico: **vocabulário errado vira
 > software errado.** Se eu chamar de "serviço" o que ela chama de "procedimento",
@@ -17,13 +17,13 @@
 
 | Marca | Significa                                                                                                |
 | ----- | -------------------------------------------------------------------------------------------------------- |
-| 🗣️    | **Palavra da Rosiele.** Confirmada na primeira rodada. Estas vencem qualquer preferência minha           |
+| 🗣️    | **Palavra da Roziele.** Confirmada na primeira rodada. Estas vencem qualquer preferência minha           |
 | ✅    | Termo do domínio da beleza com significado estável no mercado brasileiro                                 |
-| ⚠️    | **A confirmar com a Rosiele** — ou eu não sei se ela usa, ou o termo tem mais de um significado em uso   |
+| ⚠️    | **A confirmar com a Roziele** — ou eu não sei se ela usa, ou o termo tem mais de um significado em uso   |
 | 🔷    | Termo do **produto RoHair**, definido por nós. Precisa ser aprovado como o nome que aparece na interface |
 
 **Nada aqui é definitivo.** Este glossário nasce como hipótese e será reescrito na
-Fase 1B com o vocabulário real da Rosiele. Onde o termo dela divergir do meu,
+Fase 1B com o vocabulário real da Roziele. Onde o termo dela divergir do meu,
 **o dela vence** — inclusive se for gramaticalmente estranho ou regional.
 
 ---
@@ -38,7 +38,7 @@ Lavagem, secagem e modelagem do fio com secador e escova. Não é procedimento
 químico e o efeito dura até a próxima lavagem.
 
 ⚠️ **Armadilha de modelagem.** "Escova" é usado no Brasil com três sentidos
-diferentes, e preciso saber qual é o da Rosiele:
+diferentes, e preciso saber qual é o da Roziele:
 
 1. **A ferramenta** — a escova física
 2. **O serviço de modelagem** — lavar, secar e modelar
@@ -53,7 +53,7 @@ nas pontas), **escova com babyliss** (cachos ou ondas ao final).
 ### Nutrição 🗣️
 
 **A palavra dela é "nutrição", não "hidratação".** Toda a documentação anterior
-listava o escopo como "escova, hidratação, progressiva"; as palavras da Rosiele são
+listava o escopo como "escova, hidratação, progressiva"; as palavras da Roziele são
 **progressiva, nutrição, escova**. A interface usa o termo dela.
 
 Ela usa **Wella**, e a frase foi _"Wella para nutrição pra escovar"_ — o "pra" liga
@@ -114,7 +114,7 @@ impossíveis depois — adicionar um serviço deve ser cadastro, nunca código.
 | **Mechas / luzes** ✅     | Clareamento parcial. **Balayage** e **ombré** são técnicas de distribuição                                                                                                                                                                                                                                         |
 | **Matização** ✅          | Neutraliza tons amarelados após clareamento. Costuma ser cobrada à parte                                                                                                                                                                                                                                           |
 | **Corte de pontas** 🗣️    | **Confirmado e rotineiro:** _"As pontas sempre cortamos na maioria das vezes pra não ficar ressecadas."_ Entra na semente do catálogo, marcado. Se é etapa embutida ou serviço à parte, ela decide na configuração                                                                                                 |
-| **Cronograma capilar** ✅ | **Não é um serviço — é uma sequência.** Alternância planejada entre hidratação, nutrição e reconstrução ao longo de semanas. Se a Rosiele trabalha assim, o produto precisa entender uma **série de atendimentos com um plano**, não visitas isoladas. ⚠️ Isso teria impacto real no modelo e no portal da cliente |
+| **Cronograma capilar** ✅ | **Não é um serviço — é uma sequência.** Alternância planejada entre hidratação, nutrição e reconstrução ao longo de semanas. Se a Roziele trabalha assim, o produto precisa entender uma **série de atendimentos com um plano**, não visitas isoladas. ⚠️ Isso teria impacto real no modelo e no portal da cliente |
 
 ---
 
@@ -207,7 +207,7 @@ aparecem na tela.
 
 | Termo                   | Definição no sistema                                                                          | Nome provável na interface                                             |
 | ----------------------- | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| **Organização** 🔷      | A unidade de isolamento de dados. Hoje: a Rosiele. Amanhã: cada profissional assinante        | Nunca aparece na interface na Fase 1–15                                |
+| **Organização** 🔷      | A unidade de isolamento de dados. Hoje: a Roziele. Amanhã: cada profissional assinante        | Nunca aparece na interface na Fase 1–15                                |
 | **Ficha** 🔷            | `Client` — o registro de negócio da cliente. **Existe sem conta e sem app**                   | "Ficha" ou "Cliente" ⚠️                                                |
 | **Conta da cliente** 🔷 | `ClientAccount` — a credencial de acesso ao portal. 1:1 opcional com a ficha                  | "Acesso ao app"                                                        |
 | **Agendamento** 🔷      | `Appointment` — o compromisso futuro                                                          | "Horário" ⚠️ — provavelmente é como ela fala                           |
@@ -238,7 +238,7 @@ Existe atendimento sem agendamento (encaixe) e agendamento sem atendimento
 ## 8. Perguntas em aberto
 
 Por [DEC-013](04-DECISOES.md#dec-013), estas perguntas **não vão ser feitas à
-Rosiele**. Quase todas eram sobre o que ela faz — e o que ela faz é escolha dela na
+Roziele**. Quase todas eram sobre o que ela faz — e o que ela faz é escolha dela na
 tela de configuração, não descoberta nossa.
 
 | #    | Pergunta                                           | Resolução                                                                               |

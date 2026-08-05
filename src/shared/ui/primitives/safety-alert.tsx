@@ -8,7 +8,7 @@ import { cn } from '@/shared/utils/cn';
  * comum: sobrepor química incompatível — guanidina sob amônia, por exemplo —
  * pode literalmente partir o fio da cliente.
  *
- * 🗣️ A Rosiele abre todo atendimento perguntando o que a cliente já fez e
+ * 🗣️ A Roziele abre todo atendimento perguntando o que a cliente já fez e
  * testando uma mecha. Este componente é a versão em tela dessa pergunta, e por
  * isso aparece **no topo da ficha**, acima de qualquer métrica
  * (docs/12-WIREFRAMES.md, tela 6).

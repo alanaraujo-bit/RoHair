@@ -4,7 +4,7 @@
 > dela e ajusta o que for diferente.**
 >
 > Substitui a descoberta por entrevista ([DEC-013](04-DECISOES.md#dec-013)). Tudo
-> que eu ia perguntar à Rosiele por mensagem — preço, duração, produto, horário —
+> que eu ia perguntar à Roziele por mensagem — preço, duração, produto, horário —
 > é campo de cadastro, e cadastro é para todas as profissionais, não só para ela.
 
 ---
@@ -47,7 +47,7 @@ ligado à categoria de produto certa.
 | **Cor**        | Coloração · Retoque de cor · Mechas · Luzes · Matização · Descoloração |
 
 🗣️ A ordem não é alfabética de propósito: **progressiva, nutrição, escova e corte
-de pontas aparecem primeiro**, porque é o que a Rosiele faz — e é uma aposta
+de pontas aparecem primeiro**, porque é o que a Roziele faz — e é uma aposta
 razoável para autônoma de cabelo em geral. Ela marca quatro caixas e o catálogo
 está pronto.
 
@@ -131,7 +131,7 @@ Cada profissional decide o produto que quer ter. Nós entregamos o padrão bom.
 
 ### 3.5 Anamnese
 
-🗣️ As cinco perguntas que a Rosiele já faz vêm marcadas: já fez alisamento, qual
+🗣️ As cinco perguntas que a Roziele já faz vêm marcadas: já fez alisamento, qual
 produto usou, quando foi, se está quebrando, se está caindo. Mais o **teste de
 mecha** como etapa obrigatória de serviço químico.
 
@@ -207,7 +207,7 @@ O que sobra das perguntas que eu ia mandar por mensagem: elas viram esta tela.
 
 ---
 
-## 7. O que a conversa com a Rosiele ainda serviu
+## 7. O que a conversa com a Roziele ainda serviu
 
 Ela não foi desperdício, e não vai se repetir. O que veio dela virou:
 

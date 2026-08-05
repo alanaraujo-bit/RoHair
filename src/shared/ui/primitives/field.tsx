@@ -129,3 +129,17 @@ export function Textarea({ className, rows = 3, ...rest }: TextareaProps) {
     />
   );
 }
+
+export type SelectProps = React.ComponentPropsWithoutRef<'select'>;
+
+/**
+ * Seleção nativa. O `<select>` do navegador já entrega a roda de escolha do
+ * iOS, que é o controle certo para listas que não cabem na tela.
+ */
+export function Select({ className, children, ...rest }: SelectProps) {
+  return (
+    <select className={cn(CONTROL_BASE, 'pr-9', className)} {...rest}>
+      {children}
+    </select>
+  );
+}

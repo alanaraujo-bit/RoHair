@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import { requireStaffSession } from '@/features/auth/infrastructure/session-context';
 import { agendaDeHoje } from '@/features/painel/infrastructure/painel-repository';
+import { buttonClasses } from '@/shared/ui/primitives/button';
 import { Badge, Card } from '@/shared/ui/primitives/surface';
 
 export const metadata: Metadata = { title: 'Agenda · RoHair' };
@@ -38,14 +39,19 @@ export default async function AgendaPage() {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex flex-col gap-1">
-        <h1 className="font-display text-[length:var(--text-2xl)] text-[var(--aurea-ink)]">
-          Agenda
-        </h1>
-        <p className="text-[length:var(--text-sm)] text-[var(--aurea-ink-muted)]">
-          {hoje} · {agenda.length} {agenda.length === 1 ? 'horário' : 'horários'} ·{' '}
-          {vagas} vagas
-        </p>
+      <div className="flex items-end justify-between gap-3">
+        <div className="flex flex-col gap-1">
+          <h1 className="font-display text-[length:var(--text-2xl)] text-[var(--aurea-ink)]">
+            Agenda
+          </h1>
+          <p className="text-[length:var(--text-sm)] text-[var(--aurea-ink-muted)]">
+            {hoje} · {agenda.length} {agenda.length === 1 ? 'horário' : 'horários'} ·{' '}
+            {vagas} vagas
+          </p>
+        </div>
+        <Link href="/painel/agenda/nova" className={buttonClasses({ size: 'sm' })}>
+          + Novo
+        </Link>
       </div>
 
       <ol className="flex flex-col">

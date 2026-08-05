@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import { requireStaffSession } from '@/features/auth/infrastructure/session-context';
 import { listaDeClientes } from '@/features/painel/infrastructure/painel-repository';
+import { buttonClasses } from '@/shared/ui/primitives/button';
 import { Badge, Card } from '@/shared/ui/primitives/surface';
 
 export const metadata: Metadata = { title: 'Clientes · RoHair' };
@@ -24,9 +25,14 @@ export default async function ClientesPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="font-display text-[length:var(--text-2xl)] text-[var(--aurea-ink)]">
-        Clientes
-      </h1>
+      <div className="flex items-center justify-between gap-3">
+        <h1 className="font-display text-[length:var(--text-2xl)] text-[var(--aurea-ink)]">
+          Clientes
+        </h1>
+        <Link href="/painel/clientes/nova" className={buttonClasses({ size: 'sm' })}>
+          + Nova
+        </Link>
+      </div>
 
       {precisamVoltar.length > 0 && (
         <Grupo titulo="Precisam voltar" clientes={precisamVoltar} destaque />

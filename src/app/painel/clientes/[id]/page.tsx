@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { iniciarAtendimentoAction } from '@/app/painel/atendimento/[id]/actions';
 import { requireStaffSession } from '@/features/auth/infrastructure/session-context';
 import { fichaDaCliente } from '@/features/painel/infrastructure/painel-repository';
-import { Button } from '@/shared/ui/primitives/button';
+import { Button, buttonClasses } from '@/shared/ui/primitives/button';
 import { MoneyText } from '@/shared/ui/primitives/money-display';
 import { SafetyAlert } from '@/shared/ui/primitives/safety-alert';
 import { Badge, Card } from '@/shared/ui/primitives/surface';
@@ -88,12 +88,26 @@ export default async function FichaPage({
       </Card>
 
       <div className="grid grid-cols-2 gap-2">
-        <Button variant="secondary" size="sm">
+        <Link
+          href={`/painel/agenda/nova?cliente=${ficha.id}`}
+          className={buttonClasses({ variant: 'secondary', size: 'sm' })}
+        >
           Agendar
-        </Button>
-        <Button variant="secondary" size="sm">
-          WhatsApp
-        </Button>
+        </Link>
+        {ficha.telefone ? (
+          <Link
+            href={linkWhatsApp(ficha.telefone)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={buttonClasses({ variant: 'secondary', size: 'sm' })}
+          >
+            WhatsApp
+          </Link>
+        ) : (
+          <Button variant="secondary" size="sm" disabled>
+            WhatsApp
+          </Button>
+        )}
       </div>
       <form action={iniciarAtendimentoAction}>
         <input type="hidden" name="clienteId" value={ficha.id} />
@@ -141,6 +155,16 @@ export default async function FichaPage({
       </section>
     </div>
   );
+}
+
+/**
+ * O telefone guardado segue o padrão `+55…` do kernel; o WhatsApp quer só os
+ * dígitos, sem o sinal de mais.
+ */
+function linkWhatsApp(telefone: string): string {
+  const digitos = telefone.replace(/\D/g, '');
+  const comCodigo = digitos.startsWith('55') ? digitos : `55${digitos}`;
+  return `https://wa.me/${comCodigo}`;
 }
 
 function Estatistica({ rotulo, valor }: { rotulo: string; valor: string }) {

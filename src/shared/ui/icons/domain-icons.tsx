@@ -109,7 +109,7 @@ export function IconHourglass(props: IconProps) {
   );
 }
 
-/** Calendário com vaga — a agenda. "Vaga" é a palavra da Rosiele. */
+/** Calendário com vaga — a agenda. "Vaga" é a palavra da Roziele. */
 export function IconCalendar(props: IconProps) {
   return (
     <IconShell {...props}>
@@ -129,6 +129,17 @@ export function IconMoney(props: IconProps) {
       <rect x="2.8" y="6.2" width="18.4" height="12.6" rx="2.8" />
       <circle cx="12" cy="12.5" r="2.9" />
       <path d="M6.4 10.2v4.6M17.6 10.2v4.6" />
+    </IconShell>
+  );
+}
+
+/** Casa — a tela Hoje, o ponto de partida do painel. */
+export function IconHome(props: IconProps) {
+  return (
+    <IconShell {...props}>
+      <path d="M3.6 10.4 12 3.8l8.4 6.6" />
+      <path d="M5.8 9.4V20h12.4V9.4" />
+      <path d="M10 20v-5h4v5" />
     </IconShell>
   );
 }
